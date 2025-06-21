@@ -8,6 +8,24 @@ public class Rarity {
 
     }
 
+    public Rarity(int rarity) {
+        this();
+        switch (rarity) {
+            case 1:
+                this.setName("Common");
+                this.setAbbreviation("COM");
+            case 2:
+                this.setName("Uncommon");
+                this.setAbbreviation("UCM");
+            case 3:
+                this.setName("Rare");
+                this.setAbbreviation("RAR");
+            case 4:
+                this.setName("Legendary");
+                this.setAbbreviation("LEG");
+        }
+    }
+
     public String getName() {
         return this.name;
     }

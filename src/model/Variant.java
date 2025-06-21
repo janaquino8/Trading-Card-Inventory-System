@@ -6,7 +6,26 @@ public class Variant {
     private double valueMultiplier;
 
     public Variant() {
+        this.setName("Normal");
+        this.setAbbreviation("N");
+        this.setValueMultiplier(1);
+    }
 
+    public Variant(int variant) {
+        switch (variant) {
+            case 2:
+                this.setName("Extended-art");
+                this.setAbbreviation("EA");
+                this.setValueMultiplier(1.5);
+            case 3:
+                this.setName("Full-art");
+                this.setAbbreviation("FA");
+                this.setValueMultiplier(2);
+            case 4:
+                this.setName("Alt-art");
+                this.setAbbreviation("AA");
+                this.setValueMultiplier(3);
+        }
     }
 
     public String getName() {

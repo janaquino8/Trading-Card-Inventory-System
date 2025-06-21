@@ -10,12 +10,34 @@ public class Card {
     private int cardNo;
 
     public Card() {
-        this.rarity = new Rarity();
-        this.variant = new Variant();
         this.setCollectionCount(1);
     }
 
-    // add increaseCollectionCount and decreaseCollectionCount
+    public Card(String name, int rarity, double baseValue, int cardNo) {
+        this();
+        this.setName(name);
+        this.rarity = new Rarity(rarity);
+        this.variant = new Variant();
+        this.setBaseValue(baseValue);
+        this.setCardNo(cardNo);
+        this.setFinalValue(baseValue);
+    }
+
+    public Card(String name, int rarity, int variant, double baseValue, int cardNo) {
+        this(name, rarity, baseValue, cardNo);
+        if (variant != 1) {
+            this.variant = new Variant(variant);
+            this.calculateFinalValue();
+        }
+    }
+
+    public void incrementCollectionCount() {
+        this.setCollectionCount(this.getCollectionCount() + 1);
+    }
+
+    public void decrementCollectionCount() {
+        this.setCollectionCount(this.getCollectionCount() - 1);
+    }
 
     public void calculateFinalValue() {
         this.setFinalValue(this.getBaseValue() * this.getVariant().getValueMultiplier());

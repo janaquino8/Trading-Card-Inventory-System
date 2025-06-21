@@ -7,10 +7,6 @@ public class CollectorView {
 
     }
 
-    public void start() {
-        System.out.println("Welcome to the Trading Card Inventory System! The best place for all your trading card needs!");
-    }
-
     public void displayMainOptions (int collectionSize, int binderCount, int deckCount) {
         System.out.println("""
                     ____________________ .___  _________   \s
@@ -20,14 +16,30 @@ public class CollectorView {
                  \\/   |____|    \\______  /___/_______  / \\/\s
                                        \\/            \\/\s
                 """);
+        System.out.println("Welcome to the Trading Card Inventory System! The best place for all your trading card needs!\n");
         System.out.println("OPTIONS");
-        System.out.println("[1] Add Card");
-        System.out.println("[2] Create a New Binder");
-        System.out.println("[3] Create a New Deck");
-        // card options
-        // binder options
-        // deck options
-        System.out.println("~~~");
+
+        if (collectionSize == 0) {
+            System.out.println("[1] Add Card");
+        }
+        else {
+            System.out.println("[1] Manage Collection");
+        }
+
+        if (binderCount == 0) {
+            System.out.println("[2] Create a New Binder");
+        }
+        else {
+            System.out.println("[2] Manage Binders");
+        }
+
+        if (deckCount == 0) {
+            System.out.println("[3] Create a New Deck");
+        }
+        else {
+            System.out.println("[3] Manage Decks");
+        }
+
         System.out.println("[0] Exit");
     }
 

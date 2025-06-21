@@ -14,11 +14,11 @@ public class Controller {
     }
 
     public void run() {
+        int input;
+
         int collectionSize = collector.getCollection().getCards().size();
         int binderCount = collector.getBinder().size();
         int deckCount = collector.getDeck().size();
-
-        collectorView.start();
         // collectorView.displayMainOptions(collector.getCollection().getCards().size(), collector.getBinder().size(), collector.getDeck().size());
         collectorView.displayMainOptions(collectionSize, binderCount, deckCount);
     }
