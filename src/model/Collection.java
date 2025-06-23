@@ -9,6 +9,24 @@ public class Collection {
         cards = new ArrayList<Card>();
     }
 
+    public int findCard(String name) {
+        for (int i = 0; i < this.getCards().size(); i++) {
+            if (this.getCard(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int findCard(int cardNo) {
+        for (int i = 0; i < this.getCards().size(); i++) {
+            if (this.getCard(i).getCardNo() == cardNo) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void addCard(String name, int rarity, double baseValue) {
         this.getCards().add(new Card(name, rarity, baseValue, this.getCards().size()));
     }

@@ -4,24 +4,72 @@ import java.util.*;
 
 public class Collector {
     private Collection collection;
-    private ArrayList<Binder> binder;
-    private ArrayList<Deck> deck;
+    private ArrayList<Binder> binders;
+    private ArrayList<Deck> decks;
 
     public Collector() {
         collection = new Collection();
-        binder = new ArrayList<Binder>();
-        deck = new ArrayList<Deck>();
+        binders = new ArrayList<Binder>();
+        decks = new ArrayList<Deck>();
+    }
+
+    public void createBinder(String name) {
+        this.getBinders().add(new Binder(name));
+    }
+
+    public void deleteBinder(int index) {
+        this.getBinders().remove(index);
+    }
+
+    public int findBinder(String name) {
+        for (int i = 0; i < this.getBinders().size(); i++) {
+            if (this.getBinder(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void createDeck(String name) {
+        this.getDecks().add(new Deck(name));
+    }
+
+    public void deleteDeck(int index) {
+        this.getDecks().remove(index);
+    }
+
+    public int findDeck(String name) {
+        for (int i = 0; i < this.getDecks().size(); i++) {
+            if (this.getDeck(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public Collection getCollection() {
         return this.collection;
     }
 
-    public ArrayList<Binder> getBinder() {
-        return this.binder;
+    public Binder getBinder(int index) {
+        if (index >= 0 && index < this.binders.size()) {
+            return this.binders.get(index);
+        }
+        return null;
     }
 
-    public ArrayList<Deck> getDeck() {
-        return this.deck;
+    public ArrayList<Binder> getBinders() {
+        return this.binders;
+    }
+
+    public Deck getDeck(int index) {
+        if (index >= 0 && index < this.decks.size()) {
+            return this.decks.get(index);
+        }
+        return null;
+    }
+
+    public ArrayList<Deck> getDecks() {
+        return this.decks;
     }
 }
