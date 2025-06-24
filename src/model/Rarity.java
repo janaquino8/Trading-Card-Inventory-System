@@ -5,15 +5,13 @@ public class Rarity {
     private String abbreviation;
 
     public Rarity() {
-
+        this.setName("Common");
+        this.setAbbreviation("COM");
     }
 
     public Rarity(int rarity) {
         this();
         switch (rarity) {
-            case 1:
-                this.setName("Common");
-                this.setAbbreviation("COM");
             case 2:
                 this.setName("Uncommon");
                 this.setAbbreviation("UCM");

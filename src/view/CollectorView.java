@@ -5,10 +5,6 @@ import java.util.*;
 public class CollectorView {
     Scanner sc = new Scanner(System.in);
 
-    public CollectorView() {
-
-    }
-
     public int getIntInput(String prompt, int min, int max) {
         int input;
 
@@ -62,6 +58,9 @@ public class CollectorView {
         System.out.println();
 
         switch (option) {
+            case 0:
+                System.out.println("Action successfully cancelled.");
+                break;
             case 1:
                 System.out.println("Card successfully added to collection.");
                 break;
@@ -72,7 +71,13 @@ public class CollectorView {
                 System.out.println("Deck successfully created.");
                 break;
             case 4:
-                System.out.println("Card already exists. Would you like to increment its collection count?");
+                System.out.println("Card already exists.");
+                break;
+            case 5:
+                System.out.println("Card copy successfully added.");
+                break;
+            case 6:
+                System.out.println("Card does not yet exist in the collection.");
                 break;
         }
 
@@ -126,7 +131,7 @@ public class CollectorView {
         System.out.println("[1] Increase/Decrease Card Count");
         System.out.println("[2] Display a Card");
         System.out.println("[3] Display Collection");
-        System.out.println("[0] Exit\n");
+        System.out.println("[0] Back\n");
     }
 
     public void displayBinderOptions() {
@@ -142,7 +147,7 @@ public class CollectorView {
         System.out.println("[3] Remove a Card");
         System.out.println("[4] View a Binder");
         System.out.println("[5] Trade");
-        System.out.println("[0] Exit\n");
+        System.out.println("[0] Back\n");
     }
 
     public void displayDeckOptions() {
@@ -157,7 +162,7 @@ public class CollectorView {
         System.out.println("[2] Add a Card");
         System.out.println("[3] Remove a Card");
         System.out.println("[4] View a Binder");
-        System.out.println("[0] Exit\n");
+        System.out.println("[0] Back\n");
     }
 
     public void exit() {
