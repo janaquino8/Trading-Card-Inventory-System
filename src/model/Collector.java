@@ -18,6 +18,7 @@ public class Collector {
     }
 
     public void deleteBinder(int index) {
+        this.getCollection().returnCards(this.getBinder(index).getCards());
         this.getBinders().remove(index);
     }
 
@@ -35,6 +36,7 @@ public class Collector {
     }
 
     public void deleteDeck(int index) {
+        this.getCollection().returnCards(this.getDeck(index).getCards());
         this.getDecks().remove(index);
     }
 

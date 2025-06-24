@@ -35,6 +35,23 @@ public class Deck {
         this.setCard(i - 1, null);
     }
 
+    public boolean isEmpty() {
+        return this.cards[0] == null;
+    }
+
+    public boolean isFull() {
+        return this.cards[MAX_COUNT - 1] != null;
+    }
+
+    public int findCard(String name) {
+        for (int i = 0; i < MAX_COUNT && this.getCard(i) != null; i++) {
+            if (this.getCard(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public String getName() {
         return this.name;
     }

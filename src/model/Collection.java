@@ -35,6 +35,13 @@ public class Collection {
         this.getCards().add(new Card(name, rarity, variant, baseValue, this.getCards().size()));
     }
 
+    public void returnCards(Card[] cards) {
+        for (Card c : cards) {
+            int index = this.getCards().indexOf(c);
+            this.getCard(this.getCards().indexOf(c)).incrementCollectionCount();
+        }
+    }
+
     public Card getCard(int index) {
         if (index >= 0 && index < this.getCards().size()) {
             return this.cards.get(index);
