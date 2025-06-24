@@ -1,23 +1,44 @@
 package src.view;
 
 public class BinderView {
+    private final String RESET = "\u001B[0m";
+    private final String BOLD = "\u001B[1m";
+    private final String UNDERLINE = "\u001B[4m";
+    private final String RED = "\u001B[31m";
+    private final String GREEN = "\u001B[32m";
+    private final String BLUE = "\u001B[34m";
 
     public void displayBinder() {
-        String formattedTitle = "\u001B[1m\u001B[4m\u001B[31mB I N D E R\u001B[0m";
-        String formattedBorder = "\u001B[34m|\u001B[0m";
-        printBorder();
-        System.out.printf("%s %-43s %s\n", formattedBorder, formattedTitle, formattedBorder);
-        printBorder();
+        String formattedTitle = BOLD + UNDERLINE + RED + "B I N D E R" + RESET;
+        printBorder(28);
+        System.out.printf(BLUE + "|" + RESET +" %-43s " + BLUE + "|" + RESET + "\n", formattedTitle);
+        printBorder(28);
     }
 
     public void displayBinderCard(String name) {
-        String formattedBorder = "\u001B[34m|\u001B[0m";
-        System.out.printf("%s \u001B[32m%-26s\u001B[0m %s\n", formattedBorder, name, formattedBorder);
-        printBorder();
+        System.out.printf(BLUE + "|" + RESET + " " + GREEN + "%-26s" + RESET + " " + BLUE + "|" + RESET + "\n", name);
+        printBorder(28);
     }
 
-    public void printBorder() {
-        String formattedPlus = "\u001B[34m+\u001B[0m";
-        System.out.printf("%s" + "\u001B[34m-\u001B[0m".repeat(28) + "%s\n", formattedPlus, formattedPlus);
+    public void displayTrade(String incomingName, double incomingValue, String outgoingName, double outgoingValue) {
+        String formattedTitle = BOLD + UNDERLINE + RED + "T R A D E  E X C H A N G E" + RESET;
+        printBorder(51);
+        System.out.printf(BLUE + "|" + RESET + " %-66s " + BLUE + "|" + RESET + "\n", formattedTitle);
+        printBorder(51);
+        printTradeRow("Incoming", incomingName, incomingValue);
+        printBorder(51);
+        printTradeRow("Outgoing", outgoingName, outgoingValue);
+        printBorder(51);
+    }
+
+    private void printTradeRow(String trade, String name, double value) {
+        System.out.printf(BLUE + "|" + RESET + RED + " %s " + RESET +
+                        BLUE + "|" + RESET + GREEN + " %-26s " + RESET +
+                        BLUE + "|" + RESET + RED + " $%8.2f " + RESET + BLUE + "|" + RESET + "\n"
+                , trade, name, value);
+    }
+
+    private void printBorder(int count) {
+        System.out.println(BLUE + "+" + "-".repeat(count) + "+" + RESET);
     }
 }
