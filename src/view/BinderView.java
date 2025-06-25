@@ -16,7 +16,7 @@ public class BinderView {
     }
 
     public void displayBinderCard(String name) {
-        System.out.printf(BLUE + "|" + RESET + " " + GREEN + "%-26s" + RESET + " " + BLUE + "|" + RESET + "\n", name);
+        System.out.printf(BLUE + "|" + RESET + GREEN + " %-26s " + RESET + BLUE + "|" + RESET + "\n", name);
         printBorder(28);
     }
 
