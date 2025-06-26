@@ -97,7 +97,7 @@ public class CollectorView {
         System.out.println("OPTIONS\n");
 
         if (collectionSize == 0) {
-            System.out.println("[1] Add Card");
+            System.out.println("[1] Add a Card");
         }
         else {
             System.out.println("[1] Manage Collection");
@@ -128,9 +128,10 @@ public class CollectorView {
                  \\__/\\___/_/_/\\__/\\__/\\__/_/\\___/_//_/\s
                 """);
         System.out.println("OPTIONS\n");
-        System.out.println("[1] Increase/Decrease Card Count");
-        System.out.println("[2] Display a Card");
-        System.out.println("[3] Display Collection");
+        System.out.println("[1] Add a Card");
+        System.out.println("[2] Increase/Decrease Card Count");
+        System.out.println("[3] Display a Card");
+        System.out.println("[4] Display Collection");
         System.out.println("[0] Back\n");
     }
 
@@ -142,11 +143,12 @@ public class CollectorView {
                  /_.__/_/_//_/\\_,_/\\__/_/  \s
                 """);
         System.out.println("OPTIONS\n");
-        System.out.println("[1] Delete a Binder");
-        System.out.println("[2] Add a Card");
-        System.out.println("[3] Remove a Card");
-        System.out.println("[4] View a Binder");
-        System.out.println("[5] Trade");
+        System.out.println("[1] Create a New Binder");
+        System.out.println("[2] Delete a Binder");
+        System.out.println("[3] Add a Card");
+        System.out.println("[4] Remove a Card");
+        System.out.println("[5] View a Binder");
+        System.out.println("[6] Trade");
         System.out.println("[0] Back\n");
     }
 
@@ -158,10 +160,11 @@ public class CollectorView {
                  \\_,_/\\__/\\__/_/\\_\\\s
                 """);
         System.out.println("OPTIONS\n");
-        System.out.println("[1] Delete a Binder");
-        System.out.println("[2] Add a Card");
-        System.out.println("[3] Remove a Card");
-        System.out.println("[4] View a Binder");
+        System.out.println("[1] Create a New Deck");
+        System.out.println("[2] Delete a Binder");
+        System.out.println("[3] Add a Card");
+        System.out.println("[4] Remove a Card");
+        System.out.println("[5] View a Binder");
         System.out.println("[0] Back\n");
     }
 
