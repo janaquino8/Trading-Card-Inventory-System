@@ -102,7 +102,7 @@ public class Controller {
 
             switch (input) {
                 case 1: this.createDeck(); break;
-                case 2: this.deleteBinder(); break;
+                case 2: this.deleteDeck(); break;
                 case 3: this.addCardToDeck(); break;
                 case 4: this.removeCardFromDeck(); break;
                 case 5: this.viewDeck(); break;

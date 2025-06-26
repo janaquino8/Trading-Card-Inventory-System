@@ -37,6 +37,9 @@ public class Collection {
 
     public void returnCards(Card[] cards) {
         for (Card c : cards) {
+            if (c == null) {
+                return;
+            }
             int index = this.getCards().indexOf(c);
             this.getCard(this.getCards().indexOf(c)).incrementCollectionCount();
         }

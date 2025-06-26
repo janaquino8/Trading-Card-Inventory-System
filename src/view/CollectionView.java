@@ -28,7 +28,7 @@ public class CollectionView {
     }
 
     public void displayUpdateCardCount() {
-        System.out.println(BOLD + UNDERLINE + RED + "U P D A T E  C A R D  C O U N T" + RESET);
+        System.out.println("\n" + BOLD + UNDERLINE + RED + "U P D A T E  C A R D  C O U N T" + RESET);
         System.out.println(GREEN + "[1] Search card by name" + RESET);
         System.out.println(GREEN + "[2] Search card by card no." + RESET);
         System.out.println(GREEN + "[0] Back\n" + RESET);
