@@ -62,7 +62,7 @@ public class CollectionView {
         String MAGENTA = "\u001B[35m";
 
         System.out.printf(BLUE + "|" + RESET + GREEN + " %-26s " + RESET + BLUE + "|" + RESET +
-                MAGENTA + " Count : %3d " + RESET + BLUE + "|" + RESET + "\n", "Pikachu", 16);
+                MAGENTA + " Count : %3d " + RESET + BLUE + "|" + RESET + "\n", name, collectionCount);
         printBorder();
     }
 

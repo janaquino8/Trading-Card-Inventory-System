@@ -55,6 +55,10 @@ public class Collection {
         return ctr;
     }
 
+    public void sort() {
+        this.getCards().sort(new NameSorter());
+    }
+
     public Card getCard(int index) {
         if (index >= 0 && index < this.getCards().size()) {
             return this.cards.get(index);

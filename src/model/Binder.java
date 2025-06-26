@@ -52,6 +52,10 @@ public class Binder {
         return -1;
     }
 
+    public void sort() {
+        Arrays.sort(this.getCards(), new NameSorter());
+    }
+
     public void trade(int outgoingCardIndex, Card incomingCard) {
         this.setCard(outgoingCardIndex, incomingCard);
     }

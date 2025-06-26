@@ -15,6 +15,7 @@ public class Controller {
     CollectionView collectionView;
     BinderView binderView;
     DeckView deckView;
+    CardView cardView;
 
     /**
      * Constructor to construct a Collector object
@@ -25,6 +26,7 @@ public class Controller {
         collectionView = new CollectionView();
         binderView = new BinderView();
         deckView = new DeckView();
+        cardView = new CardView();
     }
 
     public void run() {
@@ -298,11 +300,46 @@ public class Controller {
     }
 
     public void displayCard() {
+        int index = -1;
+        int input;
 
+        // header
+
+        // asks for the card (via either card name or card no.)
+        switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
+            case 1: // search by name
+                index = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
+                break;
+            case 2: // search by card no.
+                index = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCards().size() - 1));
+                break;
+            case 0: // cancel action
+                collectorView.printConfirmationMsg(0);
+        }
+
+        // if the card is not in the collection
+        if (index == -1 && input != 0) {
+            collectionView.printConfirmationMsg(3);
+        }
+        else {
+            cardView.displayCard(collector.getCollection().getCard(index).getName(),
+                                 collector.getCollection().getCard(index).getRarity().getName(),
+                                 collector.getCollection().getCard(index).getVariant().getName(),
+                                 collector.getCollection().getCard(index).getBaseValue(),
+                                 collector.getCollection().getCard(index).getFinalValue());
+        }
     }
 
     public void displayCollection() {
+        // sorts collection
+        collector.getCollection().sort();
 
+        // header
+        collectionView.displayCollection();
+
+        for (Card c : collector.getCollection().getCards()) {
+            collectionView.displayCollectionCard(c.getCollectionCount(), c.getName());
+        }
     }
 
     public void deleteBinder() {
@@ -344,7 +381,7 @@ public class Controller {
             return;
         }
 
-        int binderIndex = -1;
+        int binderIndex;
         String binderName;
         int cardIndex = -1;
         int input;
@@ -471,6 +508,9 @@ public class Controller {
             }
         } while (binderIndex == -1);
 
+        // sorts binder
+        collector.getBinder(binderIndex).sort();
+
         // displays binder name
         binderView.displayBinder(binderName);
 
@@ -588,7 +628,7 @@ public class Controller {
             return;
         }
 
-        int deckIndex = -1;
+        int deckIndex;
         String deckName;
         int cardIndex = -1;
         int input;
@@ -750,7 +790,11 @@ public class Controller {
             }
 
             if (cardIndex != -1) {
-                //display card
+                cardView.displayCard(collector.getDeck(deckIndex).getCard(cardIndex).getName(),
+                                     collector.getDeck(deckIndex).getCard(cardIndex).getRarity().getName(),
+                                     collector.getDeck(deckIndex).getCard(cardIndex).getVariant().getName(),
+                                     collector.getDeck(deckIndex).getCard(cardIndex).getBaseValue(),
+                                     collector.getDeck(deckIndex).getCard(cardIndex).getFinalValue());
             }
         } while (cardIndex != 0);
 
