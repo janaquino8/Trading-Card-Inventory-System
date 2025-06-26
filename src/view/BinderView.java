@@ -8,6 +8,55 @@ public class BinderView {
     private final String GREEN = "\u001B[32m";
     private final String BLUE = "\u001B[34m";
 
+    public void printConfirmationMsg(int option) {
+        System.out.println();
+        switch (option) {
+            case 0:
+                System.out.println(GREEN + "Action successfully cancelled." + RESET);
+                break;
+            case 1:
+                System.out.println(GREEN + "Card successfully added to binder." + RESET);
+                break;
+            case 2:
+                System.out.println(RED + "There are no cards currently in the collection." + RESET);
+                break;
+            case 3:
+                System.out.println(RED + "All binders are full." + RESET);
+                break;
+            case 4:
+                System.out.println(RED + "Binder doesn't exist." + RESET);
+                break;
+            case 5:
+                System.out.println(RED + "Binder is full." + RESET);
+                break;
+            case 6:
+                System.out.println(RED + "Card doesn't exist" + RESET);
+                break;
+            case 7:
+                System.out.println(RED + "No copies of the card exist in the collection" + RESET);
+                break;
+            case 8:
+                System.out.println(RED + "All binders are empty." + RESET);
+                break;
+            case 9:
+                System.out.println(RED + "Binder is empty." + RESET);
+                break;
+            case 10:
+                System.out.println(RED + "Card is not in binder." + RESET);
+                break;
+            case 11:
+                System.out.println(GREEN + "Card successfully removed from binder." + RESET);
+                break;
+            case 12:
+                System.out.println(RED + "WARNING: Difference in value is greater than or equal to $1.00" + RESET);
+                break;
+            case 13:
+                System.out.println(GREEN + "Trade completed." + RESET);
+                break;
+        }
+        System.out.println();
+    }
+
     public void displayBinder(String binderName) {
         String formattedTitle = BOLD + UNDERLINE + RED + binderName + RESET;
         printBorder(28);

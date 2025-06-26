@@ -81,6 +81,24 @@ public class CollectorView {
             case 6:
                 System.out.println(RED + "Card does not yet exist in the collection." + RESET);
                 break;
+            case 7:
+                System.out.println(RED + "Binder already exists. Input another name." + RESET);
+                break;
+            case 8:
+                System.out.println(RED + "Deck already exists. Input another name." + RESET);
+                break;
+            case 9:
+                System.out.println(RED + "Binder doesn't exist. Input another name." + RESET);
+                break;
+            case 10:
+                System.out.println(RED + "Deck doesn't exist. Input another name." + RESET);
+                break;
+            case 11:
+                System.out.println(GREEN + "Binder successfully deleted." + RESET);
+                break;
+            case 12:
+                System.out.println(GREEN + "Deck successfully deleted." + RESET);
+                break;
         }
         System.out.println();
     }
@@ -204,6 +222,6 @@ public class CollectorView {
 
     public void exit() {
         System.out.println(GREEN + "\nThanks for using the Trading Card Inventory System!" + RESET);
-        System.out.println(RED + "Shutting down..." + RESET);
+        System.out.println(GREEN + "Shutting down..." + RESET);
     }
 }

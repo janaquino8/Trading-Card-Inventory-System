@@ -200,8 +200,9 @@ public class Controller {
         do {
             name = collectorView.getStringInput("Enter new binder name: ");
 
+            // if binder already exists
             if (collector.findBinder(name) != -1) {
-                System.out.println(name + "already exists. Input another name.");
+                collectorView.printConfirmationMsg(7);
             }
         } while (collector.findBinder(name) != -1);
 
@@ -226,8 +227,9 @@ public class Controller {
         do {
             name = collectorView.getStringInput("Enter new deck name: ");
 
+            // if deck already exists
             if (collector.findDeck(name) != -1) {
-                System.out.println(name + "already exists. Input another name.");
+                collectorView.printConfirmationMsg(8);
             }
         } while (collector.findDeck(name) != -1);
 
@@ -314,28 +316,31 @@ public class Controller {
             name = collectorView.getStringInput("Enter binder name: ");
             index = collector.findBinder(name);
 
+            // if binder doesn't exist
             if (index == -1) {
-                System.out.println(name + " doesn't exist. Input another name.");
+                collectorView.printConfirmationMsg(9);
             }
         } while (index == -1);
 
         // asks user if the binder will be removed
         if (collectorView.getIntInput("Delete binder " + name + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
             collector.deleteBinder(index);
-            // binderView confirmation msg
+            collectorView.printConfirmationMsg(11);
         }
         else {
-            // binderView confirmation msg 0
+            collectorView.printConfirmationMsg(0);
         }
     }
 
     public void addCardToBinder() {
+        // if there are no cards in the collection
         if (collector.getCollection().countTotalCards() == 0) {
-            // there are no cards in the collection
+            binderView.printConfirmationMsg(2);
             return;
         }
+        // if all binders are full
         else if (collector.isBindersFull()) {
-            // all binders are full
+            binderView.printConfirmationMsg(3);
             return;
         }
 
@@ -346,62 +351,69 @@ public class Controller {
 
         // display
 
+        // asks the user for binder name
         do {
             binderName = collectorView.getStringInput("Enter binder name: ");
             binderIndex = collector.findBinder(binderName);
 
+            // if binder doesn't exist
             if (binderIndex == -1) {
-                // doesnt exist
+                binderView.printConfirmationMsg(4);
             }
+            // if binder is full
             else if (collector.getBinder(binderIndex).isFull()) {
-                // full
+                binderView.printConfirmationMsg(5);
                 binderIndex = -1;
             }
         } while (binderIndex == -1);
 
         // display card search options
 
+        // asks user for card to be added (either by card name or card no.)
         switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
-            case 1:
+            case 1: // search by name
                 cardIndex = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
                 break;
-            case 2:
+            case 2: // search by card no.
                 cardIndex = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCards().size() - 1));
                 break;
-            case 0:
-                // cancel action
+            case 0: // cancel action
+                binderView.printConfirmationMsg(0);
         }
 
+        // if card doesn't exist
         if (cardIndex == -1 && input != 0) {
-            // card doesnt exist
+            binderView.printConfirmationMsg(6);
         }
+        // if no copies of the card exist in the collection
         else if (collector.getCollection().getCard(cardIndex).getCollectionCount() == 0) {
-            // no copies of the card in the collection
+            binderView.printConfirmationMsg(7);
         }
         else {
+            // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                                           binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
                 collector.getBinder(binderIndex).addCard(collector.getCollection().getCard(cardIndex));
                 collector.getCollection().getCard(cardIndex).decrementCollectionCount();
-                // success
+                binderView.printConfirmationMsg(1);
             }
             else {
-                // cancel action
+                binderView.printConfirmationMsg(0);
             }
         }
     }
 
     public void removeCardFromBinder() {
+        // if all binders are empty
         if (collector.isBindersEmpty()) {
-            // all binders are empty
+            binderView.printConfirmationMsg(8);
             return;
         }
 
-        int binderIndex = -1;
+        int binderIndex;
         String binderName;
-        int cardIndex = -1;
+        int cardIndex;
         String cardName;
-        int input;
 
         // display
 
@@ -409,33 +421,36 @@ public class Controller {
             binderName = collectorView.getStringInput("Enter binder name: ");
             binderIndex = collector.findBinder(binderName);
 
+            // if binder doesn't exist
             if (binderIndex == -1) {
-                // doesnt exist
+                binderView.printConfirmationMsg(4);
             }
+            // if binder is empty
             else if (collector.getBinder(binderIndex).isEmpty()) {
-                // empty
+                binderView.printConfirmationMsg(9);
                 binderIndex = -1;
             }
         } while (binderIndex == -1);
 
-        // display card search options
-
+        // asks user for card to be removed
         do {
             cardName = collectorView.getStringInput("Enter card name: ");
             cardIndex = collector.getBinder(binderIndex).findCard(cardName);
 
+            // if card is not in binder
             if (cardIndex == -1) {
-                // card isnt in
+                binderView.printConfirmationMsg(10);
             }
         } while (cardIndex == -1);
 
+        // asks user if the card will be removed from binder
         if (collectorView.getIntInput("Remove " + cardName + " from " + binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
             collector.getCollection().getCard(collector.getCollection().findCard(cardName)).incrementCollectionCount();
             collector.getBinder(binderIndex).removeCard(cardIndex);
-            // success
+            binderView.printConfirmationMsg(11);
         }
         else {
-            // cancel action
+            binderView.printConfirmationMsg(0);
         }
     }
 
@@ -450,8 +465,9 @@ public class Controller {
             binderName = collectorView.getStringInput("Enter binder name: ");
             binderIndex = collector.findBinder(binderName);
 
+            // if binder doesn't exist
             if (binderIndex == -1) {
-                // doesnt exist
+                binderView.printConfirmationMsg(4);
             }
         } while (binderIndex == -1);
 
@@ -466,7 +482,7 @@ public class Controller {
 
     public void trade() {
         if (collector.isBindersEmpty()) {
-            // all binders are empty
+            binderView.printConfirmationMsg(8);
             return;
         }
 
@@ -479,32 +495,37 @@ public class Controller {
 
         // display
 
+        // asks user for binder name
         do {
             binderName = collectorView.getStringInput("Enter binder name: ");
             binderIndex = collector.findBinder(binderName);
 
+            // if binder doesn't exist
             if (binderIndex == -1) {
-                // doesnt exist
+                binderView.printConfirmationMsg(4);
             }
+            // if binder is empty
             else if (collector.getBinder(binderIndex).isEmpty()) {
-                // empty
+                binderView.printConfirmationMsg(9);
                 binderIndex = -1;
             }
         } while (binderIndex == -1);
 
+        // asks user for outgoing card
         do {
             cardName = collectorView.getStringInput("Enter card name: ");
             cardIndex = collector.getBinder(binderIndex).findCard(cardName);
 
+            // if card isn't in binder
             if (cardIndex == -1) {
-                // card isnt in
+                binderView.printConfirmationMsg(10);
             }
         } while (cardIndex == -1);
 
-        // time to create incoming card
-
+        // creates incoming card
         incomingCardIndex = this.addCard(true);
 
+        // displays trade
         binderView.displayTrade(collector.getCollection().getCard(incomingCardIndex).getName(),
                                 collector.getCollection().getCard(incomingCardIndex).getFinalValue(),
                                 cardName,
@@ -513,21 +534,18 @@ public class Controller {
         difference = Math.abs(collector.getCollection().getCard(incomingCardIndex).getFinalValue() -
                      collector.getBinder(binderIndex).getCard(cardIndex).getFinalValue());
 
+        // if difference in value is >= $1.00
         if (difference >= 1) {
-            // difference is significant
-            if (collectorView.getIntInput("Proceed with trade? (1 for yes, 0 for no): ", 0, 1) == 1) {
-                collector.getBinder(binderIndex).trade(cardIndex, collector.getCollection().getCard(incomingCardIndex));
-                // success
-            }
-            else {
-                // cancel
+            binderView.printConfirmationMsg(12);
+            // if cancelled
+            if (collectorView.getIntInput("Proceed with trade? (1 for yes, 0 for no): ", 0, 1) == 0) {
+                binderView.printConfirmationMsg(0);
+                return;
             }
         }
-        else {
-            collector.getBinder(binderIndex).trade(cardIndex, collector.getCollection().getCard(incomingCardIndex));
-            // success
-        }
-
+        // otherwise
+        collector.getBinder(binderIndex).trade(cardIndex, collector.getCollection().getCard(incomingCardIndex));
+        binderView.printConfirmationMsg(13);
         collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
     }
 
@@ -537,31 +555,36 @@ public class Controller {
 
         // display
 
+        // asks for unique deck name
         do {
             name = collectorView.getStringInput("Enter deck name: ");
             index = collector.findDeck(name);
 
+            // if deck doesn't exist
             if (index == -1) {
-                System.out.println(name + " doesn't exist. Input another name.");
+                collectorView.printConfirmationMsg(10);
             }
         } while (index == -1);
 
+        // asks user if deck will be removed
         if (collectorView.getIntInput("Delete deck " + name + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
             collector.deleteDeck(index);
-            // deckView confirmation msg
+            collectorView.printConfirmationMsg(12);
         }
         else {
-            // deckView confirmation msg 0
+            collectorView.printConfirmationMsg(0);
         }
     }
 
     public void addCardToDeck() {
+        // if there are no cards in the collection
         if (collector.getCollection().countTotalCards() == 0) {
-            // there are no cards in the collection
+            deckView.printConfirmationMsg(2);
             return;
         }
+        // if all decks are full
         else if (collector.isDecksFull()) {
-            // all decks are full
+            deckView.printConfirmationMsg(3);
             return;
         }
 
@@ -572,65 +595,73 @@ public class Controller {
 
         // display
 
+        // asks the user for deck name
         do {
             deckName = collectorView.getStringInput("Enter deck name: ");
             deckIndex = collector.findDeck(deckName);
 
+            // if deck doesn't exist
             if (deckIndex == -1) {
-                // doesnt exist
+                deckView.printConfirmationMsg(4);
             }
+            // if binder is full
             else if (collector.getDeck(deckIndex).isFull()) {
-                // full
+                deckView.printConfirmationMsg(5);
                 deckIndex = -1;
             }
         } while (deckIndex == -1);
 
         // display card search options
 
+        // asks user for card to be added (either by card name or card no.)
         switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
-            case 1:
+            case 1: // search by name
                 cardIndex = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
                 break;
-            case 2:
+            case 2: // search by card no.
                 cardIndex = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCards().size() - 1));
                 break;
-            case 0:
-                // cancel action
+            case 0: // cancel action
+                deckView.printConfirmationMsg(0);
         }
 
+        // if card doesn't exist
         if (cardIndex == -1 && input != 0) {
-            // card doesnt exist
+            deckView.printConfirmationMsg(6);
         }
+        // if no copies of the card exist in the collection
         else if (collector.getCollection().getCard(cardIndex).getCollectionCount() == 0) {
-            // no copies of the card in the collection
+            deckView.printConfirmationMsg(7);
         }
+        // if card is already in the deck
         else if (collector.getDeck(deckIndex).findCard(collector.getCollection().getCard(cardIndex).getName()) != -1) {
-            // card is already in deck
+            deckView.printConfirmationMsg(12);
         }
         else {
+            // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
-                    deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
+                                          deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
                 collector.getDeck(deckIndex).addCard(collector.getCollection().getCard(cardIndex));
                 collector.getCollection().getCard(cardIndex).decrementCollectionCount();
-                // success
+                deckView.printConfirmationMsg(1);
             }
             else {
-                // cancel action
+                deckView.printConfirmationMsg(0);
             }
         }
     }
 
     public void removeCardFromDeck() {
+        // if all decks are empty
         if (collector.isDecksEmpty()) {
-            // all decks are empty
+            deckView.printConfirmationMsg(8);
             return;
         }
 
-        int deckIndex = -1;
+        int deckIndex;
         String deckName;
-        int cardIndex = -1;
+        int cardIndex;
         String cardName;
-        int input;
 
         // display
 
@@ -638,34 +669,36 @@ public class Controller {
             deckName = collectorView.getStringInput("Enter deck name: ");
             deckIndex = collector.findBinder(deckName);
 
+            // if deck doesn't exist
             if (deckIndex == -1) {
-                // doesnt exist
+                deckView.printConfirmationMsg(4);
             }
+            // if deck is empty
             else if (collector.getBinder(deckIndex).isEmpty()) {
-                // empty
+                deckView.printConfirmationMsg(9);
                 deckIndex = -1;
             }
         } while (deckIndex == -1);
 
-        // display card search options
-
+        // asks user for card to be removed
         do {
             cardName = collectorView.getStringInput("Enter card name: ");
             cardIndex = collector.getBinder(deckIndex).findCard(cardName);
 
+            // if card is not in deck
             if (cardIndex == -1) {
-                // card isnt in
+                deckView.printConfirmationMsg(10);
             }
         } while (cardIndex == -1);
 
+        // asks user if the card will be removed form deck
         if (collectorView.getIntInput("Remove " + cardName + " from " + deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
-
             collector.getCollection().getCard(collector.getCollection().findCard(cardName)).incrementCollectionCount();
             collector.getBinder(deckIndex).removeCard(cardIndex);
-            // success
+            deckView.printConfirmationMsg(11);
         }
         else {
-            // cancel action
+            deckView.printConfirmationMsg(0);
         }
     }
 
@@ -681,8 +714,9 @@ public class Controller {
             deckName = collectorView.getStringInput("Enter deck name: ");
             deckIndex = collector.findDeck(deckName);
 
+            // if deck doesn't exist
             if (deckIndex == -1) {
-                // doesnt exist
+                deckView.printConfirmationMsg(4);
             }
         } while (deckIndex == -1);
 
@@ -704,10 +738,13 @@ public class Controller {
                 case 1:
                     do {
                         cardIndex = collector.getDeck(deckIndex).findCard(collectorView.getStringInput("Enter card name: "));
+                        if (cardIndex == -1) {
+                            deckView.printConfirmationMsg(10);
+                        }
                     } while (cardIndex == -1);
                     break;
                 case 2:
-                    // cardIndex = collector.getDeck(deckIndex).getCard(collectorView.getIntInput("Enter number in deck", 1, cardIndex - 1));
+                    cardIndex = collectorView.getIntInput("Enter number in deck", 1, cardIndex - 1);
                     cardIndex--;
                     break;
             }
