@@ -230,7 +230,7 @@ public class Controller {
             collectionView.printConfirmationMsg(3);
         }
         else {
-            collectionView.displayCardtoUpdateCount(collector.getCollection().getCard(index).getName(),
+            collectionView.displayCardToUpdateCount(collector.getCollection().getCard(index).getName(),
                                                     collector.getCollection().getCard(index).getCollectionCount());
 
             if (collector.getCollection().getCard(index).getCollectionCount() == 0) {
