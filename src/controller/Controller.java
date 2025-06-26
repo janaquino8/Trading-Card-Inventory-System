@@ -705,7 +705,7 @@ public class Controller {
                     } while (cardIndex == -1);
                     break;
                 case 2:
-                    cardIndex = collector.getDeck(deckIndex).getCard(collectorView.getIntInput("Enter number in deck", 1, cardIndex - 1);
+                    // cardIndex = collector.getDeck(deckIndex).getCard(collectorView.getIntInput("Enter number in deck", 1, cardIndex - 1));
                     cardIndex--;
                     break;
             }

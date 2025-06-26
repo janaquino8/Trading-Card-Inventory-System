@@ -3,13 +3,18 @@ package src.view;
 import java.util.*;
 
 public class CollectorView {
+    private final String RESET = "\u001B[0m";
+    private final String BOLD = "\u001B[1m";
+    private final String UNDERLINE = "\u001B[4m";
+    private final String RED = "\u001B[31m";
+    private final String GREEN = "\u001B[32m";
+    private final String BLUE = "\u001B[34m";
     Scanner sc = new Scanner(System.in);
 
     public int getIntInput(String prompt, int min, int max) {
         int input;
-
         do {
-            System.out.print(prompt);
+            System.out.print(GREEN + prompt + RESET);
             try {
                 input = Integer.parseInt(sc.nextLine());
             }
@@ -17,7 +22,7 @@ public class CollectorView {
                 input = min - 1;
             }
             if (input < min || input > max) {
-                System.out.println("Invalid input. Try again");
+                System.out.println(RED + "Invalid input. Try again." + RESET);
             }
         } while (input < min || input > max);
 
@@ -26,9 +31,8 @@ public class CollectorView {
 
     public String getStringInput(String prompt) {
         String input;
-
         do {
-            System.out.print(prompt);
+            System.out.print(GREEN + prompt + RESET);
             input = sc.nextLine();
         } while (input.isEmpty());
 
@@ -37,9 +41,8 @@ public class CollectorView {
 
     public double getDoubleInput(String prompt) {
         double input;
-
         do {
-            System.out.print(prompt);
+            System.out.print(GREEN + prompt + RESET);
             try {
                 input = Double.parseDouble(sc.nextLine());
             }
@@ -47,7 +50,7 @@ public class CollectorView {
                 input = -1;
             }
             if (input < 0) {
-                System.out.println("Invalid input. Try again.");
+                System.out.println(RED + "Invalid input. Try again." + RESET);
             }
         } while (input < 0);
 
@@ -56,144 +59,151 @@ public class CollectorView {
 
     public void printConfirmationMsg(int option) {
         System.out.println();
-
         switch (option) {
             case 0:
-                System.out.println("Action successfully cancelled.");
+                System.out.println(GREEN + "Action successfully cancelled." + RESET);
                 break;
             case 1:
-                System.out.println("Card successfully added to collection.");
+                System.out.println(GREEN + "Card successfully added to collection." + RESET);
                 break;
             case 2:
-                System.out.println("Binder successfully created.");
+                System.out.println(GREEN + "Binder successfully created." + RESET);
                 break;
             case 3:
-                System.out.println("Deck successfully created.");
+                System.out.println(GREEN + "Deck successfully created." + RESET);
                 break;
             case 4:
-                System.out.println("Card already exists.");
+                System.out.println(RED + "Card already exists." + RESET);
                 break;
             case 5:
-                System.out.println("Card copy successfully added.");
+                System.out.println(GREEN + "Card copy successfully added." + RESET);
                 break;
             case 6:
-                System.out.println("Card does not yet exist in the collection.");
+                System.out.println(RED + "Card does not yet exist in the collection." + RESET);
                 break;
         }
-
         System.out.println();
     }
 
     public void displayMainOptions (int collectionSize, int binderCount, int deckCount) {
-        System.out.println("""
-                    ____________________ .___  _________   \s
-                 /\\ \\__    ___/\\_   ___ \\|   |/   _____/ /\\\s
-                 \\/   |    |   /    \\  \\/|   |\\_____  \\  \\/\s
-                 /\\   |    |   \\     \\___|   |/        \\ /\\\s
-                 \\/   |____|    \\______  /___/_______  / \\/\s
-                                       \\/            \\/\s
-                """);
-        System.out.println("Welcome to the Trading Card Inventory System! The best place for all your trading card needs!\n");
-        System.out.println("OPTIONS\n");
+        System.out.println( BOLD + BLUE +
+                " _____    ____   ___   ____  \n" +
+                "|_   _|  / ___| |_ _| / ___| \n" +
+                "  | |   | |      | |  \\___ \\ \n" +
+                "  | |   | |___   | |   ___) |\n" +
+                "  |_|    \\____| |___| |____/\n" + RESET);
+
+        System.out.println(GREEN + "Welcome to the Trading Card  Inventory System! The best place for all your trading card needs!\n" + RESET);
+        System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S\n" + RESET);
 
         if (collectionSize == 0) {
-            System.out.println("[1] Add a Card");
+            System.out.println(GREEN + "[1] Add a Card" + RESET);
         }
         else {
-            System.out.println("[1] Manage Collection");
+            System.out.println(GREEN + "[1] Manage Collection" + RESET);
         }
 
         if (binderCount == 0) {
-            System.out.println("[2] Create a New Binder");
+            System.out.println(GREEN + "[2] Create a New Binder" + RESET);
         }
         else {
-            System.out.println("[2] Manage Binders");
+            System.out.println(GREEN + "[2] Manage Binders" + RESET);
         }
 
         if (deckCount == 0) {
-            System.out.println("[3] Create a New Deck");
+            System.out.println(GREEN + "[3] Create a New Deck" + RESET);
         }
         else {
-            System.out.println("[3] Manage Decks");
+            System.out.println(GREEN + "[3] Manage Decks" + RESET);
         }
 
-        System.out.println("[0] Exit\n");
+        System.out.println(RED + "[0] Exit\n" + RESET);
     }
 
     public void displayCollectionOptions() {
-        System.out.println("""
-                            ____        __  _        \s
-                  _______  / / /__ ____/ /_(_)__  ___\s
-                 / __/ _ \\/ / / -_) __/ __/ / _ \\/ _ \\\s
-                 \\__/\\___/_/_/\\__/\\__/\\__/_/\\___/_//_/\s
-                """);
-        System.out.println("OPTIONS\n");
-        System.out.println("[1] Add a Card");
-        System.out.println("[2] Increase/Decrease Card Count");
-        System.out.println("[3] Display a Card");
-        System.out.println("[4] Display Collection");
-        System.out.println("[0] Back\n");
+        System.out.println(BOLD + BLUE +
+                "  ____    ___    _       _       _____    ____   _____   ___    ___    _   _ \n" +
+                " / ___|  / _ \\  | |     | |     | ____|  / ___| |_   _| |_ _|  / _ \\  | \\ | |\n" +
+                "| |     | | | | | |     | |     |  _|   | |       | |    | |  | | | | |  \\| |\n" +
+                "| |___  | |_| | | |___  | |___  | |___  | |___    | |    | |  | |_| | | |\\  |\n" +
+                " \\____|  \\___/  |_____| |_____| |_____|  \\____|   |_|   |___|  \\___/  |_| \\_|\n" + RESET);
+
+        System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S\n" + RESET);
+        System.out.println(GREEN + "[1] Add a Card" + RESET);
+        System.out.println(GREEN + "[2] Increase/Decrease Card Count" + RESET);
+        System.out.println(GREEN + "[3] Display a Card" + RESET);
+        System.out.println(GREEN + "[4] Display Collection" + RESET);
+        System.out.println(RED + "[0] Back\n" + RESET);
     }
 
     public void displayBinderOptions() {
-        System.out.println("""
-                    __   _         __      \s
-                   / /  (_)__  ___/ /__ ____\s
-                  / _ \\/ / _ \\/ _  / -_) __/\s
-                 /_.__/_/_//_/\\_,_/\\__/_/  \s
-                """);
-        System.out.println("OPTIONS\n");
-        System.out.println("[1] Create a New Binder");
-        System.out.println("[2] Delete a Binder");
-        System.out.println("[3] Add a Card");
-        System.out.println("[4] Remove a Card");
-        System.out.println("[5] View a Binder");
-        System.out.println("[6] Trade");
-        System.out.println("[0] Back\n");
+        System.out.println(BOLD + BLUE +
+                " ____    ___   _   _   ____    _____   ____  \n" +
+                "| __ )  |_ _| | \\ | | |  _ \\  | ____| |  _ \\ \n" +
+                "|  _ \\   | |  |  \\| | | | | | |  _|   | |_) |\n" +
+                "| |_) |  | |  | |\\  | | |_| | | |___  |  _ < \n" +
+                "|____/  |___| |_| \\_| |____/  |_____| |_| \\_\\\n" + RESET);
+
+        System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S\n" + RESET);
+        System.out.println(GREEN + "[1] Create a New Binder" + RESET);
+        System.out.println(GREEN + "[2] Delete a Binder" + RESET);
+        System.out.println(GREEN + "[3] Add a Card" + RESET);
+        System.out.println(GREEN + "[4] Remove a Card" + RESET);
+        System.out.println(GREEN + "[5] View a Binder" + RESET);
+        System.out.println(GREEN + "[6] Trade" + RESET);
+        System.out.println(RED + "[0] Back\n" + RESET);
     }
 
     public void displayDeckOptions() {
-        System.out.println("""
-                      __        __ \s
-                  ___/ /__ ____/ /__\s
-                 / _  / -_) __/  '_/\s
-                 \\_,_/\\__/\\__/_/\\_\\\s
-                """);
-        System.out.println("OPTIONS\n");
-        System.out.println("[1] Create a New Deck");
-        System.out.println("[2] Delete a Binder");
-        System.out.println("[3] Add a Card");
-        System.out.println("[4] Remove a Card");
-        System.out.println("[5] View a Binder");
-        System.out.println("[0] Back\n");
-    }
+        System.out.println(BOLD + BLUE +
+                " ____    _____    ____   _  __\n" +
+                "|  _ \\  | ____|  / ___| | |/ /\n" +
+                "| | | | |  _|   | |     | ' / \n" +
+                "| |_| | | |___  | |___  | . \\ \n" +
+                "|____/  |_____|  \\____| |_|\\_\\\n" + RESET);
 
-    public void exit() {
-        System.out.println("\nThanks for using the Trading Card Inventory System!");
-        System.out.println("Shutting down...");
+        System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S\n" + RESET);
+        System.out.println(GREEN + "[1] Create a New Deck" + RESET);
+        System.out.println(GREEN + "[2] Delete a Binder" + RESET);
+        System.out.println(GREEN + "[3] Add a Card" + RESET);
+        System.out.println(GREEN + "[4] Remove a Card" + RESET);
+        System.out.println(GREEN + "[5] View a Binder" + RESET);
+        System.out.println(RED + "[0] Back\n" + RESET);
     }
 
     public void displayAddCard() {
-        System.out.println("""
-                       __   __      __        __   __ \s
-                  /\\  |  \\ |  \\    /  `  /\\  |__) |  \\\s
-                 /~~\\ |__/ |__/    \\__, /~~\\ |  \\ |__/\s
-                """);
+        System.out.println(BOLD + BLUE +
+                "    _      ____    ____        ____      _      ____    ____  \n" +
+                "   / \\    |  _ \\  |  _ \\      / ___|    / \\    |  _ \\  |  _ \\ \n" +
+                "  / _ \\   | | | | | | | |    | |       / _ \\   | |_) | | | | |\n" +
+                " / ___ \\  | |_| | | |_| |    | |___   / ___ \\  |  _ <  | |_| |\n" +
+                "/_/   \\_\\ |____/  |____/      \\____| /_/   \\_\\ |_| \\_\\ |____/\n" + RESET);
     }
 
     public void displayCreateBinder() {
-        System.out.println("""
-                  __   __   ___      ___  ___     __          __   ___  __ \s
-                 /  ` |__) |__   /\\   |  |__     |__) | |\\ | |  \\ |__  |__)\s
-                 \\__, |  \\ |___ /~~\\  |  |___    |__) | | \\| |__/ |___ |  \\\s
-                """);
+        System.out.println(BOLD + BLUE +
+                "  ____   ____    _____      _      _____   _____      ____    ___   _   _   ____    _____   ____  \n" +
+                " / ___| |  _ \\  | ____|    / \\    |_   _| | ____|    | __ )  |_ _| | \\ | | |  _ \\  | ____| |  _ \\ \n" +
+                "| |     | |_) | |  _|     / _ \\     | |   |  _|      |  _ \\   | |  |  \\| | | | | | |  _|   | |_) |\n" +
+                "| |___  |  _ <  | |___   / ___ \\    | |   | |___     | |_) |  | |  | |\\  | | |_| | | |___  |  _ < \n" +
+                " \\____| |_| \\_\\ |_____| /_/   \\_\\   |_|   |_____|    |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\\n" + RESET);
     }
 
     public void displayCreateDeck() {
-        System.out.println("""
-                  __   __   ___      ___  ___     __   ___  __      \s
-                 /  ` |__) |__   /\\   |  |__     |  \\ |__  /  ` |__/\s
-                 \\__, |  \\ |___ /~~\\  |  |___    |__/ |___ \\__, |  \\\s
-                """);
+        System.out.println(BOLD + BLUE +
+                "  ____   ____    _____      _      _____   _____      ____    _____    ____   _  __\n" +
+                " / ___| |  _ \\  | ____|    / \\    |_   _| | ____|    |  _ \\  | ____|  / ___| | |/ /\n" +
+                "| |     | |_) | |  _|     / _ \\     | |   |  _|      | | | | |  _|   | |     | ' / \n" +
+                "| |___  |  _ <  | |___   / ___ \\    | |   | |___     | |_| | | |___  | |___  | . \\ \n" +
+                " \\____| |_| \\_\\ |_____| /_/   \\_\\   |_|   |_____|    |____/  |_____|  \\____| |_|\\_\\\n" + RESET);
+    }
+
+    public void printCardCreatedVerification(String name, int cardNo) {
+        System.out.println("[" + cardNo + "] " + name + "\b");
+    }
+
+    public void exit() {
+        System.out.println(GREEN + "\nThanks for using the Trading Card Inventory System!" + RESET);
+        System.out.println(RED + "Shutting down..." + RESET);
     }
 }
