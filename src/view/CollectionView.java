@@ -6,29 +6,30 @@ public class CollectionView {
     private final String UNDERLINE = "\u001B[4m";
     private final String RED = "\u001B[31m";
     private final String GREEN = "\u001B[32m";
-    private final String BLUE = "\u001B[34m";
 
     public void printConfirmationMsg(int option) {
+        System.out.println();
         switch (option) {
             case 0:
-                System.out.println(UNDERLINE + RED + "\nAction successfully cancelled.\n" + RESET);
+                System.out.println(GREEN + "Action successfully cancelled." + RESET);
                 break;
             case 1:
-                System.out.println(UNDERLINE + GREEN + "\nCard count successfully incremented.\n" + RESET);
+                System.out.println(GREEN + "Card count successfully incremented." + RESET);
                 break;
             case 2:
-                System.out.println(UNDERLINE + GREEN + "\nCard count successfully decremented.\n" + RESET);
+                System.out.println(GREEN + "Card count successfully decremented." + RESET);
                 break;
             case 3:
-                System.out.println(UNDERLINE + RED + "\nCard not found.\n" + RESET);
+                System.out.println(RED + "Card not found." + RESET);
                 break;
             case 4:
-                System.out.println(UNDERLINE + RED + "\nCard has no copies in collection.\n" + RESET);
+                System.out.println(RED + "Card has no copies in collection." + RESET);
         }
+        System.out.println();
     }
 
     public void displayUpdateCardCount() {
-        System.out.println("\n" + BOLD + UNDERLINE + RED + "U P D A T E  C A R D  C O U N T" + RESET);
+        System.out.println(BOLD + UNDERLINE + RED + "\nU P D A T E  C A R D  C O U N T" + RESET);
         System.out.println(GREEN + "[1] Search card by name" + RESET);
         System.out.println(GREEN + "[2] Search card by card no." + RESET);
         System.out.println(GREEN + "[0] Back\n" + RESET);
