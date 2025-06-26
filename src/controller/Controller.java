@@ -19,7 +19,6 @@ public class Controller {
 
     public void run() {
         int input;
-        int input2;
 
         do {
             int collectionSize = collector.getCollection().getCards().size();
@@ -27,7 +26,6 @@ public class Controller {
             int deckCount = collector.getDecks().size();
 
             collectorView.displayMainOptions(collectionSize, binderCount, deckCount);
-
             input = collectorView.getIntInput("Enter option: ", 0, 3);
 
             switch (input) {
@@ -36,7 +34,7 @@ public class Controller {
                         this.addCard(false);
                     }
                     else {
-                        collectorView.displayCollectionOptions();
+                        this.collectionMenu();
                     }
                     break;
                 case 2:
@@ -44,7 +42,7 @@ public class Controller {
                         this.createBinder();
                     }
                     else {
-                        collectorView.displayBinderOptions();
+                        this.binderMenu();
                     }
                     break;
                 case 3:
@@ -52,13 +50,64 @@ public class Controller {
                         this.createDeck();
                     }
                     else {
-                        collectorView.displayDeckOptions();
+                        this.deckMenu();
                     }
                     break;
             }
         } while (input != 0);
 
         collectorView.exit();
+    }
+
+    public void collectionMenu() {
+        int input;
+
+        do {
+            collectorView.displayCollectionOptions();
+            input = collectorView.getIntInput("Enter option: ", 0, 4);
+
+            switch (input) {
+                case 1: this.addCard(false); break;
+                case 2: this.updateCardCount(); break;
+                case 3: this.displayCard(); break;
+                case 4: this.displayCollection(); break;
+            }
+        } while (input != 0);
+    }
+
+    public void binderMenu() {
+        int input;
+
+        do {
+            collectorView.displayBinderOptions();
+            input = collectorView.getIntInput("Enter option: ", 0, 6);
+
+            switch (input) {
+                case 1: this.createBinder(); break;
+                case 2: this.deleteBinder(); break;
+                case 3: this.addCardToBinder(); break;
+                case 4: this.removeCardFromBinder(); break;
+                case 5: this.viewBinder(); break;
+                case 6: this.trade(); break;
+            }
+        } while (input != 0);
+    }
+
+    public void deckMenu() {
+        int input;
+
+        do {
+            collectorView.displayDeckOptions();
+            input = collectorView.getIntInput("Enter option: ", 0, 5);
+
+            switch (input) {
+                case 1: this.createDeck(); break;
+                case 2: this.deleteBinder(); break;
+                case 3: this.addCardToDeck(); break;
+                case 4: this.removeCardFromDeck(); break;
+                case 5: this.viewDeck(); break;
+            }
+        } while (input != 0);
     }
 
     public int addCard(boolean isAutoAdd) {
@@ -208,9 +257,13 @@ public class Controller {
         }
     }
 
-    // display card
+    public void displayCard() {
 
-    // display collection
+    }
+
+    public void displayCollection() {
+
+    }
 
     public void deleteBinder() {
         String name;
@@ -237,6 +290,15 @@ public class Controller {
     }
 
     public void addCardToBinder() {
+        if (collector.getCollection().countTotalCards() == 0) {
+            // there are no cards in the collection
+            return;
+        }
+        else if (collector.isBindersFull()) {
+            // all binders are full
+            return;
+        }
+
         int binderIndex = -1;
         String binderName;
         int cardIndex = -1;
@@ -273,6 +335,9 @@ public class Controller {
         if (cardIndex == -1 && input != 0) {
             // card doesnt exist
         }
+        else if (collector.getCollection().getCard(cardIndex).getCollectionCount() == 0) {
+            // no copies of the card in the collection
+        }
         else {
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                                           binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
@@ -287,6 +352,11 @@ public class Controller {
     }
 
     public void removeCardFromBinder() {
+        if (collector.isBindersEmpty()) {
+            // all binders are empty
+            return;
+        }
+
         int binderIndex = -1;
         String binderName;
         int cardIndex = -1;
@@ -329,9 +399,73 @@ public class Controller {
         }
     }
 
-    // viewBinder
+    public void viewBinder() {
 
-    // trade
+    }
+
+    public void trade() {
+        if (collector.isBindersEmpty()) {
+            // all binders are empty
+            return;
+        }
+
+        int binderIndex = -1;
+        String binderName;
+        int cardIndex = -1;
+        String cardName;
+        int incomingCardIndex;
+        double difference;
+
+        // display
+
+        do {
+            binderName = collectorView.getStringInput("Enter binder name: ");
+            binderIndex = collector.findBinder(binderName);
+
+            if (binderIndex == -1) {
+                // doesnt exist
+            }
+            else if (collector.getBinder(binderIndex).isEmpty()) {
+                // empty
+                binderIndex = -1;
+            }
+        } while (binderIndex == -1);
+
+        do {
+            cardName = collectorView.getStringInput("Enter card name: ");
+            cardIndex = collector.getBinder(binderIndex).findCard(cardName);
+
+            if (cardIndex == -1) {
+                // card isnt in
+            }
+        } while (cardIndex == -1);
+
+        // time to create incoming card
+
+        incomingCardIndex = this.addCard(true);
+
+        // display trade offer
+
+        difference = Math.abs(collector.getCollection().getCard(incomingCardIndex).getFinalValue() -
+                     collector.getBinder(binderIndex).getCard(cardIndex).getFinalValue());
+
+        if (difference >= 1) {
+            // difference is significant
+            if (collectorView.getIntInput("Proceed with trade? (1 for yes, 0 for no): ", 0, 1) == 1) {
+                collector.getBinder(binderIndex).trade(cardIndex, collector.getCollection().getCard(incomingCardIndex));
+                // success
+            }
+            else {
+                // cancel
+            }
+        }
+        else {
+            collector.getBinder(binderIndex).trade(cardIndex, collector.getCollection().getCard(incomingCardIndex));
+            // success
+        }
+
+        collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
+    }
 
     public void deleteDeck() {
         String name;
@@ -358,6 +492,15 @@ public class Controller {
     }
 
     public void addCardToDeck() {
+        if (collector.getCollection().countTotalCards() == 0) {
+            // there are no cards in the collection
+            return;
+        }
+        else if (collector.isDecksFull()) {
+            // all decks are full
+            return;
+        }
+
         int deckIndex = -1;
         String deckName;
         int cardIndex = -1;
@@ -394,6 +537,9 @@ public class Controller {
         if (cardIndex == -1 && input != 0) {
             // card doesnt exist
         }
+        else if (collector.getCollection().getCard(cardIndex).getCollectionCount() == 0) {
+            // no copies of the card in the collection
+        }
         else if (collector.getDeck(deckIndex).findCard(collector.getCollection().getCard(cardIndex).getName()) != -1) {
             // card is already in deck
         }
@@ -411,6 +557,11 @@ public class Controller {
     }
 
     public void removeCardFromDeck() {
+        if (collector.isDecksEmpty()) {
+            // all decks are empty
+            return;
+        }
+
         int deckIndex = -1;
         String deckName;
         int cardIndex = -1;
@@ -454,6 +605,8 @@ public class Controller {
         }
     }
 
-    // viewDeck
+    public void viewDeck() {
+
+    }
 }
 

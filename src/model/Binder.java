@@ -52,8 +52,8 @@ public class Binder {
         return -1;
     }
 
-    public void trade(/*outgoing card and incoming card*/) {
-
+    public void trade(int outgoingCardIndex, Card incomingCard) {
+        this.setCard(outgoingCardIndex, incomingCard);
     }
 
     public String getName() {

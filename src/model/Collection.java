@@ -42,6 +42,16 @@ public class Collection {
         }
     }
 
+    public int countTotalCards() {
+        int ctr = 0;
+
+        for (Card c : this.getCards()) {
+            ctr += c.getCollectionCount();
+        }
+
+        return ctr;
+    }
+
     public Card getCard(int index) {
         if (index >= 0 && index < this.getCards().size()) {
             return this.cards.get(index);

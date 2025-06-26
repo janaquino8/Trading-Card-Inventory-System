@@ -49,6 +49,42 @@ public class Collector {
         return -1;
     }
 
+    public boolean isBindersEmpty() {
+        for (Binder b : this.getBinders()) {
+            if (!b.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isBindersFull() {
+        for (Binder b : this.getBinders()) {
+            if (!b.isFull()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isDecksEmpty() {
+        for (Deck d : this.getDecks()) {
+            if (!d.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isDecksFull() {
+        for (Deck d : this.getDecks()) {
+            if (!d.isFull()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public Collection getCollection() {
         return this.collection;
     }
