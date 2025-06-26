@@ -6,11 +6,11 @@ public class DeckView {
     private final String BLUE = "\u001B[34m";
 
 
-    public void displayDeck() {
+    public void displayDeck(String deckName) {
         String UNDERLINE = "\u001B[4m";
         String BOLD = "\u001B[1m";
 
-        String formattedTitle = BOLD + UNDERLINE + RED + "D E C K" + RESET;
+        String formattedTitle = BOLD + UNDERLINE + RED + deckName + RESET;
         printBorder();
         System.out.printf(BLUE + "|" + RESET +" %-47s " + BLUE + "|" + RESET + "\n", formattedTitle);
         printBorder();

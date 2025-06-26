@@ -168,11 +168,6 @@ public class CollectorView {
         System.out.println("[0] Back\n");
     }
 
-    public void exit() {
-        System.out.println("\nThanks for using the Trading Card Inventory System!");
-        System.out.println("Shutting down...");
-    }
-
     public void displayAddCard() {
         System.out.println("""
                        __   __      __        __   __ \s
@@ -195,5 +190,14 @@ public class CollectorView {
                  /  ` |__) |__   /\\   |  |__     |  \\ |__  /  ` |__/\s
                  \\__, |  \\ |___ /~~\\  |  |___    |__/ |___ \\__, |  \\\s
                 """);
+    }
+
+    public void printCardCreatedVerification(String name, int cardNo) {
+        System.out.println("[" + cardNo + "] " + name + "\b");
+    }
+
+    public void exit() {
+        System.out.println("\nThanks for using the Trading Card Inventory System!");
+        System.out.println("Shutting down...");
     }
 }

@@ -8,8 +8,8 @@ public class BinderView {
     private final String GREEN = "\u001B[32m";
     private final String BLUE = "\u001B[34m";
 
-    public void displayBinder() {
-        String formattedTitle = BOLD + UNDERLINE + RED + "B I N D E R" + RESET;
+    public void displayBinder(String binderName) {
+        String formattedTitle = BOLD + UNDERLINE + RED + binderName + RESET;
         printBorder(28);
         System.out.printf(BLUE + "|" + RESET +" %-43s " + BLUE + "|" + RESET + "\n", formattedTitle);
         printBorder(28);
