@@ -6,6 +6,7 @@ public class CollectionView {
     private final String UNDERLINE = "\u001B[4m";
     private final String RED = "\u001B[31m";
     private final String GREEN = "\u001B[32m";
+    private final String BLUE = "\u001B[34m";
 
     public void printConfirmationMsg(int option) {
         System.out.println();
@@ -45,5 +46,27 @@ public class CollectionView {
         System.out.println(GREEN + "[1] Increment Card Count" + RESET);
         System.out.println(GREEN + "[2] Decrement Card Count" + RESET);
         System.out.println(GREEN + "[0] Back\n" + RESET);
+    }
+
+    public void displayCollection() {
+        String UNDERLINE = "\u001B[4m";
+        String BOLD = "\u001B[1m";
+
+        String formattedTitle = BOLD + UNDERLINE + RED + "C O L L E C T I O N" + RESET;
+        printBorder();
+        System.out.printf(BLUE + "|" + RESET +" %-57s " + BLUE + "|" + RESET + "\n", formattedTitle);
+        printBorder();
+    }
+
+    public void displayCollectionCard(int collectionCount, String name) {
+        String MAGENTA = "\u001B[35m";
+
+        System.out.printf(BLUE + "|" + RESET + GREEN + " %-26s " + RESET + BLUE + "|" + RESET +
+                MAGENTA + " Count : %3d " + RESET + BLUE + "|" + RESET + "\n", "Pikachu", 16);
+        printBorder();
+    }
+
+    private void printBorder() {
+        System.out.println(BLUE + "+" + "-".repeat(42) + "+" + RESET);
     }
 }

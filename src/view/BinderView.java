@@ -7,6 +7,7 @@ public class BinderView {
     private final String RED = "\u001B[31m";
     private final String GREEN = "\u001B[32m";
     private final String BLUE = "\u001B[34m";
+    private final String MAGENTA = "\u001B[35m";
 
     public void printConfirmationMsg(int option) {
         System.out.println();
@@ -65,7 +66,7 @@ public class BinderView {
     }
 
     public void displayBinderCard(String name) {
-        System.out.printf(BLUE + "|" + RESET + GREEN + " %-26s " + RESET + BLUE + "|" + RESET + "\n", name);
+        System.out.printf(BLUE + "|" + RESET + MAGENTA + " %-26s " + RESET + BLUE + "|" + RESET + "\n", name);
         printBorder(28);
     }
 
@@ -83,7 +84,7 @@ public class BinderView {
     private void printTradeRow(String trade, String name, double value) {
         System.out.printf(BLUE + "|" + RESET + RED + " %s " + RESET +
                         BLUE + "|" + RESET + GREEN + " %-26s " + RESET +
-                        BLUE + "|" + RESET + RED + " $%8.2f " + RESET + BLUE + "|" + RESET + "\n"
+                        BLUE + "|" + RESET + MAGENTA + " $%8.2f " + RESET + BLUE + "|" + RESET + "\n"
                 , trade, name, value);
     }
 

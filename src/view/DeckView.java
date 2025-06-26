@@ -63,11 +63,10 @@ public class DeckView {
     }
 
     public void displayDeckCard(int index, String name) {
-        String GREEN = "\u001B[32m";
+        String MAGENTA = "\u001B[35m";
 
-        System.out.printf(BLUE + "|" + RESET +
-                RED + " %2d " + RESET + BLUE + "|" + RESET +
-                GREEN + " %-26s" + RESET + BLUE + "|" + RESET + "\n", index, name);
+        System.out.printf(BLUE + "|" + RESET + MAGENTA + " %2d " + RESET +
+                BLUE + "|" + RESET + GREEN + " %-26s" + RESET + BLUE + "|" + RESET + "\n", index, name);
         printBorder();
     }
 
