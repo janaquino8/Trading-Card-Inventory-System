@@ -164,10 +164,10 @@ public class CollectorView {
 
         System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S\n" + RESET);
         System.out.println(GREEN + "[1] Create a New Deck" + RESET);
-        System.out.println(GREEN + "[2] Delete a Binder" + RESET);
+        System.out.println(GREEN + "[2] Delete a Deck" + RESET);
         System.out.println(GREEN + "[3] Add a Card" + RESET);
         System.out.println(GREEN + "[4] Remove a Card" + RESET);
-        System.out.println(GREEN + "[5] View a Binder" + RESET);
+        System.out.println(GREEN + "[5] View a Deck" + RESET);
         System.out.println(RED + "[0] Back\n" + RESET);
     }
 
@@ -199,7 +199,7 @@ public class CollectorView {
     }
 
     public void printCardCreatedVerification(String name, int cardNo) {
-        System.out.println("[" + cardNo + "] " + name + "\b");
+        System.out.println(GREEN + "[" + cardNo + "] " + name + "\n" + RESET);
     }
 
     public void exit() {
