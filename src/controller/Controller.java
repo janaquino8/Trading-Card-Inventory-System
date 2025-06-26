@@ -309,6 +309,7 @@ public class Controller {
 
         // display
 
+        // asks user for unique binder name
         do {
             name = collectorView.getStringInput("Enter binder name: ");
             index = collector.findBinder(name);
@@ -318,6 +319,7 @@ public class Controller {
             }
         } while (index == -1);
 
+        // asks user if the binder will be removed
         if (collectorView.getIntInput("Delete binder " + name + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
             collector.deleteBinder(index);
             // binderView confirmation msg
