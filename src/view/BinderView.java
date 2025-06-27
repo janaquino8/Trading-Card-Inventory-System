@@ -112,14 +112,18 @@ public class BinderView {
         System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
-    public void displayTrade(String incomingName, double incomingValue, String outgoingName, double outgoingValue) {
+    public void displayTrade(String incomingName, double incomingValue, String outgoingName, double outgoingValue, double difference) {
         String formattedTitle = BOLD + UNDERLINE + RED + "T R A D E  E X C H A N G E" + RESET;
+        String formattedDifference = String.format("%,.2f", difference);
+
         printBorder(51);
         System.out.printf(BLUE + "|" + RESET + " %-66s " + BLUE + "|" + RESET + "\n", formattedTitle);
         printBorder(51);
         printTradeRow("Incoming", incomingName, incomingValue);
         printBorder(51);
         printTradeRow("Outgoing", outgoingName, outgoingValue);
+        printBorder(51);
+        System.out.printf(BLUE + "|" + RESET + " Difference:" + MAGENTA + " $%-36s " + RESET + BLUE + "|" + RESET + "\n", formattedDifference);
         printBorder(51);
     }
 

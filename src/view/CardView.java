@@ -38,9 +38,9 @@ public class CardView {
 
         System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Collection Count:" + rarityColor + " %-18s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedCollectionCount);
 
-        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Base Value:" + rarityColor + " %-24s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedBaseValue);
+        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Base Value:" + rarityColor + " $%-23s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedBaseValue);
 
-        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Final Value:" + rarityColor + " %-23s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedFinalValue);
+        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Final Value:" + rarityColor + " $%-22s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedFinalValue);
 
         System.out.println(BOLD + CYAN + "╚══════════════════════════════════════╝" + RESET);
     }
