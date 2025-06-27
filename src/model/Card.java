@@ -39,7 +39,7 @@ public class Card {
         this.setCollectionCount(this.getCollectionCount() - 1);
     }
 
-    public void calculateFinalValue() {
+    private void calculateFinalValue() {
         this.setFinalValue(this.getBaseValue() * this.getVariant().getValueMultiplier());
     }
 
@@ -55,16 +55,8 @@ public class Card {
         return this.rarity;
     }
 
-    public void setRarity(Rarity rarity) {
-        this.rarity = rarity;
-    }
-
     public Variant getVariant() {
         return this.variant;
-    }
-
-    public void setVariant(Variant variant) {
-        this.variant = variant;
     }
 
     public double getBaseValue() {

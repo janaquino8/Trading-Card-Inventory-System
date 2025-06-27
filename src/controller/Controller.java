@@ -320,12 +320,13 @@ public class Controller {
         if (index == -1 && input != 0) {
             collectionView.printConfirmationMsg(3);
         }
+        else if (input != 0 && collector.getCollection().getCard(index).getCollectionCount() == 0) {
+            collectionView.printConfirmationMsg(4);
+        }
         else if (input != 0) {
-            cardView.displayCard(collector.getCollection().getCard(index).getName(),
-                                 collector.getCollection().getCard(index).getRarity().getName(),
-                                 collector.getCollection().getCard(index).getVariant().getName(),
-                                 collector.getCollection().getCard(index).getBaseValue(),
-                                 collector.getCollection().getCard(index).getFinalValue());
+            Card c = collector.getCollection().getCard(index);
+            cardView.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
+                                 c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
         }
     }
 
@@ -337,7 +338,9 @@ public class Controller {
         collectionView.displayCollection();
 
         for (Card c : collector.getCollection().getCards()) {
-            collectionView.displayCollectionCard(c.getCollectionCount(), c.getName());
+            if (c.getCollectionCount() != 0) {
+                collectionView.displayCollectionCard(c.getCollectionCount(), c.getName());
+            }
         }
     }
 
@@ -511,6 +514,12 @@ public class Controller {
             }
         } while (binderIndex == -1);
 
+        // if deck is empty
+        if (collector.getBinder(binderIndex).isEmpty()) {
+            binderView.printConfirmationMsg(9);
+            return;
+        }
+
         // sorts binder
         collector.getBinder(binderIndex).sort();
 
@@ -518,8 +527,8 @@ public class Controller {
         binderView.displayBinder(binderName);
 
         // displays binder contents
-        for (Card c : collector.getBinder(binderIndex).getCards()) {
-            binderView.displayBinderCard(c.getName());
+        for (int i = 0; i < Binder.MAX_COUNT && collector.getBinder(binderIndex).getCard(i) != null; i++) {
+            binderView.displayBinderCard(collector.getBinder(binderIndex).getCard(i).getName());
         }
     }
 
@@ -531,8 +540,8 @@ public class Controller {
 
         int binderIndex;
         String binderName;
-        int cardIndex;
-        String cardName;
+        int outgoingCardIndex;
+        String outgoingCardName;
         int incomingCardIndex;
         double difference;
 
@@ -557,26 +566,27 @@ public class Controller {
 
         // asks user for outgoing card
         do {
-            cardName = collectorView.getStringInput("Enter card name: ");
-            cardIndex = collector.getBinder(binderIndex).findCard(cardName);
+            outgoingCardName = collectorView.getStringInput("Enter card name: ");
+            outgoingCardIndex = collector.getBinder(binderIndex).findCard(outgoingCardName);
 
             // if card isn't in binder
-            if (cardIndex == -1) {
+            if (outgoingCardIndex == -1) {
                 binderView.printConfirmationMsg(10);
             }
-        } while (cardIndex == -1);
+        } while (outgoingCardIndex == -1);
 
         // creates incoming card
         incomingCardIndex = this.addCard(true);
 
+        difference = Math.abs(collector.getCollection().getCard(incomingCardIndex).getFinalValue() -
+                collector.getBinder(binderIndex).getCard(outgoingCardIndex).getFinalValue());
+
         // displays trade
         binderView.displayTrade(collector.getCollection().getCard(incomingCardIndex).getName(),
                                 collector.getCollection().getCard(incomingCardIndex).getFinalValue(),
-                                cardName,
-                                collector.getBinder(binderIndex).getCard(cardIndex).getFinalValue());
-
-        difference = Math.abs(collector.getCollection().getCard(incomingCardIndex).getFinalValue() -
-                     collector.getBinder(binderIndex).getCard(cardIndex).getFinalValue());
+                                outgoingCardName,
+                                collector.getBinder(binderIndex).getCard(outgoingCardIndex).getFinalValue(),
+                                difference);
 
         // if difference in value is >= $1.00
         if (difference >= 1) {
@@ -588,7 +598,7 @@ public class Controller {
             }
         }
         // otherwise
-        collector.getBinder(binderIndex).trade(cardIndex, collector.getCollection().getCard(incomingCardIndex));
+        collector.getBinder(binderIndex).trade(outgoingCardIndex, collector.getCollection().getCard(incomingCardIndex));
         binderView.printConfirmationMsg(13);
         collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
     }
@@ -768,6 +778,12 @@ public class Controller {
             }
         } while (deckIndex == -1);
 
+        // if deck is empty
+        if (collector.getDeck(deckIndex).isEmpty()) {
+            deckView.printConfirmationMsg(9);
+            return;
+        }
+
         // view card and card display selection
         do {
             // displays deck name
@@ -775,14 +791,13 @@ public class Controller {
 
             // displays deck contents
             cardIndex = 1;
-            for (Card c : collector.getDeck(deckIndex).getCards()) {
-                deckView.displayDeckCard(cardIndex, c.getName());
+            for (int i = 0; i < Deck.MAX_COUNT && collector.getDeck(deckIndex).getCard(i) != null; i++) {
+                deckView.displayDeckCard(cardIndex, collector.getDeck(deckIndex).getCard(i).getName());
                 cardIndex++;
             }
 
             // asks user which card to display
-
-            switch (collectorView.getIntInput("Enter (1 to search by name, 2 to search by number, or 0 to exit): ", 0, 2)) {
+            switch (collectorView.getIntInput("Enter card to display (1 to search by name, 2 to search by number, or 0 to exit): ", 0, 2)) {
                 case 1:
                     do {
                         cardIndex = collector.getDeck(deckIndex).findCard(collectorView.getStringInput("Enter card name: "));
@@ -798,11 +813,9 @@ public class Controller {
             }
 
             if (cardIndex != -1) {
-                cardView.displayCard(collector.getDeck(deckIndex).getCard(cardIndex).getName(),
-                                     collector.getDeck(deckIndex).getCard(cardIndex).getRarity().getName(),
-                                     collector.getDeck(deckIndex).getCard(cardIndex).getVariant().getName(),
-                                     collector.getDeck(deckIndex).getCard(cardIndex).getBaseValue(),
-                                     collector.getDeck(deckIndex).getCard(cardIndex).getFinalValue());
+                Card c = collector.getDeck(deckIndex).getCard(cardIndex);
+                cardView.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
+                        c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
             }
         } while (cardIndex != 0);
 
