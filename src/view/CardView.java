@@ -1,6 +1,22 @@
 package src.view;
 
+/*
+CardView - Displays the card information in a formatted box with color coding
+*/
 public class CardView {
+
+    /*
+    Method               - displayCard
+    String name          - Name of the card
+    int cardNo           - Unique identifier number of the card
+    String rarityName    - Rarity level of the card (Common, Uncommon, Rare, Legendary)
+    String variantName   - Specific variant of the card (Normal, Extended-art, Full-art, Alt-art)
+    int collectionCount  - Copies that currently exist in collection
+    double baseValue     - Base value of card WITHOUT the variant's increase in value
+    double finalValue    - Final value of card AFTER the variant's increase in value
+    return type          - void
+    Method Comment: Displays a visually formatted card with colored borders, formatted numbers, and organized sections showing all card details
+     */
     public void displayCard(String name, int cardNo, String rarityName, String variantName, int collectionCount, double baseValue, double finalValue) {
         String RESET = "\u001B[0m";
         String BOLD = "\u001B[1m";

@@ -1,5 +1,8 @@
 package src.view;
 
+/*
+BinderView - Handles all visual displays related to binder operations (adding/removing cards, viewing binders, and trades)
+ */
 public class BinderView {
     private final String RESET = "\u001B[0m";
     private final String BOLD = "\u001B[1m";
@@ -9,6 +12,12 @@ public class BinderView {
     private final String BLUE = "\u001B[34m";
     private final String MAGENTA = "\u001B[35m";
 
+    /*
+    Method       - printConfirmationMsg
+    int option   - Numeric code representing different confirmation/error messages
+    return type  - void
+    Method Comment : Prints colored status messages based on operation results (success/error cases)
+     */
     public void printConfirmationMsg(int option) {
         System.out.println();
         switch (option) {
@@ -58,6 +67,11 @@ public class BinderView {
         System.out.println();
     }
 
+    /*
+    Method       - displayAddCardToBinder
+    return type  - void
+    Method Comment: Displays large ASCII art header for "Add Card to Binder" operation
+     */
     public void displayAddCardToBinder() {
         System.out.println(BOLD + BLUE +
                 "    _      ____    ____        ____      _      ____    ____                  ____    ___   _   _   ____    _____   ____  \n" +
@@ -67,6 +81,11 @@ public class BinderView {
                 "/_/   \\_\\ |____/  |____/      \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
     }
 
+    /*
+    Method       - displayRemoveCardFromBinder
+    return type  - void
+    Method Comment: Displays large ASCII art header for "Remove Card from Binder" operation
+     */
     public void displayRemoveCardFromBinder() {
         System.out.println(BOLD + BLUE +
                 " ____    _____   __  __    ___   __     __  _____       ____      _      ____    ____                  ____    ___   _   _   ____    _____   ____  \n" +
@@ -76,6 +95,11 @@ public class BinderView {
                 "|_| \\_\\ |_____| |_|  |_|  \\___/     \\_/    |_____|     \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
     }
 
+    /*
+    Method       - displayViewBinder
+    return type  - void
+    Method Comment: Displays large ASCII art header for "View Binder" operation
+     */
     public void displayViewBinder() {
         System.out.println(BOLD + BLUE +
                 "__     __  ___   _____  __        __     ____    ___   _   _   ____    _____   ____  \n" +
@@ -85,6 +109,11 @@ public class BinderView {
                 "   \\_/    |___| |_____|    \\_/\\_/       |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
     }
 
+    /*
+    Method       - displayTrade
+    return type  - void
+    Method Comment: Displays large ASCII art header for general trade operations
+     */
     public void displayTrade() {
         System.out.println(BOLD + BLUE +
                 " _____   ____       _      ____    _____ \n" +
@@ -94,6 +123,12 @@ public class BinderView {
                 "  |_|   |_| \\_\\ /_/   \\_\\ |____/  |_____|" + RESET);
     }
 
+    /*
+    Method             - displayBinder
+    String binderName  - Name of the binder to display
+    return type        - void
+    Method Comments: Shows a formatted binder title with borders and underlining
+     */
     public void displayBinder(String binderName) {
         String formattedTitle = BOLD + UNDERLINE + RED + binderName + RESET;
         printBorder(28);
@@ -101,17 +136,38 @@ public class BinderView {
         printBorder(28);
     }
 
+    /*
+    Method       - displayBinderCard
+    String name  - Name of the card to display in binder view
+    return type  - void
+    Method Comment: Prints an individual card entry within binder view with borders
+     */
     public void displayBinderCard(String name) {
         System.out.printf(BLUE + "|" + RESET + MAGENTA + " %-26s " + RESET + BLUE + "|" + RESET + "\n", name);
         printBorder(28);
     }
 
+    /*
+    Method       - displayCardSearchOptions
+    return type  - void
+    Method Comment: Shows menu options for card search methods (by name or number) with an exit
+     */
     public void displayCardSearchOptions() {
         System.out.println(GREEN + "[1] Search card by name" + RESET);
         System.out.println(GREEN + "[2] Search card by card no." + RESET);
         System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method                - displayTrade
+    String incomingName   - Name of card being received
+    double incomingValue  - Value of incoming card
+    String outgoingName   - Name of card being traded away
+    double outgoingValue  - Value of outgoing card
+    double difference     - Net value difference between cards
+    return type           - void
+    Method Comment: Displays detailed trade comparison with values and net difference in formatted table
+     */
     public void displayTrade(String incomingName, double incomingValue, String outgoingName, double outgoingValue, double difference) {
         String formattedTitle = BOLD + UNDERLINE + RED + "T R A D E  E X C H A N G E" + RESET;
         String formattedDifference = String.format("%,.2f", difference);
@@ -127,6 +183,14 @@ public class BinderView {
         printBorder(51);
     }
 
+    /*
+    Method        - printTradeRow (private)
+    String trade  - Trade direction label ("Incoming"/"Outgoing")
+    String name   - Card name
+    double value  - Card monetary value
+    return type   - void
+    Method Comment: Helper method to format individual rows in trade display table
+     */
     private void printTradeRow(String trade, String name, double value) {
         System.out.printf(BLUE + "|" + RESET + RED + " %s " + RESET +
                         BLUE + "|" + RESET + GREEN + " %-26s " + RESET +
@@ -134,6 +198,12 @@ public class BinderView {
                 , trade, name, value);
     }
 
+    /*
+    Method       - printBorder (private)
+    int count    - Number of dashes in the border
+    return type  - void
+    Method Comment: Helper method to print consistent bordered lines for displays
+     */
     private void printBorder(int count) {
         System.out.println(BLUE + "+" + "-".repeat(count) + "+" + RESET);
     }
