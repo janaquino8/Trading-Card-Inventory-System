@@ -15,7 +15,7 @@ public class CardView {
     double baseValue     - Base value of card WITHOUT the variant's increase in value
     double finalValue    - Final value of card AFTER the variant's increase in value
     return type          - void
-    Method Comment: Displays a visually formatted card with colored borders, formatted numbers, and organized sections showing all card details
+    Method Comment : Displays a visually formatted card with colored borders, formatted numbers, and organized sections showing all card details
      */
     public void displayCard(String name, int cardNo, String rarityName, String variantName, int collectionCount, double baseValue, double finalValue) {
         String RESET = "\u001B[0m";
