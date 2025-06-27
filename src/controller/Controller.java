@@ -6,6 +6,7 @@ import src.view.*;
 // REMOVE SOUT AND MOVE TO VIEW
 
 /**
+ * Controller
  * Handles all actions performed by the user
  */
 public class Controller {
@@ -17,6 +18,7 @@ public class Controller {
     CardView cardView;
 
     /**
+     * Controller
      * Constructor to construct a Collector object
      */
     public Controller() {
@@ -28,6 +30,11 @@ public class Controller {
         cardView = new CardView();
     }
 
+    /**
+     * run
+     * The main invoker of the program that runs the main menu
+     * options change depending on card count of collection, binder count, and deck count
+     */
     public void run() {
         int input;
 
@@ -72,6 +79,11 @@ public class Controller {
         collectorView.exit();
     }
 
+    /**
+     * collectionMenu
+     * Runs the menu for managing collection
+     * add card, update card count, display card, display collection
+     */
     public void collectionMenu() {
         int input;
 
@@ -89,6 +101,11 @@ public class Controller {
         } while (input != 0);
     }
 
+    /**
+     * binderMenu
+     * Runs the menu for managing binders
+     * create binder, delete binder, add card to binder, remove card from binder, view binder, trade
+     */
     public void binderMenu() {
         int input;
 
@@ -108,6 +125,11 @@ public class Controller {
         } while (input != 0);
     }
 
+    /**
+     * deckMenu
+     * Runs the menu for managing decks
+     * create deck, delete deck, add card to deck, remove card from deck, view deck
+     */
     public void deckMenu() {
         int input;
 
@@ -126,6 +148,12 @@ public class Controller {
         } while (input != 0);
     }
 
+    /**
+     * addCard
+     * @param isAutoAdd false if the user will still be asked for confirmation, true otherwise
+     * @return index of new card/card copy
+     * Creates a new card and adds it to to the collection, or increments card count if card already exists prior
+     */
     public int addCard(boolean isAutoAdd) {
         String name;
         int rarity;
@@ -172,7 +200,7 @@ public class Controller {
         }
 
         // asks for the other details of the card
-        value = collectorView.getDoubleInput("Enter value: ");
+        value = collectorView.getDoubleInput("Enter value (in $): ");
         rarity = collectorView.getIntInput("Enter card rarity ([1] Common; [2] Uncommon; [3] Rare; [4] Legendary): ", 1, 4);
 
         // asks for card variant if rarity is either rare or legendary
@@ -191,6 +219,10 @@ public class Controller {
         return collector.getCollection().getCards().size();
     }
 
+    /**
+     * createBinder
+     * Creates an empty binder
+     */
     public void createBinder() {
         String name;
 
@@ -218,6 +250,10 @@ public class Controller {
 
     }
 
+    /**
+     * createDeck
+     * Creates an empty deck
+     */
     public void createDeck() {
         String name;
 
@@ -244,6 +280,10 @@ public class Controller {
         }
     }
 
+    /**
+     * updateCardCount
+     * Updates the collection count of a card in the collection (via increment or decrement)
+     */
     public void updateCardCount() {
         int index = -1;
         int input;
@@ -298,6 +338,10 @@ public class Controller {
         }
     }
 
+    /**
+     * displayCard
+     * Displays the details of a card in the collection
+     */
     public void displayCard() {
         int index = -1;
         int input;
@@ -320,9 +364,6 @@ public class Controller {
         if (index == -1 && input != 0) {
             collectionView.printConfirmationMsg(3);
         }
-        else if (input != 0 && collector.getCollection().getCard(index).getCollectionCount() == 0) {
-            collectionView.printConfirmationMsg(4);
-        }
         else if (input != 0) {
             Card c = collector.getCollection().getCard(index);
             cardView.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
@@ -330,13 +371,11 @@ public class Controller {
         }
     }
 
+    /**
+     * displayCollection
+     * Displays the name and collection count of each card in the collection
+     */
     public void displayCollection() {
-        // if there are no copies of any card in the collection
-        if (collector.getCollection().countTotalCards() == 0) {
-            collectionView.printConfirmationMsg(5);
-            return;
-        }
-
         // sorts collection
         collector.getCollection().sort();
 
@@ -344,12 +383,14 @@ public class Controller {
         collectionView.displayCollection();
 
         for (Card c : collector.getCollection().getCards()) {
-            if (c.getCollectionCount() != 0) {
-                collectionView.displayCollectionCard(c.getCollectionCount(), c.getName());
-            }
+            collectionView.displayCollectionCard(c.getCollectionCount(), c.getName());
         }
     }
 
+    /**
+     * deleteBinder
+     * Deletes an existing binder and returns contents, if any, back to the collection
+     */
     public void deleteBinder() {
         String name;
         int index;
@@ -378,6 +419,10 @@ public class Controller {
         }
     }
 
+    /**
+     * addCardToBinder
+     * Adds a card from the collection to a non-full binder
+     */
     public void addCardToBinder() {
         // if there are no cards in the collection
         if (collector.getCollection().countTotalCards() == 0) {
@@ -450,6 +495,10 @@ public class Controller {
         }
     }
 
+    /**
+     * returnCardFromBinder
+     * Removes a card from a non-empty binder and returns it to the collection
+     */
     public void removeCardFromBinder() {
         // if all binders are empty
         if (collector.isBindersEmpty()) {
@@ -502,6 +551,10 @@ public class Controller {
         }
     }
 
+    /**
+     * viewBinder
+     * Displays the names of the cards in a binder
+     */
     public void viewBinder() {
         String binderName;
         int binderIndex;
@@ -538,6 +591,10 @@ public class Controller {
         }
     }
 
+    /**
+     * trade
+     * Executes a trade between a card in a binder and a card outside the collection
+     */
     public void trade() {
         if (collector.isBindersEmpty()) {
             binderView.printConfirmationMsg(8);
@@ -609,6 +666,10 @@ public class Controller {
         collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
     }
 
+    /**
+     * deleteDeck
+     * Deletes an existing deck and returns contents, if any, back to the collection
+     */
     public void deleteDeck() {
         String name;
         int index;
@@ -637,6 +698,10 @@ public class Controller {
         }
     }
 
+    /**
+     * addCardToDeck
+     * Adds a card from the collection to a non-full deck, while preventing duplicates
+     */
     public void addCardToDeck() {
         // if there are no cards in the collection
         if (collector.getCollection().countTotalCards() == 0) {
@@ -713,6 +778,10 @@ public class Controller {
         }
     }
 
+    /**
+     * returnCardFromDeck
+     * Removes a card from a non-empty deck and returns it to the collection
+     */
     public void removeCardFromDeck() {
         // if all decks are empty
         if (collector.isDecksEmpty()) {
@@ -730,14 +799,14 @@ public class Controller {
 
         do {
             deckName = collectorView.getStringInput("Enter deck name: ");
-            deckIndex = collector.findBinder(deckName);
+            deckIndex = collector.findDeck(deckName);
 
             // if deck doesn't exist
             if (deckIndex == -1) {
                 deckView.printConfirmationMsg(4);
             }
             // if deck is empty
-            else if (collector.getBinder(deckIndex).isEmpty()) {
+            else if (collector.getDeck(deckIndex).isEmpty()) {
                 deckView.printConfirmationMsg(9);
                 deckIndex = -1;
             }
@@ -746,7 +815,7 @@ public class Controller {
         // asks user for card to be removed
         do {
             cardName = collectorView.getStringInput("Enter card name: ");
-            cardIndex = collector.getBinder(deckIndex).findCard(cardName);
+            cardIndex = collector.getDeck(deckIndex).findCard(cardName);
 
             // if card is not in deck
             if (cardIndex == -1) {
@@ -757,7 +826,7 @@ public class Controller {
         // asks user if the card will be removed form deck
         if (collectorView.getIntInput("Remove " + cardName + " from " + deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
             collector.getCollection().getCard(collector.getCollection().findCard(cardName)).incrementCollectionCount();
-            collector.getBinder(deckIndex).removeCard(cardIndex);
+            collector.getDeck(deckIndex).removeCard(cardIndex);
             deckView.printConfirmationMsg(11);
         }
         else {
@@ -765,6 +834,10 @@ public class Controller {
         }
     }
 
+    /**
+     * viewDeck
+     * Displays the names of the cards in a deck; allows the user to view the details of the cards individually
+     */
     public void viewDeck() {
         String deckName;
         int deckIndex;
