@@ -3,7 +3,6 @@ package src.view;
 public class CollectionView {
     private final String RESET = "\u001B[0m";
     private final String BOLD = "\u001B[1m";
-    private final String UNDERLINE = "\u001B[4m";
     private final String RED = "\u001B[31m";
     private final String GREEN = "\u001B[32m";
     private final String BLUE = "\u001B[34m";
@@ -30,7 +29,24 @@ public class CollectionView {
     }
 
     public void displayUpdateCardCount() {
-        System.out.println(BOLD + UNDERLINE + RED + "\nU P D A T E  C A R D  C O U N T" + RESET);
+        System.out.println(BOLD + BLUE +
+                " _   _   ____    ____       _      _____   _____       ____      _      ____    ____        ____    ___    _   _   _   _   _____ \n" +
+                "| | | | |  _ \\  |  _ \\     / \\    |_   _| | ____|     / ___|    / \\    |  _ \\  |  _ \\      / ___|  / _ \\  | | | | | \\ | | |_   _|\n" +
+                "| | | | | |_) | | | | |   / _ \\     | |   |  _|      | |       / _ \\   | |_) | | | | |    | |     | | | | | | | | |  \\| |   | |  \n" +
+                "| |_| | |  __/  | |_| |  / ___ \\    | |   | |___     | |___   / ___ \\  |  _ <  | |_| |    | |___  | |_| | | |_| | | |\\  |   | |  \n" +
+                " \\___/  |_|     |____/  /_/   \\_\\   |_|   |_____|     \\____| /_/   \\_\\ |_| \\_\\ |____/      \\____|  \\___/   \\___/  |_| \\_|   |_|  " + RESET);
+        System.out.println(GREEN + "[1] Search card by name" + RESET);
+        System.out.println(GREEN + "[2] Search card by card no." + RESET);
+        System.out.println(GREEN + "[0] Back\n" + RESET);
+    }
+
+    public void displayDisplayCard() {
+        System.out.println(BOLD + BLUE +
+                " ____    ___   ____    ____    _          _     __   __      ____      _      ____    ____  \n" +
+                "|  _ \\  |_ _| / ___|  |  _ \\  | |        / \\    \\ \\ / /     / ___|    / \\    |  _ \\  |  _ \\ \n" +
+                "| | | |  | |  \\___ \\  | |_) | | |       / _ \\    \\ V /     | |       / _ \\   | |_) | | | | |\n" +
+                "| |_| |  | |   ___) | |  __/  | |___   / ___ \\    | |      | |___   / ___ \\  |  _ <  | |_| |\n" +
+                "|____/  |___| |____/  |_|     |_____| /_/   \\_\\   |_|       \\____| /_/   \\_\\ |_| \\_\\ |____/ " + RESET);
         System.out.println(GREEN + "[1] Search card by name" + RESET);
         System.out.println(GREEN + "[2] Search card by card no." + RESET);
         System.out.println(GREEN + "[0] Back\n" + RESET);
@@ -42,6 +58,7 @@ public class CollectionView {
     }
 
     public void displayUpdateCardCountOptions() {
+        String UNDERLINE = "\u001B[4m";
         System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S" + RESET);
         System.out.println(GREEN + "[1] Increment Card Count" + RESET);
         System.out.println(GREEN + "[2] Decrement Card Count" + RESET);

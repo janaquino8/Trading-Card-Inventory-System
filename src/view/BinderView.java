@@ -58,6 +58,42 @@ public class BinderView {
         System.out.println();
     }
 
+    public void displayAddCardToBinder() {
+        System.out.println(BOLD + BLUE +
+                "    _      ____    ____        ____      _      ____    ____                  ____    ___   _   _   ____    _____   ____  \n" +
+                "   / \\    |  _ \\  |  _ \\      / ___|    / \\    |  _ \\  |  _ \\                | __ )  |_ _| | \\ | | |  _ \\  | ____| |  _ \\ \n" +
+                "  / _ \\   | | | | | | | |    | |       / _ \\   | |_) | | | | |     _____     |  _ \\   | |  |  \\| | | | | | |  _|   | |_) |\n" +
+                " / ___ \\  | |_| | | |_| |    | |___   / ___ \\  |  _ <  | |_| |    |_____|    | |_) |  | |  | |\\  | | |_| | | |___  |  _ < \n" +
+                "/_/   \\_\\ |____/  |____/      \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
+    }
+
+    public void displayRemoveCardFromBinder() {
+        System.out.println(BOLD + BLUE +
+                " ____    _____   __  __    ___   __     __  _____       ____      _      ____    ____                  ____    ___   _   _   ____    _____   ____  \n" +
+                "|  _ \\  | ____| |  \\/  |  / _ \\  \\ \\   / / | ____|     / ___|    / \\    |  _ \\  |  _ \\                | __ )  |_ _| | \\ | | |  _ \\  | ____| |  _ \\ \n" +
+                "| |_) | |  _|   | |\\/| | | | | |  \\ \\ / /  |  _|      | |       / _ \\   | |_) | | | | |     _____     |  _ \\   | |  |  \\| | | | | | |  _|   | |_) |\n" +
+                "|  _ <  | |___  | |  | | | |_| |   \\ V /   | |___     | |___   / ___ \\  |  _ <  | |_| |    |_____|    | |_) |  | |  | |\\  | | |_| | | |___  |  _ < \n" +
+                "|_| \\_\\ |_____| |_|  |_|  \\___/     \\_/    |_____|     \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
+    }
+
+    public void displayViewBinder() {
+        System.out.println(BOLD + BLUE +
+                "__     __  ___   _____  __        __     ____    ___   _   _   ____    _____   ____  \n" +
+                "\\ \\   / / |_ _| | ____| \\ \\      / /    | __ )  |_ _| | \\ | | |  _ \\  | ____| |  _ \\ \n" +
+                " \\ \\ / /   | |  |  _|    \\ \\ /\\ / /     |  _ \\   | |  |  \\| | | | | | |  _|   | |_) |\n" +
+                "  \\ V /    | |  | |___    \\ V  V /      | |_) |  | |  | |\\  | | |_| | | |___  |  _ < \n" +
+                "   \\_/    |___| |_____|    \\_/\\_/       |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
+    }
+
+    public void displayTrade() {
+        System.out.println(BOLD + BLUE +
+                " _____   ____       _      ____    _____ \n" +
+                "|_   _| |  _ \\     / \\    |  _ \\  | ____|\n" +
+                "  | |   | |_) |   / _ \\   | | | | |  _|  \n" +
+                "  | |   |  _ <   / ___ \\  | |_| | | |___ \n" +
+                "  |_|   |_| \\_\\ /_/   \\_\\ |____/  |_____|" + RESET);
+    }
+
     public void displayBinder(String binderName) {
         String formattedTitle = BOLD + UNDERLINE + RED + binderName + RESET;
         printBorder(28);
@@ -68,6 +104,12 @@ public class BinderView {
     public void displayBinderCard(String name) {
         System.out.printf(BLUE + "|" + RESET + MAGENTA + " %-26s " + RESET + BLUE + "|" + RESET + "\n", name);
         printBorder(28);
+    }
+
+    public void displayCardSearchOptions() {
+        System.out.println(GREEN + "[1] Search card by name" + RESET);
+        System.out.println(GREEN + "[2] Search card by card no." + RESET);
+        System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
     public void displayTrade(String incomingName, double incomingValue, String outgoingName, double outgoingValue) {

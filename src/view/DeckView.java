@@ -5,6 +5,7 @@ public class DeckView {
     private final String RED = "\u001B[31m";
     private final String BLUE = "\u001B[34m";
     private final String GREEN = "\u001B[32m";
+    private final String BOLD = "\u001B[1m";
 
     public void printConfirmationMsg(int option) {
         System.out.println();
@@ -52,6 +53,33 @@ public class DeckView {
         System.out.println();
     }
 
+    public void displayAddCardToDeck() {
+        System.out.println(BOLD + BLUE +
+                "    _      ____    ____        ____      _      ____    ____                  ____    _____    ____   _  __\n" +
+                "   / \\    |  _ \\  |  _ \\      / ___|    / \\    |  _ \\  |  _ \\                |  _ \\  | ____|  / ___| | |/ /\n" +
+                "  / _ \\   | | | | | | | |    | |       / _ \\   | |_) | | | | |     _____     | | | | |  _|   | |     | ' / \n" +
+                " / ___ \\  | |_| | | |_| |    | |___   / ___ \\  |  _ <  | |_| |    |_____|    | |_| | | |___  | |___  | . \\ \n" +
+                "/_/   \\_\\ |____/  |____/      \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |_____|  \\____| |_|\\_\\" + RESET);
+    }
+
+    public void displayRemoveCardFromDeck() {
+        System.out.println(BOLD + BLUE +
+                " ____    _____   __  __    ___   __     __  _____       ____      _      ____    ____                  ____    _____    ____   _  __\n" +
+                "|  _ \\  | ____| |  \\/  |  / _ \\  \\ \\   / / | ____|     / ___|    / \\    |  _ \\  |  _ \\                |  _ \\  | ____|  / ___| | |/ /\n" +
+                "| |_) | |  _|   | |\\/| | | | | |  \\ \\ / /  |  _|      | |       / _ \\   | |_) | | | | |     _____     | | | | |  _|   | |     | ' / \n" +
+                "|  _ <  | |___  | |  | | | |_| |   \\ V /   | |___     | |___   / ___ \\  |  _ <  | |_| |    |_____|    | |_| | | |___  | |___  | . \\ \n" +
+                "|_| \\_\\ |_____| |_|  |_|  \\___/     \\_/    |_____|     \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |_____|  \\____| |_|\\_\\" + RESET);
+    }
+
+    public void displayViewDeck() {
+        System.out.println(BOLD + BLUE +
+                "__     __  ___   _____  __        __     ____    _____    ____   _  __\n" +
+                "\\ \\   / / |_ _| | ____| \\ \\      / /    |  _ \\  | ____|  / ___| | |/ /\n" +
+                " \\ \\ / /   | |  |  _|    \\ \\ /\\ / /     | | | | |  _|   | |     | ' / \n" +
+                "  \\ V /    | |  | |___    \\ V  V /      | |_| | | |___  | |___  | . \\ \n" +
+                "   \\_/    |___| |_____|    \\_/\\_/       |____/  |_____|  \\____| |_|\\_\\" + RESET);
+    }
+
     public void displayDeck(String deckName) {
         String UNDERLINE = "\u001B[4m";
         String BOLD = "\u001B[1m";
@@ -68,6 +96,12 @@ public class DeckView {
         System.out.printf(BLUE + "|" + RESET + MAGENTA + " %2d " + RESET +
                 BLUE + "|" + RESET + GREEN + " %-26s" + RESET + BLUE + "|" + RESET + "\n", index, name);
         printBorder();
+    }
+
+    public void displayCardSearchOptions() {
+        System.out.println(GREEN + "[1] Search card by name" + RESET);
+        System.out.println(GREEN + "[2] Search card by card no." + RESET);
+        System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
     private void printBorder() {

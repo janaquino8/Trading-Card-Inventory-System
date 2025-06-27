@@ -10,21 +10,12 @@ public class CardView {
         String MAGENTA = "\u001B[35m";
         String CYAN = "\u001B[36m";
 
-        String rarityColor;
-        switch (rarityName.toLowerCase()) {
-            case "uncommon":
-                rarityColor = GREEN;
-                break;
-            case "rare":
-                rarityColor = MAGENTA;
-                break;
-            case "legendary":
-                rarityColor = RED;
-                break;
-            default:
-                rarityColor = YELLOW;
-                break;
-        }
+        String rarityColor = switch (rarityName) {
+            case "Common" -> YELLOW;
+            case "Uncommon" -> GREEN;
+            case "Rare" -> MAGENTA;
+            default -> RED;
+        };
 
         String formattedBaseValue = String.format("%,.2f", baseValue);
         String formattedFinalValue = String.format("%,.2f", finalValue);

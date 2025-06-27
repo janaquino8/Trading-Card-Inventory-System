@@ -17,14 +17,17 @@ public class Variant {
                 this.setName("Extended-art");
                 this.setAbbreviation("EA");
                 this.setValueMultiplier(1.5);
+                break;
             case 3:
                 this.setName("Full-art");
                 this.setAbbreviation("FA");
                 this.setValueMultiplier(2);
+                break;
             case 4:
                 this.setName("Alt-art");
                 this.setAbbreviation("AA");
                 this.setValueMultiplier(3);
+                break;
         }
     }
 

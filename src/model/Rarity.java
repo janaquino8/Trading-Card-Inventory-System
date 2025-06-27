@@ -15,12 +15,15 @@ public class Rarity {
             case 2:
                 this.setName("Uncommon");
                 this.setAbbreviation("UCM");
+                break;
             case 3:
                 this.setName("Rare");
                 this.setAbbreviation("RAR");
+                break;
             case 4:
                 this.setName("Legendary");
                 this.setAbbreviation("LEG");
+                break;
         }
     }
 

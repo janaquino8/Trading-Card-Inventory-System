@@ -2,7 +2,6 @@ package src.controller;
 
 import src.model.*;
 import src.view.*;
-import java.util.*;
 
 // REMOVE SOUT AND MOVE TO VIEW
 
@@ -303,7 +302,7 @@ public class Controller {
         int index = -1;
         int input;
 
-        // header
+        collectionView.displayDisplayCard();
 
         // asks for the card (via either card name or card no.)
         switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
@@ -321,7 +320,7 @@ public class Controller {
         if (index == -1 && input != 0) {
             collectionView.printConfirmationMsg(3);
         }
-        else {
+        else if (input != 0) {
             cardView.displayCard(collector.getCollection().getCard(index).getName(),
                                  collector.getCollection().getCard(index).getRarity().getName(),
                                  collector.getCollection().getCard(index).getVariant().getName(),
@@ -346,7 +345,8 @@ public class Controller {
         String name;
         int index;
 
-        // display
+        // header
+        collectorView.displayDeleteBinder();
 
         // asks user for unique binder name
         do {
@@ -386,7 +386,8 @@ public class Controller {
         int cardIndex = -1;
         int input;
 
-        // display
+        // header
+        binderView.displayAddCardToBinder();
 
         // asks the user for binder name
         do {
@@ -404,7 +405,7 @@ public class Controller {
             }
         } while (binderIndex == -1);
 
-        // display card search options
+        binderView.displayCardSearchOptions();
 
         // asks user for card to be added (either by card name or card no.)
         switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
@@ -426,7 +427,7 @@ public class Controller {
         else if (collector.getCollection().getCard(cardIndex).getCollectionCount() == 0) {
             binderView.printConfirmationMsg(7);
         }
-        else {
+        else if (input != 0) {
             // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                                           binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
@@ -452,7 +453,8 @@ public class Controller {
         int cardIndex;
         String cardName;
 
-        // display
+        // header
+        binderView.displayRemoveCardFromBinder();
 
         do {
             binderName = collectorView.getStringInput("Enter binder name: ");
@@ -496,6 +498,7 @@ public class Controller {
         int binderIndex;
 
         // header
+        binderView.displayViewBinder();
 
         // asks for binder name
         do {
@@ -526,14 +529,15 @@ public class Controller {
             return;
         }
 
-        int binderIndex = -1;
+        int binderIndex;
         String binderName;
-        int cardIndex = -1;
+        int cardIndex;
         String cardName;
         int incomingCardIndex;
         double difference;
 
-        // display
+        // header
+        binderView.displayTrade();
 
         // asks user for binder name
         do {
@@ -593,7 +597,8 @@ public class Controller {
         String name;
         int index;
 
-        // display
+        // header
+        collectorView.displayDeleteDeck();
 
         // asks for unique deck name
         do {
@@ -633,7 +638,8 @@ public class Controller {
         int cardIndex = -1;
         int input;
 
-        // display
+        // header
+        deckView.displayAddCardToDeck();
 
         // asks the user for deck name
         do {
@@ -651,7 +657,7 @@ public class Controller {
             }
         } while (deckIndex == -1);
 
-        // display card search options
+        deckView.displayCardSearchOptions();
 
         // asks user for card to be added (either by card name or card no.)
         switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
@@ -677,7 +683,7 @@ public class Controller {
         else if (collector.getDeck(deckIndex).findCard(collector.getCollection().getCard(cardIndex).getName()) != -1) {
             deckView.printConfirmationMsg(12);
         }
-        else {
+        else if (input != 0) {
             // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                                           deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
@@ -703,7 +709,8 @@ public class Controller {
         int cardIndex;
         String cardName;
 
-        // display
+        // header
+        deckView.displayRemoveCardFromDeck();
 
         do {
             deckName = collectorView.getStringInput("Enter deck name: ");
@@ -748,6 +755,7 @@ public class Controller {
         int cardIndex;
 
         // header
+        deckView.displayViewDeck();
 
         // asks for deck name
         do {
@@ -784,7 +792,7 @@ public class Controller {
                     } while (cardIndex == -1);
                     break;
                 case 2:
-                    cardIndex = collectorView.getIntInput("Enter number in deck", 1, cardIndex - 1);
+                    cardIndex = collectorView.getIntInput("Enter number in deck: ", 1, cardIndex - 1);
                     cardIndex--;
                     break;
             }
