@@ -1,7 +1,7 @@
 package src.view;
 
 public class CardView {
-    public void displayCard(String name, String rarityName, String variantName, double baseValue, double finalValue) {
+    public void displayCard(String name, int cardNo, String rarityName, String variantName, int collectionCount, double baseValue, double finalValue) {
         String RESET = "\u001B[0m";
         String BOLD = "\u001B[1m";
         String RED = "\u001B[31m";
@@ -17,12 +17,16 @@ public class CardView {
             default -> RED;
         };
 
+        String formattedCardNo = String.format("%,d", cardNo);
+        String formattedCollectionCount = String.format("%,d", collectionCount);
         String formattedBaseValue = String.format("%,.2f", baseValue);
         String formattedFinalValue = String.format("%,.2f", finalValue);
 
         System.out.println(BOLD + CYAN + "╔══════════════════════════════════════╗" + RESET);
 
         System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + rarityColor + " %-36s " + RESET + BOLD + CYAN + "║\n" + RESET, name);
+
+        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Card Number:" + rarityColor + " %-23s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedCardNo);
 
         System.out.println(BOLD + CYAN + "╠──────────────────────────────────────╣" + RESET);
 
@@ -32,9 +36,11 @@ public class CardView {
 
         System.out.println(BOLD + CYAN + "╠──────────────────────────────────────╣" + RESET);
 
+        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Collection Count:" + rarityColor + " %-18s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedCollectionCount);
+
         System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Base Value:" + rarityColor + " %-24s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedBaseValue);
 
-        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Current Value:" + rarityColor + " %-21s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedFinalValue);
+        System.out.printf(BOLD + CYAN + "║" + RESET + BOLD + " Final Value:" + rarityColor + " %-23s " + RESET + BOLD + CYAN + "║\n" + RESET, formattedFinalValue);
 
         System.out.println(BOLD + CYAN + "╚══════════════════════════════════════╝" + RESET);
     }
