@@ -173,11 +173,11 @@ public class Controller {
 
         // asks for the other details of the card
         value = collectorView.getDoubleInput("Enter value: ");
-        rarity = collectorView.getIntInput("Enter card rarity ([1] COM; [2] UCM; [3] RAR; [4] LEG): ", 1, 4);
+        rarity = collectorView.getIntInput("Enter card rarity ([1] Common; [2] Uncommon; [3] Rare; [4] Legendary): ", 1, 4);
 
         // asks for card variant if rarity is either rare or legendary
         if (rarity == 3 || rarity == 4) {
-            variant = collectorView.getIntInput("Enter card variant ([1] N; [2] EA; [3] FA; [4] AA): ", 1, 4);
+            variant = collectorView.getIntInput("Enter card variant ([1] Normal; [2] Extended-art; [3] Full-art; [4] Alt-art): ", 1, 4);
             collector.getCollection().addCard(name, rarity, variant, value);
             collectorView.printCardCreatedVerification(name, collector.getCollection().getCards().size());
             collectorView.printConfirmationMsg(1);
@@ -331,6 +331,12 @@ public class Controller {
     }
 
     public void displayCollection() {
+        // if there are no copies of any card in the collection
+        if (collector.getCollection().countTotalCards() == 0) {
+            collectionView.printConfirmationMsg(5);
+            return;
+        }
+
         // sorts collection
         collector.getCollection().sort();
 
@@ -797,7 +803,7 @@ public class Controller {
             }
 
             // asks user which card to display
-            switch (collectorView.getIntInput("Enter card to display (1 to search by name, 2 to search by number, or 0 to exit): ", 0, 2)) {
+            switch (collectorView.getIntInput("Enter card search method (1 to search by name, 2 to search by number, or 0 to exit): ", 0, 2)) {
                 case 1:
                     do {
                         cardIndex = collector.getDeck(deckIndex).findCard(collectorView.getStringInput("Enter card name: "));

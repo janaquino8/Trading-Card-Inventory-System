@@ -24,6 +24,10 @@ public class CollectionView {
                 break;
             case 4:
                 System.out.println(RED + "Card has no copies in collection." + RESET);
+                break;
+            case 5:
+                System.out.println(RED + "There are currently no cards in collection." + RESET);
+                break;
         }
         System.out.println();
     }
