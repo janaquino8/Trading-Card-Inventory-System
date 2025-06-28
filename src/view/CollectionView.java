@@ -1,5 +1,8 @@
 package src.view;
 
+/*
+CollectionView - Handles all visual displays related to card collection operations
+ */
 public class CollectionView {
     private final String RESET = "\u001B[0m";
     private final String BOLD = "\u001B[1m";
@@ -7,6 +10,12 @@ public class CollectionView {
     private final String GREEN = "\u001B[32m";
     private final String BLUE = "\u001B[34m";
 
+    /*
+    Method       - printConfirmationMsg
+    int option   - Numeric code representing different confirmation/error messages
+    return type  - void
+    Method Comment : Prints colored status messages for collection operations (success/error cases)
+     */
     public void printConfirmationMsg(int option) {
         System.out.println();
         switch (option) {
@@ -32,6 +41,11 @@ public class CollectionView {
         System.out.println();
     }
 
+    /*
+    Method       - displayUpdateCardCount
+    return type  - void
+    Method Comment : Displays large ASCII art header for "Update Card Count" with search options
+     */
     public void displayUpdateCardCount() {
         System.out.println(BOLD + BLUE +
                 " _   _   ____    ____       _      _____   _____       ____      _      ____    ____        ____    ___    _   _   _   _   _____ \n" +
@@ -44,6 +58,11 @@ public class CollectionView {
         System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method       - displayDisplayCard
+    return type  - void
+    Method Comment : Displays large ASCII art header for "Display Card" with search options
+     */
     public void displayDisplayCard() {
         System.out.println(BOLD + BLUE +
                 " ____    ___   ____    ____    _          _     __   __      ____      _      ____    ____  \n" +
@@ -56,11 +75,23 @@ public class CollectionView {
         System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method               - displayCardToUpdateCount
+    String name          - Name of the card to be modified
+    int collectionCount  - Current number of copies in collection
+    return type          - void
+    Method Comment : Shows the current card name and its count before modification
+     */
     public void displayCardToUpdateCount(String name, int collectionCount) {
         System.out.println("\n"+ GREEN + name + RESET + " - " +
                 RED + collectionCount + RESET + " copies in collection\n");
     }
 
+    /*
+    Method       - displayUpdateCardCountOptions
+    return type  - void
+    Method Comment : Displays modification options (increment/decrement) for card counts
+     */
     public void displayUpdateCardCountOptions() {
         String UNDERLINE = "\u001B[4m";
         System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S" + RESET);
@@ -69,6 +100,11 @@ public class CollectionView {
         System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method       - displayCollection
+    return type  - void
+    Method Comment : Shows formatted header for the full collection display with borders
+     */
     public void displayCollection() {
         String UNDERLINE = "\u001B[4m";
         String BOLD = "\u001B[1m";
@@ -79,6 +115,13 @@ public class CollectionView {
         printBorder();
     }
 
+    /*
+    Method               - displayCollectionCard
+    int collectionCount  - Number of copies in collection
+    String name          - Name of the card
+    return type          - void
+    Method Comment : Prints an individual card entry in collection view with collection count and borders
+     */
     public void displayCollectionCard(int collectionCount, String name) {
         String MAGENTA = "\u001B[35m";
 
@@ -87,6 +130,11 @@ public class CollectionView {
         printBorder();
     }
 
+    /*
+    Method       - printBorder (private)
+    return type  - void
+    Method Comment : Helper method to print consistent bordered lines for collection displays
+     */
     private void printBorder() {
         System.out.println(BLUE + "+" + "-".repeat(42) + "+" + RESET);
     }

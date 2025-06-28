@@ -70,7 +70,7 @@ public class BinderView {
     /*
     Method       - displayAddCardToBinder
     return type  - void
-    Method Comment: Displays large ASCII art header for "Add Card to Binder" operation
+    Method Comment : Displays large ASCII art header for "Add Card to Binder" operation
      */
     public void displayAddCardToBinder() {
         System.out.println(BOLD + BLUE +
@@ -84,7 +84,7 @@ public class BinderView {
     /*
     Method       - displayRemoveCardFromBinder
     return type  - void
-    Method Comment: Displays large ASCII art header for "Remove Card from Binder" operation
+    Method Comment : Displays large ASCII art header for "Remove Card from Binder" operation
      */
     public void displayRemoveCardFromBinder() {
         System.out.println(BOLD + BLUE +
@@ -98,7 +98,7 @@ public class BinderView {
     /*
     Method       - displayViewBinder
     return type  - void
-    Method Comment: Displays large ASCII art header for "View Binder" operation
+    Method Comment : Displays large ASCII art header for "View Binder" operation
      */
     public void displayViewBinder() {
         System.out.println(BOLD + BLUE +
@@ -112,7 +112,7 @@ public class BinderView {
     /*
     Method       - displayTrade
     return type  - void
-    Method Comment: Displays large ASCII art header for general trade operations
+    Method Comment : Displays large ASCII art header for general trade operations
      */
     public void displayTrade() {
         System.out.println(BOLD + BLUE +
@@ -127,7 +127,7 @@ public class BinderView {
     Method             - displayBinder
     String binderName  - Name of the binder to display
     return type        - void
-    Method Comments: Shows a formatted binder title with borders and underlining
+    Method Comments : Shows a formatted binder title with borders and underlining
      */
     public void displayBinder(String binderName) {
         String formattedTitle = BOLD + UNDERLINE + RED + binderName + RESET;
@@ -140,7 +140,7 @@ public class BinderView {
     Method       - displayBinderCard
     String name  - Name of the card to display in binder view
     return type  - void
-    Method Comment: Prints an individual card entry within binder view with borders
+    Method Comment : Prints an individual card entry within binder view with borders
      */
     public void displayBinderCard(String name) {
         System.out.printf(BLUE + "|" + RESET + MAGENTA + " %-26s " + RESET + BLUE + "|" + RESET + "\n", name);
@@ -150,7 +150,7 @@ public class BinderView {
     /*
     Method       - displayCardSearchOptions
     return type  - void
-    Method Comment: Shows menu options for card search methods (by name or number) with an exit
+    Method Comment : Shows menu options for card search methods (by name or number) with an exit
      */
     public void displayCardSearchOptions() {
         System.out.println(GREEN + "[1] Search card by name" + RESET);
@@ -166,7 +166,7 @@ public class BinderView {
     double outgoingValue  - Value of outgoing card
     double difference     - Net value difference between cards
     return type           - void
-    Method Comment: Displays detailed trade comparison with values and net difference in formatted table
+    Method Comment : Displays detailed trade comparison with values and net difference in formatted table
      */
     public void displayTrade(String incomingName, double incomingValue, String outgoingName, double outgoingValue, double difference) {
         String formattedTitle = BOLD + UNDERLINE + RED + "T R A D E  E X C H A N G E" + RESET;
@@ -189,7 +189,7 @@ public class BinderView {
     String name   - Card name
     double value  - Card monetary value
     return type   - void
-    Method Comment: Helper method to format individual rows in trade display table
+    Method Comment : Helper method to format individual rows in trade display table
      */
     private void printTradeRow(String trade, String name, double value) {
         System.out.printf(BLUE + "|" + RESET + RED + " %s " + RESET +
@@ -202,7 +202,7 @@ public class BinderView {
     Method       - printBorder (private)
     int count    - Number of dashes in the border
     return type  - void
-    Method Comment: Helper method to print consistent bordered lines for displays
+    Method Comment : Helper method to print consistent bordered lines for binder displays
      */
     private void printBorder(int count) {
         System.out.println(BLUE + "+" + "-".repeat(count) + "+" + RESET);

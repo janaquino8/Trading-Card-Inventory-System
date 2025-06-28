@@ -2,6 +2,9 @@ package src.view;
 
 import java.util.*;
 
+/*
+CollectorView - Main view class handling user interactions, input collection, and high-level menu displays
+ */
 public class CollectorView {
     private final String RESET = "\u001B[0m";
     private final String BOLD = "\u001B[1m";
@@ -11,6 +14,14 @@ public class CollectorView {
     private final String BLUE = "\u001B[34m";
     Scanner sc = new Scanner(System.in);
 
+    /*
+    Method         - getIntInput
+    String prompt  - Message to display for input request
+    int min        - Minimum acceptable value
+    int max        - Maximum acceptable value
+    return type    - int
+    Method Comment : Collects and validates integer input within specified range
+     */
     public int getIntInput(String prompt, int min, int max) {
         int input;
         do {
@@ -29,6 +40,12 @@ public class CollectorView {
         return input;
     }
 
+    /*
+    Method         - getStringInput
+    String prompt  - Message to display for input request
+    return type    - String
+    Method Comments : Collects and validates non-empty string input
+     */
     public String getStringInput(String prompt) {
         String input;
         do {
@@ -39,6 +56,12 @@ public class CollectorView {
         return input;
     }
 
+    /*
+    Method         - getDoubleInput
+    String prompt  - Message to display for input request
+    return type    - double
+    Method Comment : Collects and validates positive double input
+     */
     public double getDoubleInput(String prompt) {
         double input;
         do {
@@ -57,6 +80,12 @@ public class CollectorView {
         return input;
     }
 
+    /*
+    Method       - printConfirmationMsg
+    int option   - Numeric code representing different confirmation/error messages
+    return type  - void
+    Method Comment : Displays colored status messages for various operations (success/error cases)
+     */
     public void printConfirmationMsg(int option) {
         System.out.println();
         switch (option) {
@@ -110,6 +139,14 @@ public class CollectorView {
         System.out.println();
     }
 
+    /*
+    Method              - displayMainOptions
+    int collectionSize  - Number of cards in collection
+    int binderCount     - Number of existing binders
+    int deckCount       - Number of existing decks
+    return type         - void
+    Method Comment : Shows main menu with dynamic options based on the states of Collection, Binder, and Deck
+     */
     public void displayMainOptions (int collectionSize, int binderCount, int deckCount) {
         System.out.println( BOLD + BLUE +
                 " _____    ____   ___   ____  \n" +
@@ -145,6 +182,11 @@ public class CollectorView {
         System.out.println(RED + "[0] Exit\n" + RESET);
     }
 
+    /*
+    Method       - displayCollectionOptions
+    return type  - void
+    Method Comment : Displays collection management submenu with ASCII header
+     */
     public void displayCollectionOptions() {
         System.out.println(BOLD + BLUE +
                 "  ____    ___    _       _       _____    ____   _____   ___    ___    _   _ \n" +
@@ -161,6 +203,11 @@ public class CollectorView {
         System.out.println(RED + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method       - displayBinderOptions
+    return type  - void
+    Method Comment : Displays binder management submenu with ASCII header
+     */
     public void displayBinderOptions() {
         System.out.println(BOLD + BLUE +
                 " ____    ___   _   _   ____    _____   ____  \n" +
@@ -179,6 +226,11 @@ public class CollectorView {
         System.out.println(RED + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method       - displayDeckOptions
+    return type  - void
+    Method Comment : Displays deck management submenu with ASCII header
+     */
     public void displayDeckOptions() {
         System.out.println(BOLD + BLUE +
                 " ____    _____    ____   _  __\n" +
@@ -196,6 +248,11 @@ public class CollectorView {
         System.out.println(RED + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method       - displayAddCard
+    return type  - void
+    Method Comments : Shows "Add Card" operation header with ASCII art
+     */
     public void displayAddCard() {
         System.out.println(BOLD + BLUE +
                 "    _      ____    ____        ____      _      ____    ____  \n" +
@@ -205,6 +262,11 @@ public class CollectorView {
                 "/_/   \\_\\ |____/  |____/      \\____| /_/   \\_\\ |_| \\_\\ |____/\n" + RESET);
     }
 
+    /*
+    Method       - displayCreateBinder
+    return type  - void
+    Method Comment : Shows "Create Binder" operation header with ASCII art
+     */
     public void displayCreateBinder() {
         System.out.println(BOLD + BLUE +
                 "  ____   ____    _____      _      _____   _____      ____    ___   _   _   ____    _____   ____  \n" +
@@ -214,6 +276,11 @@ public class CollectorView {
                 " \\____| |_| \\_\\ |_____| /_/   \\_\\   |_|   |_____|    |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\\n" + RESET);
     }
 
+    /*
+    Method       - displayCreateDeck
+    return type  - void
+    Method Comment : Shows "Create Deck" operation header with ASCII art
+     */
     public void displayCreateDeck() {
         System.out.println(BOLD + BLUE +
                 "  ____   ____    _____      _      _____   _____      ____    _____    ____   _  __\n" +
@@ -223,6 +290,11 @@ public class CollectorView {
                 " \\____| |_| \\_\\ |_____| /_/   \\_\\   |_|   |_____|    |____/  |_____|  \\____| |_|\\_\\\n" + RESET);
     }
 
+    /*
+    Method       - displayDeleteBinder
+    return type  - void
+    Method Comment : Shows "Delete Binder" operation header with ASCII art
+     */
     public void displayDeleteBinder() {
         System.out.println(BOLD + BLUE +
                 " ____    _____   _       _____   _____   _____      ____    ___   _   _   ____    _____   ____  \n" +
@@ -232,6 +304,11 @@ public class CollectorView {
                 "|____/  |_____| |_____| |_____|   |_|   |_____|    |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
     }
 
+    /*
+    Method       - displayDeleteDeck
+    return type  - void
+    Method Comment : Shows "Delete Deck" operation header with ASCII art
+     */
     public void displayDeleteDeck() {
         System.out.println(BOLD + BLUE +
                 " ____    _____   _       _____   _____   _____      ____    _____    ____   _  __\n" +
@@ -241,10 +318,22 @@ public class CollectorView {
                 "|____/  |_____| |_____| |_____|   |_|   |_____|    |____/  |_____|  \\____| |_|\\_\\" + RESET);
     }
 
+    /*
+    Method       - printCardCreatedVerification
+    String name  - Name of created card
+    int cardNo   - Assigned card number
+    return type  -  void
+    Method Comment : Displays confirmation of successful card creation
+     */
     public void printCardCreatedVerification(String name, int cardNo) {
         System.out.println(GREEN + "\nCreated: No. " + cardNo + " " + name + RESET);
     }
 
+    /*
+    Method       - exit
+    return type  - void
+    Method Comment : Shows shutdown message when exiting application
+     */
     public void exit() {
         System.out.println(GREEN + "\nThanks for using the Trading Card Inventory System!" + RESET);
         System.out.println(GREEN + "Shutting down..." + RESET);

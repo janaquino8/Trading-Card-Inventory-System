@@ -1,5 +1,8 @@
 package src.view;
 
+/*
+DeckView - Handles all visual displays related to deck operations (adding/removing cards, viewing decks)
+ */
 public class DeckView {
     private final String RESET = "\u001B[0m";
     private final String RED = "\u001B[31m";
@@ -7,6 +10,12 @@ public class DeckView {
     private final String GREEN = "\u001B[32m";
     private final String BOLD = "\u001B[1m";
 
+    /*
+    Method       - printConfirmationMsg
+    int option   - Numeric code representing different confirmation/error messages
+    return type  - void
+    Method Comment : Prints colored status messages for deck operations (success/error cases)
+     */
     public void printConfirmationMsg(int option) {
         System.out.println();
         switch (option) {
@@ -53,6 +62,11 @@ public class DeckView {
         System.out.println();
     }
 
+    /*
+    Method       - displayAddCardToDeck
+    return type  - void
+    Method Comment : Displays large ASCII art header for "Add Card to Deck" operation
+     */
     public void displayAddCardToDeck() {
         System.out.println(BOLD + BLUE +
                 "    _      ____    ____        ____      _      ____    ____                  ____    _____    ____   _  __\n" +
@@ -62,6 +76,11 @@ public class DeckView {
                 "/_/   \\_\\ |____/  |____/      \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |_____|  \\____| |_|\\_\\" + RESET);
     }
 
+    /*
+    Method       - displayRemoveCardFromDeck
+    return type  - void
+    Method Comment : Displays large ASCII art header for "Remove Card from Deck" operation
+     */
     public void displayRemoveCardFromDeck() {
         System.out.println(BOLD + BLUE +
                 " ____    _____   __  __    ___   __     __  _____       ____      _      ____    ____                  ____    _____    ____   _  __\n" +
@@ -71,6 +90,11 @@ public class DeckView {
                 "|_| \\_\\ |_____| |_|  |_|  \\___/     \\_/    |_____|     \\____| /_/   \\_\\ |_| \\_\\ |____/                |____/  |_____|  \\____| |_|\\_\\" + RESET);
     }
 
+    /*
+    Method       - displayViewDeck
+    return type  - void
+    Method Comment : Displays large ASCII art header for "View Deck" operation
+     */
     public void displayViewDeck() {
         System.out.println(BOLD + BLUE +
                 "__     __  ___   _____  __        __     ____    _____    ____   _  __\n" +
@@ -80,6 +104,12 @@ public class DeckView {
                 "   \\_/    |___| |_____|    \\_/\\_/       |____/  |_____|  \\____| |_|\\_\\" + RESET);
     }
 
+    /*
+    Method           - displayDeck
+    String deckName  - Name of the deck to display
+    return type      - void
+    Method Comment : Shows a formatted deck title with borders and underlining
+     */
     public void displayDeck(String deckName) {
         String UNDERLINE = "\u001B[4m";
         String BOLD = "\u001B[1m";
@@ -90,6 +120,13 @@ public class DeckView {
         printBorder();
     }
 
+    /*
+    Method       - displayDeckCard
+    int index    - Position number in the deck
+    String name  - Name of the card
+    return type  - void
+    Method Comment : Prints an individual card entry within deck view with index and borders
+     */
     public void displayDeckCard(int index, String name) {
         String MAGENTA = "\u001B[35m";
 
@@ -98,12 +135,22 @@ public class DeckView {
         printBorder();
     }
 
+    /*
+    Method       - displayCardSearchOptions
+    return type  - void
+    Method Comment : Shows menu options for card search methods (by name or number)
+     */
     public void displayCardSearchOptions() {
         System.out.println(GREEN + "[1] Search card by name" + RESET);
         System.out.println(GREEN + "[2] Search card by card no." + RESET);
         System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
+    /*
+    Method       - printBorder (private)
+    return type  - void
+    Method Comment : Helper method to print consistent bordered lines for deck displays
+     */
     private void printBorder() {
         System.out.println(BLUE + "+" + "-".repeat(32) + "+" + RESET);
     }
