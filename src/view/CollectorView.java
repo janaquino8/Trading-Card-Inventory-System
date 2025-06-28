@@ -99,6 +99,13 @@ public class CollectorView {
             case 12:
                 System.out.println(GREEN + "Deck successfully deleted." + RESET);
                 break;
+            case 13:
+                System.out.println(RED + "There are no existing binders." + RESET);
+                break;
+            case 14:
+                System.out.println(RED + "There are no existing decks." + RESET);
+                break;
+
         }
         System.out.println();
     }

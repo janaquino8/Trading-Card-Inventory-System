@@ -36,14 +36,18 @@ public class Collector {
      * Deletes a binder
      */
     public void deleteBinder(int index) {
-        this.getCollection().returnCards(this.getBinder(index).getCards());
-        this.getBinders().remove(index);
+        if (index >= 0 && index < this.getBinders().size()) {
+            if (!this.getBinder(index).isEmpty()) {
+                this.getCollection().returnCards(this.getBinder(index).getCards());
+            }
+            this.getBinders().remove(index);
+        }
     }
 
     /**
      * findBinder
      * @param name name of the binder to be found
-     * @return index of the binder in binders, -1 if not fount
+     * @return index of the binder in binders, -1 if not found
      * Finds a binder in binders given a name
      */
     public int findBinder(String name) {
@@ -70,14 +74,18 @@ public class Collector {
      * Deletes a deck
      */
     public void deleteDeck(int index) {
-        this.getCollection().returnCards(this.getDeck(index).getCards());
-        this.getDecks().remove(index);
+        if (index >= 0 && index < this.getDecks().size()) {
+            if (!this.getDeck(index).isEmpty()) {
+                this.getCollection().returnCards(this.getDeck(index).getCards());
+            }
+            this.getDecks().remove(index);
+        }
     }
 
     /**
      * findDeck
      * @param name name of the deck to be found
-     * @return index of the binder in decks, -1 if not fount
+     * @return index of the binder in decks, -1 if not found
      * Finds a deck in decks given a name
      */
     public int findDeck(String name) {
@@ -109,6 +117,9 @@ public class Collector {
      * Checks if all binders are full
      */
     public boolean isBindersFull() {
+        if (this.getBinders().isEmpty()) {
+            return false;
+        }
         for (Binder b : this.getBinders()) {
             if (!b.isFull()) {
                 return false;
@@ -137,6 +148,9 @@ public class Collector {
      * Checks if all decks are full
      */
     public boolean isDecksFull() {
+        if (this.getDecks().isEmpty()) {
+            return false;
+        }
         for (Deck d : this.getDecks()) {
             if (!d.isFull()) {
                 return false;

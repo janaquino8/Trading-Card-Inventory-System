@@ -392,6 +392,12 @@ public class Controller {
      * Deletes an existing binder and returns contents, if any, back to the collection
      */
     public void deleteBinder() {
+        // if there are no existing bindedrs
+        if (this.collector.getBinders().isEmpty()) {
+            collectionView.printConfirmationMsg(13);
+            return;
+        }
+
         String name;
         int index;
 
@@ -671,6 +677,12 @@ public class Controller {
      * Deletes an existing deck and returns contents, if any, back to the collection
      */
     public void deleteDeck() {
+        // if there are no existing decks
+        if (this.collector.getDecks().isEmpty()) {
+            collectionView.printConfirmationMsg(14);
+            return;
+        }
+
         String name;
         int index;
 

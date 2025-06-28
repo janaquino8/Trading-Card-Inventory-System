@@ -39,7 +39,9 @@ public class Deck {
             index++;
         }
 
-        this.setCard(index, card);
+        if (index < MAX_COUNT) {
+            this.setCard(index, card);
+        }
     }
 
     /**
@@ -48,6 +50,10 @@ public class Deck {
      * Removes a card form the deck
      */
     public void removeCard(int index) {
+        if (this.isEmpty()) {
+            return;
+        }
+
         int i = index + 1;
         while (i < MAX_COUNT && this.getCard(i) != null) {
             this.setCard(i - 1, this.getCard(i));

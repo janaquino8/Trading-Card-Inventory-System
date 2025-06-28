@@ -41,7 +41,9 @@ public class Binder {
             index++;
         }
 
-        this.setCard(index, card);
+        if (index < MAX_COUNT) {
+            this.setCard(index, card);
+        }
     }
 
     /**
@@ -50,6 +52,10 @@ public class Binder {
      * Removes a card form the binder
      */
     public void removeCard(int index) {
+        if (this.isEmpty()) {
+            return;
+        }
+
         int i = index + 1;
         while (i < MAX_COUNT && this.getCard(i) != null) {
             this.setCard(i - 1, this.getCard(i));
@@ -106,7 +112,9 @@ public class Binder {
      * Executes a trade between a card in the binder and a card outside the collection
      */
     public void trade(int outgoingCardIndex, Card incomingCard) {
-        this.setCard(outgoingCardIndex, incomingCard);
+        if (this.getCard(outgoingCardIndex) != incomingCard) {
+            this.setCard(outgoingCardIndex, incomingCard);
+        }
     }
 
     /**
