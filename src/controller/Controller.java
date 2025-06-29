@@ -392,7 +392,7 @@ public class Controller {
      * Deletes an existing binder and returns contents, if any, back to the collection
      */
     public void deleteBinder() {
-        // if there are no existing bindedrs
+        // if there are no existing binders
         if (this.collector.getBinders().isEmpty()) {
             collectionView.printConfirmationMsg(13);
             return;
@@ -430,8 +430,13 @@ public class Controller {
      * Adds a card from the collection to a non-full binder
      */
     public void addCardToBinder() {
+        // if there are no existing binders
+        if (this.collector.getBinders().isEmpty()) {
+            collectionView.printConfirmationMsg(13);
+            return;
+        }
         // if there are no cards in the collection
-        if (collector.getCollection().countTotalCards() == 0) {
+        else if (collector.getCollection().countTotalCards() == 0) {
             binderView.printConfirmationMsg(2);
             return;
         }
@@ -506,8 +511,13 @@ public class Controller {
      * Removes a card from a non-empty binder and returns it to the collection
      */
     public void removeCardFromBinder() {
+        // if there are no existing binders
+        if (this.collector.getBinders().isEmpty()) {
+            collectionView.printConfirmationMsg(13);
+            return;
+        }
         // if all binders are empty
-        if (collector.isBindersEmpty()) {
+        else if (collector.isBindersEmpty()) {
             binderView.printConfirmationMsg(8);
             return;
         }
@@ -562,6 +572,12 @@ public class Controller {
      * Displays the names of the cards in a binder
      */
     public void viewBinder() {
+        // if there are no existing binders
+        if (this.collector.getBinders().isEmpty()) {
+            collectionView.printConfirmationMsg(13);
+            return;
+        }
+
         String binderName;
         int binderIndex;
 
@@ -602,7 +618,13 @@ public class Controller {
      * Executes a trade between a card in a binder and a card outside the collection
      */
     public void trade() {
-        if (collector.isBindersEmpty()) {
+        // if there are no existing binders
+        if (this.collector.getBinders().isEmpty()) {
+            collectionView.printConfirmationMsg(13);
+            return;
+        }
+        // if all binders are empty
+        else if (collector.isBindersEmpty()) {
             binderView.printConfirmationMsg(8);
             return;
         }
@@ -715,8 +737,13 @@ public class Controller {
      * Adds a card from the collection to a non-full deck, while preventing duplicates
      */
     public void addCardToDeck() {
+        // if there are no existing decks
+        if (this.collector.getDecks().isEmpty()) {
+            collectionView.printConfirmationMsg(14);
+            return;
+        }
         // if there are no cards in the collection
-        if (collector.getCollection().countTotalCards() == 0) {
+        else if (collector.getCollection().countTotalCards() == 0) {
             deckView.printConfirmationMsg(2);
             return;
         }
@@ -795,8 +822,13 @@ public class Controller {
      * Removes a card from a non-empty deck and returns it to the collection
      */
     public void removeCardFromDeck() {
+        // if there are no existing decks
+        if (this.collector.getDecks().isEmpty()) {
+            collectionView.printConfirmationMsg(14);
+            return;
+        }
         // if all decks are empty
-        if (collector.isDecksEmpty()) {
+        else if (collector.isDecksEmpty()) {
             deckView.printConfirmationMsg(8);
             return;
         }
@@ -851,6 +883,12 @@ public class Controller {
      * Displays the names of the cards in a deck; allows the user to view the details of the cards individually
      */
     public void viewDeck() {
+        // if there are no existing decks
+        if (this.collector.getDecks().isEmpty()) {
+            collectionView.printConfirmationMsg(14);
+            return;
+        }
+
         String deckName;
         int deckIndex;
         int cardIndex;
