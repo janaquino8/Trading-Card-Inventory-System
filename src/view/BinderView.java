@@ -205,6 +205,8 @@ public class BinderView {
     Method Comment : Helper method to print consistent bordered lines for binder displays
      */
     private void printBorder(int count) {
-        System.out.println(BLUE + "+" + "-".repeat(count) + "+" + RESET);
+        if (count > 0) {
+            System.out.println(BLUE + "+" + "-".repeat(count) + "+" + RESET);
+        }
     }
 }
