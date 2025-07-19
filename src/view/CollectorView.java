@@ -326,7 +326,7 @@ public class CollectorView {
     Method Comment : Displays confirmation of successful card creation
      */
     public void printCardCreatedVerification(String name, int cardNo) {
-        System.out.println(GREEN + "\nCreated: No. " + cardNo + " " + name + RESET);
+        System.out.println(GREEN + "\nCreated: [" + cardNo + "] " + name + RESET);
     }
 
     /*

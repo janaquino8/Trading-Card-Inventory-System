@@ -3,8 +3,6 @@ package src.controller;
 import src.model.*;
 import src.view.*;
 
-// REMOVE SOUT AND MOVE TO VIEW
-
 /**
  * Controller
  * Handles all actions performed by the user
@@ -36,13 +34,15 @@ public class Controller {
      * options change depending on card count of collection, binder count, and deck count
      */
     public void run() {
+        System.out.println(Binder.MAX_COUNT + " " + Deck.MAX_COUNT);
+
         int input;
 
         do {
             // retrieves current counts of collection cards, binders, and decks
-            int collectionSize = collector.getCollection().getCards().size();
-            int binderCount = collector.getBinders().size();
-            int deckCount = collector.getDecks().size();
+            int collectionSize = collector.getCollection().getCardCount();
+            int binderCount = collector.getBindersCount();
+            int deckCount = collector.getDecksCount();
 
             // displays main menu and asks for input
             collectorView.displayMainOptions(collectionSize, binderCount, deckCount);
@@ -206,17 +206,17 @@ public class Controller {
         // asks for card variant if rarity is either rare or legendary
         if (rarity == 3 || rarity == 4) {
             variant = collectorView.getIntInput("Enter card variant ([1] Normal; [2] Extended-art; [3] Full-art; [4] Alt-art): ", 1, 4);
+            collectorView.printCardCreatedVerification(name, collector.getCollection().getCardCount());
             collector.getCollection().addCard(name, rarity, variant, value);
-            collectorView.printCardCreatedVerification(name, collector.getCollection().getCards().size());
             collectorView.printConfirmationMsg(1);
         }
         else {
+            collectorView.printCardCreatedVerification(name, collector.getCollection().getCardCount());
             collector.getCollection().addCard(name, rarity, value);
-            collectorView.printCardCreatedVerification(name, collector.getCollection().getCards().size());
             collectorView.printConfirmationMsg(1);
         }
 
-        return collector.getCollection().getCards().size();
+        return collector.getCollection().getCardCount();
     }
 
     /**
@@ -292,22 +292,23 @@ public class Controller {
         collectionView.displayUpdateCardCount();
 
         // asks for the card (via either card name or card no.)
-        switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
+        switch (collectorView.getIntInput("Enter option: ", 0, 2)) {
             case 1: // search by name
                 index = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
                 break;
             case 2: // search by card no.
-                index = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCards().size() - 1));
+                index = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCardCount() - 1));
                 break;
             case 0: // cancel action
                 collectorView.printConfirmationMsg(0);
+                return;
         }
 
         // if the card is not in the collection
-        if (index == -1 && input != 0) {
+        if (index == -1) {
             collectionView.printConfirmationMsg(3);
         }
-        else if (input != 0) {
+        else {
             // displays chosen card and collection
             collectionView.displayCardToUpdateCount(collector.getCollection().getCard(index).getName(),
                                                     collector.getCollection().getCard(index).getCollectionCount());
@@ -344,27 +345,27 @@ public class Controller {
      */
     public void displayCard() {
         int index = -1;
-        int input;
 
         collectionView.displayDisplayCard();
 
         // asks for the card (via either card name or card no.)
-        switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
+        switch (collectorView.getIntInput("Enter option: ", 0, 2)) {
             case 1: // search by name
                 index = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
                 break;
             case 2: // search by card no.
-                index = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCards().size() - 1));
+                index = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCardCount() - 1));
                 break;
             case 0: // cancel action
                 collectorView.printConfirmationMsg(0);
+                return;
         }
 
         // if the card is not in the collection
-        if (index == -1 && input != 0) {
+        if (index == -1) {
             collectionView.printConfirmationMsg(3);
         }
-        else if (input != 0) {
+        else {
             Card c = collector.getCollection().getCard(index);
             cardView.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
                                  c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
@@ -393,8 +394,8 @@ public class Controller {
      */
     public void deleteBinder() {
         // if there are no existing binders
-        if (this.collector.getBinders().isEmpty()) {
-            collectionView.printConfirmationMsg(13);
+        if (this.collector.getBindersCount() == 0) {
+            collectorView.printConfirmationMsg(13);
             return;
         }
 
@@ -431,8 +432,8 @@ public class Controller {
      */
     public void addCardToBinder() {
         // if there are no existing binders
-        if (this.collector.getBinders().isEmpty()) {
-            collectionView.printConfirmationMsg(13);
+        if (this.collector.getBindersCount() == 0) {
+            collectorView.printConfirmationMsg(13);
             return;
         }
         // if there are no cards in the collection
@@ -449,7 +450,6 @@ public class Controller {
         int binderIndex;
         String binderName;
         int cardIndex = -1;
-        int input;
 
         // header
         binderView.displayAddCardToBinder();
@@ -473,26 +473,27 @@ public class Controller {
         binderView.displayCardSearchOptions();
 
         // asks user for card to be added (either by card name or card no.)
-        switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
+        switch (collectorView.getIntInput("Enter option: ", 0, 2)) {
             case 1: // search by name
                 cardIndex = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
                 break;
             case 2: // search by card no.
-                cardIndex = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCards().size() - 1));
+                cardIndex = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCardCount() - 1));
                 break;
             case 0: // cancel action
                 binderView.printConfirmationMsg(0);
+                return;
         }
 
         // if card doesn't exist
-        if (cardIndex == -1 && input != 0) {
+        if (cardIndex == -1) {
             binderView.printConfirmationMsg(6);
         }
         // if no copies of the card exist in the collection
         else if (collector.getCollection().getCard(cardIndex).getCollectionCount() == 0) {
             binderView.printConfirmationMsg(7);
         }
-        else if (input != 0) {
+        else {
             // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                                           binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
@@ -512,8 +513,8 @@ public class Controller {
      */
     public void removeCardFromBinder() {
         // if there are no existing binders
-        if (this.collector.getBinders().isEmpty()) {
-            collectionView.printConfirmationMsg(13);
+        if (this.collector.getBindersCount() == 0) {
+            collectorView.printConfirmationMsg(13);
             return;
         }
         // if all binders are empty
@@ -573,8 +574,8 @@ public class Controller {
      */
     public void viewBinder() {
         // if there are no existing binders
-        if (this.collector.getBinders().isEmpty()) {
-            collectionView.printConfirmationMsg(13);
+        if (this.collector.getBindersCount() == 0) {
+            collectorView.printConfirmationMsg(13);
             return;
         }
 
@@ -619,8 +620,8 @@ public class Controller {
      */
     public void trade() {
         // if there are no existing binders
-        if (this.collector.getBinders().isEmpty()) {
-            collectionView.printConfirmationMsg(13);
+        if (this.collector.getBindersCount() == 0) {
+            collectorView.printConfirmationMsg(13);
             return;
         }
         // if all binders are empty
@@ -700,8 +701,8 @@ public class Controller {
      */
     public void deleteDeck() {
         // if there are no existing decks
-        if (this.collector.getDecks().isEmpty()) {
-            collectionView.printConfirmationMsg(14);
+        if (this.collector.getDecksCount() == 0) {
+            collectorView.printConfirmationMsg(14);
             return;
         }
 
@@ -738,8 +739,8 @@ public class Controller {
      */
     public void addCardToDeck() {
         // if there are no existing decks
-        if (this.collector.getDecks().isEmpty()) {
-            collectionView.printConfirmationMsg(14);
+        if (this.collector.getDecksCount() == 0) {
+            collectorView.printConfirmationMsg(14);
             return;
         }
         // if there are no cards in the collection
@@ -756,7 +757,6 @@ public class Controller {
         int deckIndex;
         String deckName;
         int cardIndex = -1;
-        int input;
 
         // header
         deckView.displayAddCardToDeck();
@@ -780,19 +780,20 @@ public class Controller {
         deckView.displayCardSearchOptions();
 
         // asks user for card to be added (either by card name or card no.)
-        switch (input = collectorView.getIntInput("Enter option: ", 0, 2)) {
+        switch (collectorView.getIntInput("Enter option: ", 0, 2)) {
             case 1: // search by name
                 cardIndex = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
                 break;
             case 2: // search by card no.
-                cardIndex = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCards().size() - 1));
+                cardIndex = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollection().getCardCount() - 1));
                 break;
             case 0: // cancel action
                 deckView.printConfirmationMsg(0);
+                return;
         }
 
         // if card doesn't exist
-        if (cardIndex == -1 && input != 0) {
+        if (cardIndex == -1) {
             deckView.printConfirmationMsg(6);
         }
         // if no copies of the card exist in the collection
@@ -803,7 +804,7 @@ public class Controller {
         else if (collector.getDeck(deckIndex).findCard(collector.getCollection().getCard(cardIndex).getName()) != -1) {
             deckView.printConfirmationMsg(12);
         }
-        else if (input != 0) {
+        else {
             // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                                           deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
@@ -823,8 +824,8 @@ public class Controller {
      */
     public void removeCardFromDeck() {
         // if there are no existing decks
-        if (this.collector.getDecks().isEmpty()) {
-            collectionView.printConfirmationMsg(14);
+        if (this.collector.getDecksCount() == 0) {
+            collectorView.printConfirmationMsg(14);
             return;
         }
         // if all decks are empty
@@ -884,8 +885,8 @@ public class Controller {
      */
     public void viewDeck() {
         // if there are no existing decks
-        if (this.collector.getDecks().isEmpty()) {
-            collectionView.printConfirmationMsg(14);
+        if (this.collector.getDecksCount() == 0) {
+            collectorView.printConfirmationMsg(14);
             return;
         }
 
@@ -939,6 +940,8 @@ public class Controller {
                     cardIndex = collectorView.getIntInput("Enter number in deck: ", 1, cardIndex - 1);
                     cardIndex--;
                     break;
+                case 0:
+                    return;
             }
 
             if (cardIndex != -1) {
@@ -946,7 +949,7 @@ public class Controller {
                 cardView.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
                         c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
             }
-        } while (cardIndex != 0);
+        } while (true);
 
     }
 }

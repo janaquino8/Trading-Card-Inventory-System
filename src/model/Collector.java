@@ -17,8 +17,47 @@ public class Collector {
      */
     public Collector() {
         collection = new Collection();
-        binders = new ArrayList<Binder>();
-        decks = new ArrayList<Deck>();
+        binders = new ArrayList<>();
+        decks = new ArrayList<>();
+    }
+
+    private void deleteHolder(ArrayList<? extends Holder> holders, int index) {
+        if (index >= 0 && index < holders.size()) {
+            if (!holders.get(index).isEmpty()) {
+                this.getCollection().returnCards(holders.get(index).getCards());
+            }
+            holders.remove(index);
+        }
+    }
+
+    private int findHolder(ArrayList<? extends Holder> holders, String name) {
+        for (int i = 0; i < holders.size(); i++) {
+            if (holders.get(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean isHoldersEmpty(ArrayList<? extends Holder> holders) {
+        for (Holder h : holders) {
+            if (!h.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isHolderFull(ArrayList<? extends Holder> holders) {
+        if (holders.isEmpty()) {
+            return false;
+        }
+        for (Holder h : holders) {
+            if (!h.isFull()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -36,12 +75,7 @@ public class Collector {
      * Deletes a binder
      */
     public void deleteBinder(int index) {
-        if (index >= 0 && index < this.getBinders().size()) {
-            if (!this.getBinder(index).isEmpty()) {
-                this.getCollection().returnCards(this.getBinder(index).getCards());
-            }
-            this.getBinders().remove(index);
-        }
+        deleteHolder(this.getBinders(), index);
     }
 
     /**
@@ -51,12 +85,7 @@ public class Collector {
      * Finds a binder in binders given a name
      */
     public int findBinder(String name) {
-        for (int i = 0; i < this.getBinders().size(); i++) {
-            if (this.getBinder(i).getName().equals(name)) {
-                return i;
-            }
-        }
-        return -1;
+        return findHolder(this.getBinders(), name);
     }
 
     /**
@@ -74,12 +103,7 @@ public class Collector {
      * Deletes a deck
      */
     public void deleteDeck(int index) {
-        if (index >= 0 && index < this.getDecks().size()) {
-            if (!this.getDeck(index).isEmpty()) {
-                this.getCollection().returnCards(this.getDeck(index).getCards());
-            }
-            this.getDecks().remove(index);
-        }
+        deleteHolder(this.getDecks(), index);
     }
 
     /**
@@ -89,12 +113,7 @@ public class Collector {
      * Finds a deck in decks given a name
      */
     public int findDeck(String name) {
-        for (int i = 0; i < this.getDecks().size(); i++) {
-            if (this.getDeck(i).getName().equals(name)) {
-                return i;
-            }
-        }
-        return -1;
+        return findHolder(this.getDecks(), name);
     }
 
     /**
@@ -103,12 +122,7 @@ public class Collector {
      * Checks if all binders are empty
      */
     public boolean isBindersEmpty() {
-        for (Binder b : this.getBinders()) {
-            if (!b.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
+        return this.isHoldersEmpty(this.getBinders());
     }
 
     /**
@@ -117,15 +131,7 @@ public class Collector {
      * Checks if all binders are full
      */
     public boolean isBindersFull() {
-        if (this.getBinders().isEmpty()) {
-            return false;
-        }
-        for (Binder b : this.getBinders()) {
-            if (!b.isFull()) {
-                return false;
-            }
-        }
-        return true;
+        return isHolderFull(this.getBinders());
     }
 
     /**
@@ -134,12 +140,7 @@ public class Collector {
      * Checks if all decks are empty
      */
     public boolean isDecksEmpty() {
-        for (Deck d : this.getDecks()) {
-            if (!d.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
+        return this.isHoldersEmpty(this.getDecks());
     }
 
     /**
@@ -148,15 +149,7 @@ public class Collector {
      * Checks if all decks are full
      */
     public boolean isDecksFull() {
-        if (this.getDecks().isEmpty()) {
-            return false;
-        }
-        for (Deck d : this.getDecks()) {
-            if (!d.isFull()) {
-                return false;
-            }
-        }
-        return true;
+        return isHolderFull(this.getDecks());
     }
 
     /**
@@ -210,5 +203,13 @@ public class Collector {
      */
     public ArrayList<Deck> getDecks() {
         return this.decks;
+    }
+
+    public int getBindersCount() {
+        return this.binders.size();
+    }
+
+    public int getDecksCount() {
+        return this.decks.size();
     }
 }

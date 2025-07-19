@@ -14,13 +14,13 @@ public class Collection {
      * Constructor to construct a Collection object
      */
     public Collection() {
-        cards = new ArrayList<Card>();
+        cards = new ArrayList<>();
     }
 
     /**
      * findCard
      * @param name name of the card to be found
-     * @return index of the card in cards, -1 if not fount
+     * @return index of the card in cards, -1 if not found
      * Finds a card in cards given a name
      */
     public int findCard(String name) {
@@ -127,5 +127,9 @@ public class Collection {
      */
     public ArrayList<Card> getCards() {
         return this.cards;
+    }
+
+    public int getCardCount() {
+        return this.cards.size();
     }
 }
