@@ -8,21 +8,16 @@ public class Variant {
     private double valueMultiplier;
 
     /*
-    Method  - Variant (constructor)
-    Method Comment : Default constructor creates a Normal variant with 1x multiplier
-     */
-    public Variant() {
-        this.setName("Normal");
-        this.setValueMultiplier(1);
-    }
-
-    /*
     Method       - Variant (constructor)
     int variant  - Numeric code representing variant type (2-4)
     Method Comment : Creates specific variant based on input code (2: Extended-art, 3: Full-art, 4: Alt-art)
      */
     public Variant(int variant) {
         switch (variant) {
+            case 1:
+                this.setName("Normal");
+                this.setValueMultiplier(1);
+                break;
             case 2:
                 this.setName("Extended-art");
                 this.setValueMultiplier(1.5);

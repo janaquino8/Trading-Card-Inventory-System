@@ -7,21 +7,14 @@ public class Rarity {
     private String name;
 
     /*
-    Method  - Rarity (constructor)
-    Method Comment : Default constructor creates a Common rarity
-     */
-    public Rarity() {
-        this.setName("Common");
-    }
-
-    /*
     Method      - Rarity (constructor)
     int rarity  - Numeric code representing rarity level (2-4)
     Method Comment : Creates specific rarity based on input code (2: Uncommon, 3: Rare, 4: Legendary)
      */
     public Rarity(int rarity) {
-        this();
         switch (rarity) {
+            case 1:
+                this.setName("Common");
             case 2:
                 this.setName("Uncommon");
                 break;

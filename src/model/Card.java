@@ -33,7 +33,7 @@ public class Card {
         this();
         this.setName(name);
         this.rarity = new Rarity(rarity);
-        this.variant = new Variant();
+        this.variant = new Variant(1);
         this.setBaseValue(baseValue);
         this.setCardNo(cardNo);
         this.setFinalValue(baseValue);

@@ -152,7 +152,7 @@ public class Controller {
      * addCard
      * @param isAutoAdd false if the user will still be asked for confirmation, true otherwise
      * @return index of new card/card copy
-     * Creates a new card and adds it to to the collection, or increments card count if card already exists prior
+     * Creates a new card and adds it to the collection, or increments card count if card already exists prior
      */
     public int addCard(boolean isAutoAdd) {
         String name;
