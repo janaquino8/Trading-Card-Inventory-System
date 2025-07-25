@@ -8,33 +8,34 @@ import java.util.*;
 CollectorView - Main view class handling user interactions, input collection, and high-level menu displays
  */
 public class CollectorView extends Frame {
-    JButton button;
+    JButton button1;
     JButton button2;
     JButton button3;
-    JButton button4;
 
-    public CollectorView() {
+    public CollectorView(int collectionSize, int binderCount, int deckCount) {
         super("Main Menu | TCIS");
+        header.setText("Main Menu");
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setOpaque(false); // optional: to match the background
+        panel.setOpaque(false);
 
-        button = new JButton("1");
-        button2 = new JButton("2");
-        button3 = new JButton("3");
-        button4 = new JButton("4");
+        String btn1Label = collectionSize > 0 ? "Manage Collection" : "Add a Card";
+        String btn2Label = binderCount > 0 ? "Manage Binders" : "Add a Binder";
+        String btn3Label = deckCount > 0 ? "Manage Decks" : "Add a Deck";
 
-        panel.add(button);
+        button1 = new JButton(btn1Label);
+        button2 = new JButton(btn2Label);
+        button3 = new JButton(btn3Label);
+
+        panel.add(button1);
         panel.add(button2);
         panel.add(button3);
-        panel.add(button4);
 
         // Optionally center-align the panel's components
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button1.setAlignmentX(Component.CENTER_ALIGNMENT);
         button2.setAlignmentX(Component.CENTER_ALIGNMENT);
         button3.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button4.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.add(panel, BorderLayout.CENTER);
 
