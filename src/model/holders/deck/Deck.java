@@ -1,10 +1,12 @@
-package src.model;
+package src.model.holders.deck;
+
+import src.model.holders.Holder;
 
 /**
  * Deck
  * Represents a deck
  */
-public class Deck extends Holder {
+public abstract class Deck extends Holder {
     /**
      * Deck
      * @param name name of the created deck

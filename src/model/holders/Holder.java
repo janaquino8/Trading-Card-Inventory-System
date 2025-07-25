@@ -1,4 +1,6 @@
-package src.model;
+package src.model.holders;
+
+import src.model.card.Card;
 
 public abstract class Holder {
     protected String name;
@@ -11,11 +13,11 @@ public abstract class Holder {
     }
 
     /**
-     * addCard
+     * addCard PROB MAKE BOOLEAN
      * @param card card to be added to the holder
      * Adds a card to the holder
      */
-    public void addCard(Card card) {
+    public boolean addCard(Card card) {
         int index = 0;
 
         while (this.getCard(index) != null) {
@@ -24,11 +26,13 @@ public abstract class Holder {
 
         if (index < MAX_COUNT) {
             this.setCard(index, card);
+            return true;
         }
+        return false;
     }
 
     /**
-     * removeCard
+     * removeCard PROB MAKE BOOLEAN
      * @param index index of the card to be removed from the holder
      * Removes a card form the holder
      */

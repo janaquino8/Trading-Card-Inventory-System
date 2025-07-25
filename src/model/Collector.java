@@ -1,5 +1,9 @@
 package src.model;
 
+import src.model.holders.Collection;
+import src.model.holders.Holder;
+import src.model.holders.binder.*;
+import src.model.holders.deck.*;
 import java.util.*;
 
 /**
@@ -10,15 +14,17 @@ public class Collector {
     private Collection collection;
     private ArrayList<Binder> binders;
     private ArrayList<Deck> decks;
+    private double money;
 
     /**
      * Collector
      * Constructor to construct a Collector object
      */
     public Collector() {
-        collection = new Collection();
-        binders = new ArrayList<>();
-        decks = new ArrayList<>();
+        this.collection = new Collection();
+        this.binders = new ArrayList<>();
+        this.decks = new ArrayList<>();
+        this.money = 0;
     }
 
     private void deleteHolder(ArrayList<? extends Holder> holders, int index) {
@@ -65,8 +71,14 @@ public class Collector {
      * @param name name of the created binder
      * Creates a binder
      */
-    public void createBinder(String name) {
-        this.getBinders().add(new Binder(name));
+    public void createBinder(String name, int type) {
+        switch (type) {
+            case 1 -> this.getBinders().add(new NonCuratedBinder(name));
+            case 2 -> this.getBinders().add(new PauperBinder(name));
+            case 3 -> this.getBinders().add(new RaresBinder(name));
+            case 4 -> this.getBinders().add(new LuxuryBinder(name));
+            case 5 -> this.getBinders().add(new CollectorBinder(name));
+        }
     }
 
     /**
@@ -93,8 +105,11 @@ public class Collector {
      * @param name name of the created deck
      * Creates a deck
      */
-    public void createDeck(String name) {
-        this.getDecks().add(new Deck(name));
+    public void createDeck(String name, int type) {
+        switch (type) {
+            case 1 -> this.getDecks().add(new NormalDeck(name));
+            case 2 -> this.getDecks().add(new SellableDeck(name));
+        }
     }
 
     /**
@@ -150,6 +165,24 @@ public class Collector {
      */
     public boolean isDecksFull() {
         return isHolderFull(this.getDecks());
+    }
+
+    public ArrayList<Binder> getNonSellableBinders() {
+        ArrayList<Binder> newList = new ArrayList<Binder>(this.getBinders());
+        newList.removeIf(b -> b instanceof SellableBinder);
+        return newList;
+    }
+
+    public ArrayList<Binder> getSellableBinder() {
+        ArrayList<Binder> newList = new ArrayList<Binder>(this.getBinders());
+        newList.removeIf(b -> b instanceof NonCuratedBinder || b instanceof CollectorBinder);
+        return newList;
+    }
+
+    public ArrayList<Deck> getSellableDecks() {
+        ArrayList<Deck> newList = new ArrayList<Deck>(this.getDecks());
+        newList.removeIf(d -> d instanceof NormalDeck);
+        return newList;
     }
 
     /**
@@ -211,5 +244,13 @@ public class Collector {
 
     public int getDecksCount() {
         return this.decks.size();
+    }
+
+    public void earnMoney(double sale) {
+        this.money += sale;
+    }
+
+    public double getMoney() {
+        return this.money;
     }
 }

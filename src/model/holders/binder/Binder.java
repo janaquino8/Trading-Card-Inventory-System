@@ -1,4 +1,8 @@
-package src.model;
+package src.model.holders.binder;
+
+import src.model.card.Card;
+import src.model.holders.Holder;
+import src.model.holders.NameSorter;
 
 import java.util.*;
 
@@ -6,7 +10,7 @@ import java.util.*;
  * Binder
  * Represents a binder
  */
-public class Binder extends Holder {
+public abstract class Binder extends Holder {
     /**
      * Binder
      * @param name name of the created binder

@@ -1,11 +1,47 @@
 package src.view;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
 
 /*
 CollectorView - Main view class handling user interactions, input collection, and high-level menu displays
  */
-public class CollectorView {
+public class CollectorView extends Frame {
+    JButton button;
+    JButton button2;
+    JButton button3;
+    JButton button4;
+
+    public CollectorView() {
+        super("Main Menu | TCIS");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setOpaque(false); // optional: to match the background
+
+        button = new JButton("1");
+        button2 = new JButton("2");
+        button3 = new JButton("3");
+        button4 = new JButton("4");
+
+        panel.add(button);
+        panel.add(button2);
+        panel.add(button3);
+        panel.add(button4);
+
+        // Optionally center-align the panel's components
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button3.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button4.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        this.add(panel, BorderLayout.CENTER);
+
+        // NOW make it visible
+        this.setVisible(true);
+    }
+
     private final String RESET = "\u001B[0m";
     private final String BOLD = "\u001B[1m";
     private final String UNDERLINE = "\u001B[4m";
@@ -13,72 +49,6 @@ public class CollectorView {
     private final String GREEN = "\u001B[32m";
     private final String BLUE = "\u001B[34m";
     Scanner sc = new Scanner(System.in);
-
-    /*
-    Method         - getIntInput
-    String prompt  - Message to display for input request
-    int min        - Minimum acceptable value
-    int max        - Maximum acceptable value
-    return type    - int
-    Method Comment : Collects and validates integer input within specified range
-     */
-    public int getIntInput(String prompt, int min, int max) {
-        int input;
-        do {
-            System.out.print(GREEN + prompt + RESET);
-            try {
-                input = Integer.parseInt(sc.nextLine());
-            }
-            catch(NumberFormatException e) {
-                input = min - 1;
-            }
-            if (input < min || input > max) {
-                System.out.println(RED + "Invalid input. Try again." + RESET);
-            }
-        } while (input < min || input > max);
-
-        return input;
-    }
-
-    /*
-    Method         - getStringInput
-    String prompt  - Message to display for input request
-    return type    - String
-    Method Comments : Collects and validates non-empty string input
-     */
-    public String getStringInput(String prompt) {
-        String input;
-        do {
-            System.out.print(GREEN + prompt + RESET);
-            input = sc.nextLine();
-        } while (input.isEmpty());
-
-        return input;
-    }
-
-    /*
-    Method         - getDoubleInput
-    String prompt  - Message to display for input request
-    return type    - double
-    Method Comment : Collects and validates positive double input
-     */
-    public double getDoubleInput(String prompt) {
-        double input;
-        do {
-            System.out.print(GREEN + prompt + RESET);
-            try {
-                input = Double.parseDouble(sc.nextLine());
-            }
-            catch(NumberFormatException e) {
-                input = -1;
-            }
-            if (input < 0) {
-                System.out.println(RED + "Invalid input. Try again." + RESET);
-            }
-        } while (input < 0);
-
-        return input;
-    }
 
     /*
     Method       - printConfirmationMsg

@@ -1,4 +1,6 @@
-package src.model;
+package src.model.holders;
+
+import src.model.card.Card;
 
 import java.util.*;
 
@@ -105,6 +107,17 @@ public class Collection {
      */
     public void sort() {
         this.getCards().sort(new NameSorter());
+    }
+
+    /**
+     * ?
+     */
+    public double sellCard(int index) {
+        if (this.getCard(index).getCollectionCount() > 0) {
+            this.getCard(index).decrementCollectionCount();
+            return this.getCard(index).getFinalValue();
+        }
+        return 0.0;
     }
 
     /**

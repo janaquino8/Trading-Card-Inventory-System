@@ -1,4 +1,6 @@
-package src.model;
+package src.model.holders;
+
+import src.model.card.Card;
 
 import java.util.*;
 
