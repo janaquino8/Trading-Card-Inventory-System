@@ -1,4 +1,4 @@
-package src.model;
+package src.model.card;
 
 /*
 Variant - Represents different card variants with its name, abbreviations, and unique value multipliers

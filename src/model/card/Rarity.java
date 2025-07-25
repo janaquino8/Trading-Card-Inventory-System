@@ -1,4 +1,4 @@
-package src.model;
+package src.model.card;
 
 /*
 Rarity - Represents card rarity levels with its names and abbreviations
