@@ -1,7 +1,6 @@
 package src.view;
 
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -10,17 +9,20 @@ CollectorView - Main view class handling user interactions, input collection, an
  */
 public class CollectorView extends Frame {
     private JPanel body;
+    private Button[] buttons;
 
     public CollectorView() {
         super();
         body = new JPanel();
-    }
-    
-    public void mainMenu(int collectionSize, int binderCount, int deckCount, ActionListener listener) {
-        this.renameWindow("Main Menu");
-        body.removeAll();
         body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
         body.setOpaque(false);
+        this.add(body, BorderLayout.CENTER);
+        this.setVisible(true);
+    }
+    
+    public void displayMainMenu(int collectionSize, int binderCount, int deckCount, ActionListener listener) {
+        this.renameWindow("Main Menu");
+        clearBody();
 
         String btn1Label = collectionSize > 0 ? "Manage Collection" : "Add a Card";
         String btn2Label = binderCount > 0 ? "Manage Binders" : "Add a Binder";
@@ -30,19 +32,66 @@ public class CollectorView extends Frame {
         Button button2 = new Button(btn2Label);
         Button button3 = new Button(btn3Label);
 
-        body.add(Box.createVerticalStrut(100));
-        body.add(button1);
-        body.add(Box.createVerticalStrut(25));
-        body.add(button2);
-        body.add(Box.createVerticalStrut(25));
-        body.add(button3);
+        addButtonsToBody(new Button[]{button1, button2, button3}, listener);
+    }
 
-        this.add(body, BorderLayout.CENTER);
-        this.setVisible(true);
+    public void displayManageCollection(int collectionSize, ActionListener listener) {
+        this.renameWindow("Manage Collection");
+        clearBody();
 
-        button1.addActionListener(listener);
-        button2.addActionListener(listener);
-        button3.addActionListener(listener);
+        Button button1 = new Button("Add a Card");
+        Button button2 = new Button("Update Card Count");
+        Button button3 = new Button("Display a Card");
+        Button button4 = new Button("Display Collection");
+        Button button5 = new Button("Sell a Card");
+        Button button6 = new Button("Return to Main Menu");
+
+        addButtonsToBody(new Button[]{button1, button2, button3, button4, button5, button6}, listener);
+    }
+
+    public void displayManageBinders(int binderCount, ActionListener listener) {
+        this.renameWindow("Manage Binders");
+        clearBody();
+
+        Button button1 = new Button("Create a Binder");
+        Button button2 = new Button("Delete a Binder");
+        Button button3 = new Button("Add a Card to a Binder");
+        Button button4 = new Button("Remove a Card From a Binder");
+        Button button5 = new Button("View a Binder");
+        Button button6 = new Button("Trade");
+        Button button7 = new Button("Sell a Binder");
+        Button button8 = new Button("Return to Main Menu");
+
+        addButtonsToBody(new Button[]{button1, button2, button3, button4, button5, button6, button7, button8}, listener);
+    }
+
+    public void displayManageDecks(int deckCount, ActionListener listener) {
+        this.renameWindow("Manage Decks");
+        clearBody();
+
+        Button button1 = new Button("Create a Deck");
+        Button button2 = new Button("Delete a Deck");
+        Button button3 = new Button("Add a Card to a Deck");
+        Button button4 = new Button("Remove a Card From a Deck");
+        Button button5 = new Button("View a Deck");
+        Button button6 = new Button("Sell a Deck");
+        Button button7 = new Button("Return to Main Menu");
+
+        addButtonsToBody(new Button[]{button1, button2, button3, button4, button5, button6, button7}, listener);
+    }
+
+    private void addButtonsToBody(Button[] buttons, ActionListener listener) {
+        for (Button b : buttons) {
+            body.add(Box.createVerticalStrut(15));
+            body.add(b);
+            b.addActionListener(listener);
+        }
+    }
+
+    private void clearBody() {
+        body.removeAll();
+        body.revalidate();
+        body.repaint();
     }
 
     private final String RESET = "\u001B[0m";

@@ -9,8 +9,7 @@ public class Button extends JButton {
         this.setFocusable(false);
         this.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.setAlignmentY(Component.CENTER_ALIGNMENT);
-        this.setFont(new Font("Gill Sans MT", Font.PLAIN, 40));
-        this.setSize(new Dimension(400, 60));
+        this.setFont(new Font("Gill Sans MT", Font.PLAIN, 25));
         this.setForeground(Color.decode("#1E1F22"));
         this.setBackground(Color.decode("#BCBEC4"));
     }

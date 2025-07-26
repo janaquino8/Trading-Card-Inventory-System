@@ -15,12 +15,12 @@ public class Frame extends JFrame {
         this.setVisible(true);
 
         JPanel head = new JPanel();
-        head.setLayout(new GridLayout(2, 0, 25, 0));
+        head.setLayout(new GridLayout(2, 0, 15, 0));
         head.setPreferredSize(new Dimension(1000, 100));
         head.setOpaque(false);
 
-        Label title = new Label("Trading Card Inventory System", Font.PLAIN, 25);
-        header = new Label("", Font.PLAIN, 50);
+        Label title = new Label("Trading Card Inventory System", Font.PLAIN, 15);
+        header = new Label("", Font.PLAIN, 40);
 
         head.add(title);
         head.add(header);
