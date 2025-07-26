@@ -7,14 +7,22 @@
 
 package src;
 
-import src.controller.Controller;
+// import src.controller.Controller;
+
+import src.controller.NewController;
+import src.view.CollectorView;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Initiates running of program
  */
 public class Main {
     public static void main(String[] args) {
-        Controller controller = new Controller();
-        controller.run();
+//        Controller controller = new Controller();
+//        controller.run();
+        NewController controller = new NewController();
+        controller.mainMenu();
     }
 }
