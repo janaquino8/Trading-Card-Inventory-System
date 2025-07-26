@@ -1,46 +1,48 @@
 package src.view;
 
 import javax.swing.*;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.util.*;
+import java.awt.event.ActionListener;
 
 /*
 CollectorView - Main view class handling user interactions, input collection, and high-level menu displays
  */
 public class CollectorView extends Frame {
-    JButton button1;
-    JButton button2;
-    JButton button3;
+    private JPanel body;
 
-    public CollectorView(int collectionSize, int binderCount, int deckCount) {
-        super("Main Menu | TCIS");
-        header.setText("Main Menu");
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setOpaque(false);
+    public CollectorView() {
+        super();
+        body = new JPanel();
+    }
+    
+    public void mainMenu(int collectionSize, int binderCount, int deckCount, ActionListener listener) {
+        this.renameWindow("Main Menu");
+        body.removeAll();
+        body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+        body.setOpaque(false);
 
         String btn1Label = collectionSize > 0 ? "Manage Collection" : "Add a Card";
         String btn2Label = binderCount > 0 ? "Manage Binders" : "Add a Binder";
         String btn3Label = deckCount > 0 ? "Manage Decks" : "Add a Deck";
 
-        button1 = new JButton(btn1Label);
-        button2 = new JButton(btn2Label);
-        button3 = new JButton(btn3Label);
+        Button button1 = new Button(btn1Label);
+        Button button2 = new Button(btn2Label);
+        Button button3 = new Button(btn3Label);
 
-        panel.add(button1);
-        panel.add(button2);
-        panel.add(button3);
+        body.add(Box.createVerticalStrut(100));
+        body.add(button1);
+        body.add(Box.createVerticalStrut(25));
+        body.add(button2);
+        body.add(Box.createVerticalStrut(25));
+        body.add(button3);
 
-        // Optionally center-align the panel's components
-        button1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button3.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        this.add(panel, BorderLayout.CENTER);
-
-        // NOW make it visible
+        this.add(body, BorderLayout.CENTER);
         this.setVisible(true);
+
+        button1.addActionListener(listener);
+        button2.addActionListener(listener);
+        button3.addActionListener(listener);
     }
 
     private final String RESET = "\u001B[0m";
@@ -49,7 +51,6 @@ public class CollectorView extends Frame {
     private final String RED = "\u001B[31m";
     private final String GREEN = "\u001B[32m";
     private final String BLUE = "\u001B[34m";
-    Scanner sc = new Scanner(System.in);
 
     /*
     Method       - printConfirmationMsg

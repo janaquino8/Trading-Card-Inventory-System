@@ -1,5 +1,6 @@
 package src.model;
 
+import src.model.card.Card;
 import src.model.holders.Collection;
 import src.model.holders.Holder;
 import src.model.holders.binder.*;
@@ -173,17 +174,17 @@ public class Collector {
         return newList;
     }
 
-    public ArrayList<Binder> getSellableBinder() {
-        ArrayList<Binder> newList = new ArrayList<Binder>(this.getBinders());
-        newList.removeIf(b -> b instanceof NonCuratedBinder || b instanceof CollectorBinder);
-        return newList;
-    }
-
-    public ArrayList<Deck> getSellableDecks() {
-        ArrayList<Deck> newList = new ArrayList<Deck>(this.getDecks());
-        newList.removeIf(d -> d instanceof NormalDeck);
-        return newList;
-    }
+//    public ArrayList<SellableBinder> getSellableBinder() {
+//        ArrayList<SellableBinder> newList = new ArrayList<Binder>(this.getBinders());
+//        newList.removeIf(b -> b instanceof NonCuratedBinder || b instanceof CollectorBinder);
+//        return newList;
+//    }
+//
+//    public ArrayList<SellableDeck> getSellableDecks() {
+//        ArrayList<SellableDeck> newList = new ArrayList<Deck>(this.getDecks());
+//        newList.removeIf(d -> d instanceof NormalDeck);
+//        return newList;
+//    }
 
     /**
      * getCollection
@@ -236,6 +237,20 @@ public class Collector {
      */
     public ArrayList<Deck> getDecks() {
         return this.decks;
+    }
+
+    public int getCollectionCardCount() {
+        return this.collection.getCards().size();
+    }
+
+    public int getCollectionTotalCount() {
+        int ctr = 0;
+
+        for (Card c : this.getCollection().getCards()) {
+            ctr += c.getCollectionCount();
+        }
+
+        return ctr;
     }
 
     public int getBindersCount() {

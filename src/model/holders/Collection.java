@@ -87,21 +87,6 @@ public class Collection {
     }
 
     /**
-     * countTotalCards
-     * @return the total number of cards (accounting for copies) in the collection
-     * Gets the number of cards (and copies) currently in the collection
-     */
-    public int countTotalCards() {
-        int ctr = 0;
-
-        for (Card c : this.getCards()) {
-            ctr += c.getCollectionCount();
-        }
-
-        return ctr;
-    }
-
-    /**
      * sort
      * Sorts cards in alphabetical order of name
      */
@@ -140,9 +125,5 @@ public class Collection {
      */
     public ArrayList<Card> getCards() {
         return this.cards;
-    }
-
-    public int getCardCount() {
-        return this.cards.size();
     }
 }
