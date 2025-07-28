@@ -12,16 +12,22 @@ import java.awt.event.ActionListener;
 CollectionView - Handles all visual displays related to card collection operations
  */
 public class CollectionView extends Frame {
-    private Button buttons[];
+    private Button[] buttons;
     private TextField cardNameField;
     private ComboBox rarityBox;
     private ComboBox variantBox;
     private TextField valueField;
     private Button btnBack;
     private Button btnAddCard;
+    private Button btnDisplayCard;
+    private Button btnIncrement;
+    private Button btnDecrement;
+    private Button btnSellCard;
+    private Label cardNameLabel;
+    private Label cardCountLabel;
+    private Label cardValueLabel;
     private boolean isFieldsEmpty;
     private boolean isBoxesEmpty;
-    DocumentListener listener;
 
     public CollectionView() {
         super();
@@ -66,7 +72,6 @@ public class CollectionView extends Frame {
         JPanel body = new JPanel();
         body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
         body.setOpaque(false);
-        this.add(body, BorderLayout.CENTER);
 
         JPanel cardName = new JPanel();
         Label cardNameLabel = new Label("Name: ", Font.PLAIN, 30);
@@ -100,10 +105,95 @@ public class CollectionView extends Frame {
 
         setActionListener(new Button[]{btnBack, btnAddCard}, listener);
 
+        this.add(body, BorderLayout.CENTER);
         this.add(options, BorderLayout.SOUTH);
     }
 
-    public void displayCollection(ArrayList<String> cardsList) {
+    public void displayUpdateCardCount(String[] cardsList) {
+        renameWindow("Update Card Count");
+
+        JPanel cardSelectPanel = new JPanel();
+        cardSelectPanel.setOpaque(false);
+        cardSelectPanel.setLayout(new BoxLayout(cardSelectPanel, BoxLayout.Y_AXIS));
+        cardSelectPanel.setPreferredSize(new Dimension(450, 0));
+
+        JPanel updatePanel = new JPanel();
+        updatePanel.setOpaque(false);
+        updatePanel.setLayout(new BoxLayout(updatePanel, BoxLayout.Y_AXIS));
+        updatePanel.setPreferredSize(new Dimension(450, 0));
+
+        cardSelectPanel.add(Box.createVerticalStrut(15));
+        Label selectLabel = new Label("Select a card to update.", Font.PLAIN, 30);
+        cardSelectPanel.add(selectLabel);
+
+        cardSelectPanel.add(Box.createVerticalStrut(15));
+        ComboBox cardList = new ComboBox(cardsList);
+        cardList.insertItemAt("", 0);
+        cardList.setSelectedIndex(0);
+        cardList.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cardSelectPanel.add(cardList);
+
+        cardSelectPanel.setVisible(true);
+
+        cardNameLabel = new Label("");
+        updatePanel.add(cardNameLabel);
+        cardCountLabel = new Label("");
+        updatePanel.add(cardCountLabel);
+
+        JPanel updateButtonsPanel = new JPanel();
+        btnIncrement = new Button("Increment");
+        btnDecrement = new Button("Decrement");
+        setPanel(new Button[]{btnIncrement, btnDecrement}, updateButtonsPanel);
+        updatePanel.add(updateButtonsPanel);
+
+        updatePanel.setVisible(true);
+
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        options.add(btnBack);
+        options.setVisible(true);
+
+        this.add(cardSelectPanel, BorderLayout.WEST);
+        this.add(updatePanel, BorderLayout.EAST);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
+    public void displayCard(String[] cardsList) {
+        renameWindow("Display a Card");
+
+        JPanel body = new JPanel();
+        body.setOpaque(false);
+        body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+
+        body.add(Box.createVerticalStrut(15));
+        Label selectLabel = new Label("Select a card to display.", Font.PLAIN, 30);
+        body.add(selectLabel);
+
+        body.add(Box.createVerticalStrut(15));
+        ComboBox cardList = new ComboBox(cardsList);
+        cardList.insertItemAt("", 0);
+        cardList.setSelectedIndex(0);
+        cardList.setAlignmentX(Component.CENTER_ALIGNMENT);
+        body.add(cardList);
+
+        body.add(Box.createVerticalStrut(15));
+        btnDisplayCard = new Button("Display");
+        btnDisplayCard.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnDisplayCard.setEnabled(false);
+        body.add(btnDisplayCard);
+
+        body.setVisible(true);
+
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        options.add(btnBack);
+        options.setVisible(true);
+
+        this.add(body, BorderLayout.CENTER);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
+    public void displayCollection(String[] cardsList) {
         renameWindow("Collection");
 
         JPanel body = new JPanel();
@@ -112,7 +202,7 @@ public class CollectionView extends Frame {
 
         body.add(Box.createVerticalStrut(15));
         List list = new List(cardsList);
-        JScrollPane scroll = new JScrollPane(list.list);
+        JScrollPane scroll = new JScrollPane(list);
         body.add(scroll);
         body.setVisible(true);
 
@@ -122,6 +212,52 @@ public class CollectionView extends Frame {
         options.setVisible(true);
 
         this.add(body, BorderLayout.CENTER);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
+    public void displaySellCard(String[] cardsList) {
+        renameWindow("Sell a Card");
+
+        JPanel cardSelectPanel = new JPanel();
+        cardSelectPanel.setOpaque(false);
+        cardSelectPanel.setLayout(new BoxLayout(cardSelectPanel, BoxLayout.Y_AXIS));
+        cardSelectPanel.setPreferredSize(new Dimension(450, 0));
+
+        JPanel sellPanel = new JPanel();
+        sellPanel.setOpaque(false);
+        sellPanel.setLayout(new BoxLayout(sellPanel, BoxLayout.Y_AXIS));
+        sellPanel.setPreferredSize(new Dimension(450, 0));
+
+        cardSelectPanel.add(Box.createVerticalStrut(15));
+        Label selectLabel = new Label("Select a card to sell.", Font.PLAIN, 30);
+        cardSelectPanel.add(selectLabel);
+
+        cardSelectPanel.add(Box.createVerticalStrut(15));
+        ComboBox cardList = new ComboBox(cardsList);
+        cardList.insertItemAt("", 0);
+        cardList.setSelectedIndex(0);
+        cardList.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cardSelectPanel.add(cardList);
+
+        cardSelectPanel.setVisible(true);
+
+        cardNameLabel = new Label("");
+        sellPanel.add(cardNameLabel);
+        cardValueLabel = new Label("");
+        sellPanel.add(cardValueLabel);
+
+        btnSellCard = new Button("Sell");
+        sellPanel.add(btnSellCard);
+
+        sellPanel.setVisible(true);
+
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        options.add(btnBack);
+        options.setVisible(true);
+
+        this.add(cardSelectPanel, BorderLayout.WEST);
+        this.add(sellPanel, BorderLayout.EAST);
         this.add(options, BorderLayout.SOUTH);
     }
 

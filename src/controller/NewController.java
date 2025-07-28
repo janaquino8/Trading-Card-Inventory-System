@@ -118,6 +118,14 @@ public class NewController {
         collectionView.displayAddCard(actionListener);
     }
 
+    public void updateCardCount() {
+
+    }
+
+    public void displayCard() {
+
+    }
+
     public void displayCollection() {
         actionListener = e -> {
             if (e.getActionCommand().equals("Back")) {
@@ -139,6 +147,10 @@ public class NewController {
             displayableCardsList.add(c.getName() + " (" + c.getCollectionCount() + " copies)");
         }
 
-        collectionView.displayCollection(displayableCardsList);
+        collectionView.displayCollection(displayableCardsList.toArray(new String[0]));
+    }
+
+    public void sellCard() {
+
     }
 }
