@@ -1,18 +1,15 @@
 package src.view;
 
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
 
-public class List {
-    JList<String> list;
+public class List extends JList {
+    public List(String[] incomingList) {
+        super(incomingList);
 
-    public List(ArrayList<String> incomingList) {
-        list = new JList<>(incomingList.toArray(new String[0]));
-
-        list.setFont(new Font("Gill Sans MT", Font.PLAIN, 25));
-        list.setForeground(Color.decode("#1E1F22"));
-        list.setBackground(Color.decode("#BCBEC4"));
-        list.setEnabled(true);
+        this.setFont(new Font("Gill Sans MT", Font.PLAIN, 25));
+        this.setForeground(Color.decode("#1E1F22"));
+        this.setBackground(Color.decode("#BCBEC4"));
+        this.setEnabled(true);
     }
 }
