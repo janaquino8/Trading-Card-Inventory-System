@@ -8,7 +8,7 @@ This is what I used in my test project to display it:
         Frame frame = new Frame();
         frame.renameWindow("Card View");
 
-        CardViewGUI cardView = new CardViewGUI();
+        CardView cardView = new CardView();
         cardView.displayCard("Dragon's Breath", 12345, "Legendary", "Full-art", 3, 24.99, 34.99);
 
         frame.add(cardView, BorderLayout.CENTER);
@@ -16,13 +16,13 @@ This is what I used in my test project to display it:
 */
 
 public class CardView extends JPanel {
-    private final JLabel nameLabel;
-    private final JLabel cardNoLabel;
-    private final JLabel variantLabel;
-    private final JLabel rarityLabel;
-    private final JLabel collectionCountLabel;
-    private final JLabel baseValueLabel;
-    private final JLabel finalValueLabel;
+    private final Label nameLabel;
+    private final Label cardNoLabel;
+    private final Label variantLabel;
+    private final Label rarityLabel;
+    private final Label collectionCountLabel;
+    private final Label baseValueLabel;
+    private final Label finalValueLabel;
 
     public CardView() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
