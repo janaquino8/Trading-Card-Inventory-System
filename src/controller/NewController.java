@@ -1,10 +1,14 @@
 package src.controller;
 
+import java.util.*;
+
 import src.model.*;
 import src.model.card.Card;
+import src.model.holders.NameSorter;
 import src.model.holders.binder.*;
 import src.model.holders.deck.*;
 import src.view.*;
+
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +17,10 @@ import java.awt.event.ActionEvent;
 public class NewController {
     Collector collector;
     CollectorView collectorView;
-    ActionListener listener;
+    CollectionView collectionView;
+    BinderView binderView;
+    DeckView deckView;
+    ActionListener actionListener;
 
     /**
      * Controller
@@ -26,9 +33,9 @@ public class NewController {
     }
 
     public void mainMenu() {
-        listener = e -> {
+        actionListener = e -> {
             switch (e.getActionCommand()) {
-                case "Add a Card"        -> System.out.println("Add Card");
+                case "Add a Card"        -> addCard();
                 case "Add a Binder"      -> System.out.println("Add Binder");
                 case "Add a Deck"        -> System.out.println("Add Deck");
                 case "Manage Collection" -> manageCollection();
@@ -36,29 +43,29 @@ public class NewController {
                 case "Manage Decks"      -> manageDecks();
             }
         };
-        collectorView.displayMainMenu(collector.getCollectionTotalCount(),
-                               collector.getBindersCount(),
-                               collector.getDecksCount(),
-                               listener);
+
+        collectorView.displayMainMenu(collector.getCollectionCardCount(), collector.getBindersCount(),
+                               collector.getDecksCount(), actionListener);
     }
 
     public void manageCollection() {
-        listener = e -> {
+        actionListener = e -> {
             switch (e.getActionCommand()) {
-                case "Add a Card"           -> System.out.println("1");
+                case "Add a Card"           -> addCard();
                 case "Update Card Count"    -> System.out.println("2");
                 case "Display a Card"       -> System.out.println("3");
-                case "Display Collection"   -> System.out.println("4");
+                case "Display Collection"   -> displayCollection();
                 case "Sell a Card"          -> System.out.println("5");
                 case "Return to Main Menu"  -> mainMenu();
             }
         };
+
         collectorView.displayManageCollection(collector.getCollectionTotalCount(),
-                listener);
+                actionListener);
     }
 
     public void manageBinders() {
-        listener = e -> {
+        actionListener = e -> {
             switch (e.getActionCommand()) {
                 case "Create a Binder"              -> System.out.println("1");
                 case "Delete a Binder"              -> System.out.println("2");
@@ -70,12 +77,14 @@ public class NewController {
                 case "Return to Main Menu"          -> mainMenu();
             }
         };
-        collectorView.displayManageBinders(collector.getBindersCount(),
-                listener);
+
+        collectorView.displayManageBinders(collector.getBindersCount(), collector.getCollectionTotalCount(),
+                collector.isBindersFull(), collector.isBindersEmpty(), collector.getSellableBinders().size(),
+                actionListener);
     }
 
     public void manageDecks() {
-        listener = e -> {
+        actionListener = e -> {
             switch (e.getActionCommand()) {
                 case "Create a Deck"              -> System.out.println("1");
                 case "Delete a Deck"              -> System.out.println("2");
@@ -86,7 +95,50 @@ public class NewController {
                 case "Return to Main Menu"        -> mainMenu();
             }
         };
-        collectorView.displayManageDecks(collector.getDecksCount(),
-                listener);
+
+        collectorView.displayManageDecks(collector.getDecksCount(), collector.getCollectionTotalCount(),
+                collector.isDecksFull(), collector.isDecksEmpty(), collector.getSellableBinders().size(),
+                actionListener);
+    }
+
+    public void addCard() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> {
+                    collectionView.dispose();
+                    collectorView = new CollectorView();
+                }
+                case "Add" -> System.out.println("test");
+            }
+        };
+
+        collectorView.dispose();
+        collectionView = new CollectionView();
+
+        collectionView.displayAddCard(actionListener);
+    }
+
+    public void displayCollection() {
+        actionListener = e -> {
+            if (e.getActionCommand().equals("Back")) {
+                collectionView.dispose();
+                collectorView = new CollectorView();
+                manageCollection();
+            }
+        };
+
+        collectorView.dispose();
+        collectionView = new CollectionView();
+        ArrayList<Card> displayableCards = new ArrayList<Card>(collector.getCollection().getCards());
+        ArrayList<String> displayableCardsList = new ArrayList<String>();
+
+        displayableCards.removeIf(c -> c.getCollectionCount() == 0);
+        displayableCards.sort(new NameSorter());
+
+        for (Card c : displayableCards) {
+            displayableCardsList.add(c.getName() + " (" + c.getCollectionCount() + " copies)");
+        }
+
+        collectionView.displayCollection(displayableCardsList);
     }
 }

@@ -86,13 +86,13 @@ public class Collection {
         }
     }
 
-    /**
-     * sort
-     * Sorts cards in alphabetical order of name
-     */
-    public void sort() {
-        this.getCards().sort(new NameSorter());
-    }
+//    /**
+//     * sort
+//     * Sorts cards in alphabetical order of name
+//     */
+//    public void sort() {
+//        this.getCards().sort(new NameSorter());
+//    }
 
     /**
      * ?

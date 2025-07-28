@@ -174,17 +174,25 @@ public class Collector {
         return newList;
     }
 
-//    public ArrayList<SellableBinder> getSellableBinder() {
-//        ArrayList<SellableBinder> newList = new ArrayList<Binder>(this.getBinders());
-//        newList.removeIf(b -> b instanceof NonCuratedBinder || b instanceof CollectorBinder);
-//        return newList;
-//    }
-//
-//    public ArrayList<SellableDeck> getSellableDecks() {
-//        ArrayList<SellableDeck> newList = new ArrayList<Deck>(this.getDecks());
-//        newList.removeIf(d -> d instanceof NormalDeck);
-//        return newList;
-//    }
+    public ArrayList<SellableBinder> getSellableBinders() {
+        ArrayList<SellableBinder> newList = new ArrayList<SellableBinder>();
+        for (Binder b : this.getBinders()) {
+            if (b instanceof SellableBinder sb) {
+                newList.add(sb);
+            }
+        }
+        return newList;
+    }
+
+    public ArrayList<SellableDeck> getSellableDecks() {
+        ArrayList<SellableDeck> newList = new ArrayList<SellableDeck>();
+        for (Deck d : this.getDecks()) {
+            if (d instanceof SellableDeck sd) {
+                newList.add(sd);
+            }
+        }
+        return newList;
+    }
 
     /**
      * getCollection
