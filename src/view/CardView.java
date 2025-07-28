@@ -31,13 +31,13 @@ public class CardView extends JPanel {
         setMaximumSize(new Dimension(350, 400));
 
         // Initialize components
-        nameLabel = createStyledLabel("", 22);
-        cardNoLabel = createStyledLabel("Card Number: ", 18);
-        variantLabel = createStyledLabel("Variant: ", 18);
-        rarityLabel = createStyledLabel("Rarity: ", 18);
-        collectionCountLabel = createStyledLabel("Collection Count: ", 18);
-        baseValueLabel = createStyledLabel("Base Value: ", 18);
-        finalValueLabel = createStyledLabel("Final Value: ", 18);
+        nameLabel = createStyledLabel("", Font.BOLD | Font.ITALIC, 22);
+        cardNoLabel = createStyledLabel("Card Number: ", Font.BOLD | Font.ITALIC, 18);
+        variantLabel = createStyledLabel("Variant: ", Font.BOLD | Font.ITALIC, 18);
+        rarityLabel = createStyledLabel("Rarity: ", Font.BOLD | Font.ITALIC, 18);
+        collectionCountLabel = createStyledLabel("Collection Count: ", Font.BOLD | Font.ITALIC, 18);
+        baseValueLabel = createStyledLabel("Base Value: ", Font.BOLD | Font.ITALIC, 18);
+        finalValueLabel = createStyledLabel("Final Value: ", Font.BOLD | Font.ITALIC, 18);
 
         // Add components to panel with separators
         add(createBorderedPanel(nameLabel));
@@ -91,13 +91,8 @@ public class CardView extends JPanel {
         finalValueLabel.setForeground(rarityColor);
     }
 
-    private JLabel createStyledLabel(String text, int fontSize) {
-        JLabel label = new JLabel(text);
-        label.setFont(new Font("Gill Sans MT", Font.BOLD | Font.ITALIC, fontSize));
-        label.setForeground(Color.decode("#BCBEC4"));
-        label.setAlignmentX(Component.LEFT_ALIGNMENT);
-        label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        return label;
+    private Label createStyledLabel(String text, int style, int fontSize) {
+        return new Label(text, style, fontSize, true); // alignLeft = true
     }
 
     private JSeparator createSeparator() {
