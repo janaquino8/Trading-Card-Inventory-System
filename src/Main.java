@@ -7,7 +7,7 @@
 
 package src;
 
-// import src.controller.Controller;
+ import src.controller.Controller;
 
 import src.controller.NewController;
 import src.view.CollectionView;
@@ -22,9 +22,9 @@ import java.util.ArrayList; //REMOVE
  */
 public class Main {
     public static void main(String[] args) {
-//        Controller controller = new Controller();
-//        controller.run();
-        NewController controller = new NewController();
-        controller.mainMenu();
+        Controller controller = new Controller();
+        controller.run();
+//        NewController controller = new NewController();
+//        controller.mainMenu();
     }
 }

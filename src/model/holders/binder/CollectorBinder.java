@@ -2,7 +2,7 @@ package src.model.holders.binder;
 
 import src.model.card.Card;
 
-public class CollectorBinder extends Binder {
+public class CollectorBinder extends TradableBinder {
     public CollectorBinder(String name) {
         super(name);
     }
