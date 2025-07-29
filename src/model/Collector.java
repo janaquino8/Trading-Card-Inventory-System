@@ -74,7 +74,7 @@ public class Collector {
      */
     public void createBinder(String name, int type) {
         switch (type) {
-            case 1 -> this.getBinders().add(new NonCuratedBinder(name));
+            case 1 -> this.getBinders().add(new TradableBinder(name));
             case 2 -> this.getBinders().add(new PauperBinder(name));
             case 3 -> this.getBinders().add(new RaresBinder(name));
             case 4 -> this.getBinders().add(new LuxuryBinder(name));
@@ -108,7 +108,7 @@ public class Collector {
      */
     public void createDeck(String name, int type) {
         switch (type) {
-            case 1 -> this.getDecks().add(new NormalDeck(name));
+            case 1 -> this.getDecks().add(new Deck(name));
             case 2 -> this.getDecks().add(new SellableDeck(name));
         }
     }
@@ -168,9 +168,13 @@ public class Collector {
         return isHolderFull(this.getDecks());
     }
 
-    public ArrayList<Binder> getNonSellableBinders() {
-        ArrayList<Binder> newList = new ArrayList<Binder>(this.getBinders());
-        newList.removeIf(b -> b instanceof SellableBinder);
+    public ArrayList<TradableBinder> getTradableBinders() {
+        ArrayList<TradableBinder> newList = new ArrayList<TradableBinder>();
+        for (Binder b : this.getBinders()) {
+            if (b instanceof TradableBinder tb) {
+                newList.add(tb);
+            }
+        }
         return newList;
     }
 

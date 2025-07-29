@@ -7,7 +7,7 @@
 
 package src;
 
- import src.controller.Controller;
+import src.controller.Controller;
 
 import src.controller.NewController;
 import src.view.CollectionView;

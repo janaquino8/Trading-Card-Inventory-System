@@ -6,7 +6,7 @@ import src.model.card.Card;
  * TradableBinder
  * Represents a tradable binder
  */
-public abstract class TradableBinder extends Binder {
+public class TradableBinder extends Binder {
     /**
      * TradableBinder
      * @param name name of the binder to be created

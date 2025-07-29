@@ -6,7 +6,7 @@ import src.model.holders.Holder;
  * Deck
  * Represents a deck
  */
-public abstract class Deck extends Holder {
+public class Deck extends Holder {
     /**
      * Deck
      * @param name name of the created deck

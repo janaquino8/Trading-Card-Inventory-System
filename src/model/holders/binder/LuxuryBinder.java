@@ -12,7 +12,7 @@ public class LuxuryBinder extends SellableBinder {
 
     @Override
     public boolean addCard(Card card) {
-        if (card.getVariant().getName().equals("Normal")) {
+        if (!card.getVariant().getName().equals("Normal")) {
             return false;
         }
         if (super.addCard(card)) {
