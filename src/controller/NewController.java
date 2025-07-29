@@ -16,8 +16,8 @@ import java.awt.event.ActionEvent;
 
 public class NewController {
     Collector collector;
-    CollectorView collectorView;
-    CollectionView collectionView;
+    CollectorGUI collectorGUI;
+    CollectionGUI collectionGUI;
     BinderView binderView;
     DeckView deckView;
     ActionListener actionListener;
@@ -28,7 +28,7 @@ public class NewController {
      */
     public NewController() {
         collector = new Collector();
-        collectorView = new CollectorView();
+        collectorGUI = new CollectorGUI();
         mainMenu();
     }
 
@@ -44,7 +44,7 @@ public class NewController {
             }
         };
 
-        collectorView.displayMainMenu(collector.getCollectionCardCount(), collector.getBindersCount(),
+        collectorGUI.displayMainMenu(collector.getCollectionCardCount(), collector.getBindersCount(),
                                collector.getDecksCount(), actionListener);
     }
 
@@ -60,7 +60,7 @@ public class NewController {
             }
         };
 
-        collectorView.displayManageCollection(collector.getCollectionTotalCount(),
+        collectorGUI.displayManageCollection(collector.getCollectionTotalCount(),
                 actionListener);
     }
 
@@ -78,7 +78,7 @@ public class NewController {
             }
         };
 
-        collectorView.displayManageBinders(collector.getBindersCount(), collector.getCollectionTotalCount(),
+        collectorGUI.displayManageBinders(collector.getBindersCount(), collector.getCollectionTotalCount(),
                 collector.isBindersFull(), collector.isBindersEmpty(), collector.getSellableBinders().size(),
                 actionListener);
     }
@@ -96,7 +96,7 @@ public class NewController {
             }
         };
 
-        collectorView.displayManageDecks(collector.getDecksCount(), collector.getCollectionTotalCount(),
+        collectorGUI.displayManageDecks(collector.getDecksCount(), collector.getCollectionTotalCount(),
                 collector.isDecksFull(), collector.isDecksEmpty(), collector.getSellableBinders().size(),
                 actionListener);
     }
@@ -105,17 +105,27 @@ public class NewController {
         actionListener = e -> {
             switch (e.getActionCommand()) {
                 case "Back" -> {
-                    collectionView.dispose();
-                    collectorView = new CollectorView();
+                    collectionGUI.dispose();
+                    collectorGUI = new CollectorGUI();
                 }
-                case "Add" -> System.out.println("test");
+                case "Add" -> {
+                    int index = collector.getCollection().findCard(collectionGUI.getCardName());
+
+                    if (index != -1) {
+                        Card c = collector.getCollection().getCard(index);
+                        String msg = "Card " + c.getName() + " already exists with the following details:\n";
+                    }
+                    else {
+
+                    }
+                }
             }
         };
 
-        collectorView.dispose();
-        collectionView = new CollectionView();
+        collectorGUI.dispose();
+        collectionGUI = new CollectionGUI();
 
-        collectionView.displayAddCard(actionListener);
+        collectionGUI.displayAddCard(actionListener);
     }
 
     public void updateCardCount() {
@@ -129,14 +139,14 @@ public class NewController {
     public void displayCollection() {
         actionListener = e -> {
             if (e.getActionCommand().equals("Back")) {
-                collectionView.dispose();
-                collectorView = new CollectorView();
+                collectionGUI.dispose();
+                collectorGUI = new CollectorGUI();
                 manageCollection();
             }
         };
 
-        collectorView.dispose();
-        collectionView = new CollectionView();
+        collectorGUI.dispose();
+        collectionGUI = new CollectionGUI();
         ArrayList<Card> displayableCards = new ArrayList<Card>(collector.getCollection().getCards());
         ArrayList<String> displayableCardsList = new ArrayList<String>();
 
@@ -147,7 +157,7 @@ public class NewController {
             displayableCardsList.add(c.getName() + " (" + c.getCollectionCount() + " copies)");
         }
 
-        collectionView.displayCollection(displayableCardsList.toArray(new String[0]));
+        collectionGUI.displayCollection(displayableCardsList.toArray(new String[0]));
     }
 
     public void sellCard() {

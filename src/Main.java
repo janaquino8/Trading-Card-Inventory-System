@@ -10,10 +10,12 @@ package src;
 // import src.controller.Controller;
 
 import src.controller.NewController;
+import src.view.CollectionView;
 import src.view.CollectorView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList; //REMOVE
 
 /**
  * Initiates running of program
