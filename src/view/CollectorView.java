@@ -199,6 +199,7 @@ public class CollectorView {
         System.out.println(GREEN + "[2] Increase/Decrease Card Count" + RESET);
         System.out.println(GREEN + "[3] Display a Card" + RESET);
         System.out.println(GREEN + "[4] Display Collection" + RESET);
+        System.out.println(GREEN + "[5] Sell a Card" + RESET);
         System.out.println(RED + "[0] Back\n" + RESET);
     }
 
@@ -244,6 +245,7 @@ public class CollectorView {
         System.out.println(GREEN + "[3] Add a Card" + RESET);
         System.out.println(GREEN + "[4] Remove a Card" + RESET);
         System.out.println(GREEN + "[5] View a Deck" + RESET);
+        System.out.println(GREEN + "[6] Sell a Deck" + RESET);
         System.out.println(RED + "[0] Back\n" + RESET);
     }
 

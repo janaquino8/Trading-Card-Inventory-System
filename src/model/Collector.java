@@ -178,23 +178,15 @@ public class Collector {
         return newList;
     }
 
-    public ArrayList<SellableBinder> getSellableBinders() {
-        ArrayList<SellableBinder> newList = new ArrayList<SellableBinder>();
-        for (Binder b : this.getBinders()) {
-            if (b instanceof SellableBinder sb) {
-                newList.add(sb);
-            }
-        }
+    public ArrayList<Binder> getSellableBinders() {
+        ArrayList<Binder> newList = new ArrayList<Binder>(this.getBinders());
+        newList.removeIf(b -> b.getID() <= 2);
         return newList;
     }
 
-    public ArrayList<SellableDeck> getSellableDecks() {
-        ArrayList<SellableDeck> newList = new ArrayList<SellableDeck>();
-        for (Deck d : this.getDecks()) {
-            if (d instanceof SellableDeck sd) {
-                newList.add(sd);
-            }
-        }
+    public ArrayList<Deck> getSellableDecks() {
+        ArrayList<Deck> newList = new ArrayList<Deck>(this.getDecks());
+        newList.removeIf(d -> d.getID() == 1);
         return newList;
     }
 

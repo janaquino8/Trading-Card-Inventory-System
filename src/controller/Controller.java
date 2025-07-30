@@ -101,7 +101,7 @@ public class Controller {
                 case 2: this.updateCardCount(); break;
                 case 3: this.displayCard(); break;
                 case 4: this.displayCollection(); break;
-                //case 5: this.sellCard(); Break;
+                case 5: this.sellCard(); break;
             }
         } while (input != 0);
     }
@@ -126,7 +126,7 @@ public class Controller {
                 case 4: this.removeCardFromBinder(); break;
                 case 5: this.viewBinder(); break;
                 case 6: this.trade(); break;
-                //case 7: this.sellBinder; break;
+                //case 7: this.sellBinder(); break;
             }
         } while (input != 0);
     }
@@ -150,7 +150,7 @@ public class Controller {
                 case 3: this.addCardToDeck(); break;
                 case 4: this.removeCardFromDeck(); break;
                 case 5: this.viewDeck(); break;
-                //case 6: this.sellDeck(); break;
+                case 6: this.sellDeck(); break;
             }
         } while (input != 0);
     }
@@ -391,10 +391,12 @@ public class Controller {
      * Displays the name and collection count of each card in the collection
      */
     public void displayCollection() {
+        // if there are no card in the collection
         if (collector.getCollectionTotalCount() == 0) {
             collectionView.printConfirmationMsg(5);
             return;
         }
+
         // sorts collection
         collector.getCollection().getCards().sort(new NameSorter());
 
@@ -408,13 +410,58 @@ public class Controller {
         }
     }
 
+    public void sellCard() {
+        int index = -1;
+
+        // if there are no card in the collection
+        if (collector.getCollectionTotalCount() == 0) {
+            collectionView.printConfirmationMsg(5);
+            return;
+        }
+
+        // header
+        collectionView.displaySellCard(collector.getMoney());
+
+        // asks for the card (via either card name or card no.)
+        switch (collectorView.getIntInput("Enter option: ", 0, 2)) {
+            case 1: // search by name
+                index = collector.getCollection().findCard(collectorView.getStringInput("Enter card name: "));
+                break;
+            case 2: // search by card no.
+                index = collector.getCollection().findCard(collectorView.getIntInput("Enter card no.: ", 0, collector.getCollectionCardCount() - 1));
+                break;
+            case 0: // cancel action
+                collectorView.printConfirmationMsg(0);
+                return;
+        }
+
+        // if the card is not in the collection
+        if (index == -1) {
+            collectionView.printConfirmationMsg(3);
+        }
+        else if (collector.getCollection().getCard(index).getCollectionCount() == 0) {
+            collectionView.printConfirmationMsg(4);
+        }
+        else {
+            collectionView.displayCardToBeSold(collector.getCollection().getCard(index).getName(),
+                    collector.getCollection().getCard(index).getFinalValue(), collector.getMoney());
+            if (collectorView.getIntInput("Sell card? (1 for yes, 0 for no): ", 0, 1) == 1) {
+                collector.earnMoney(collector.getCollection().sellCard(index));
+                collectionView.printConfirmationMsg(6);
+            }
+            else {
+                collectionView.printConfirmationMsg(0);
+            }
+        }
+    }
+
     /**
      * deleteBinder
      * Deletes an existing binder and returns contents, if any, back to the collection
      */
     public void deleteBinder() {
         // if there are no existing binders
-        if (this.collector.getBindersCount() == 0) {
+        if (collector.getBindersCount() == 0) {
             collectorView.printConfirmationMsg(13);
             return;
         }
@@ -452,7 +499,7 @@ public class Controller {
      */
     public void addCardToBinder() {
         // if there are no existing binders
-        if (this.collector.getBindersCount() == 0) {
+        if (collector.getBindersCount() == 0) {
             collectorView.printConfirmationMsg(13);
             return;
         }
@@ -539,7 +586,7 @@ public class Controller {
      */
     public void removeCardFromBinder() {
         // if there are no existing binders
-        if (this.collector.getBindersCount() == 0) {
+        if (collector.getBindersCount() == 0) {
             collectorView.printConfirmationMsg(13);
             return;
         }
@@ -600,7 +647,7 @@ public class Controller {
      */
     public void viewBinder() {
         // if there are no existing binders
-        if (this.collector.getBindersCount() == 0) {
+        if (collector.getBindersCount() == 0) {
             collectorView.printConfirmationMsg(13);
             return;
         }
@@ -646,7 +693,7 @@ public class Controller {
      */
     public void trade() {
         // if there are no existing binders
-        if (this.collector.getBindersCount() == 0) {
+        if (collector.getBindersCount() == 0) {
             collectorView.printConfirmationMsg(13);
             return;
         }
@@ -764,7 +811,7 @@ public class Controller {
      */
     public void deleteDeck() {
         // if there are no existing decks
-        if (this.collector.getDecksCount() == 0) {
+        if (collector.getDecksCount() == 0) {
             collectorView.printConfirmationMsg(14);
             return;
         }
@@ -802,7 +849,7 @@ public class Controller {
      */
     public void addCardToDeck() {
         // if there are no existing decks
-        if (this.collector.getDecksCount() == 0) {
+        if (collector.getDecksCount() == 0) {
             collectorView.printConfirmationMsg(14);
             return;
         }
@@ -887,7 +934,7 @@ public class Controller {
      */
     public void removeCardFromDeck() {
         // if there are no existing decks
-        if (this.collector.getDecksCount() == 0) {
+        if (collector.getDecksCount() == 0) {
             collectorView.printConfirmationMsg(14);
             return;
         }
@@ -948,7 +995,7 @@ public class Controller {
      */
     public void viewDeck() {
         // if there are no existing decks
-        if (this.collector.getDecksCount() == 0) {
+        if (collector.getDecksCount() == 0) {
             collectorView.printConfirmationMsg(14);
             return;
         }
@@ -1013,6 +1060,54 @@ public class Controller {
                         c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
             }
         } while (true);
+    }
 
+    public void sellDeck() {
+        // if there are no existing decks
+        if (collector.getDecksCount() == 0) {
+            collectorView.printConfirmationMsg(14);
+            return;
+        }
+        // if there are no existing sellable decks
+        else if (collector.getSellableDecks().isEmpty()) {
+            deckView.printConfirmationMsg(13);
+            return;
+        }
+
+        String deckName;
+        int deckIndex;
+        SellableDeck sd;
+
+        // header
+        deckView.displaySellDeck(collector.getMoney());
+
+        // asks for deck name
+        do {
+            deckName = collectorView.getStringInput("Enter deck name: ");
+            deckIndex = collector.findDeck(deckName);
+
+            // if deck doesn't exist
+            if (deckIndex == -1) {
+                deckView.printConfirmationMsg(4);
+            }
+            else if (collector.getDeck(deckIndex).getID() == 1) {
+                deckView.printConfirmationMsg(14);
+                deckIndex = -1;
+            }
+        } while (deckIndex == -1);
+
+        sd = new SellableDeck("");
+        sd.setCards(collector.getDeck(deckIndex).getCards());
+
+        deckView.displayDeckToBeSold(deckName, sd.getValue(), collector.getMoney());
+
+        if (collectorView.getIntInput("Sell deck? (1 for yes, 0 for no): ", 0, 1) == 1) {
+            collector.earnMoney(sd.getValue());
+            collector.deleteDeck(deckIndex);
+            deckView.printConfirmationMsg(15);
+        }
+        else {
+            deckView.printConfirmationMsg(0);
+        }
     }
 }

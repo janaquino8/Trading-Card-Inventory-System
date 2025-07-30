@@ -58,6 +58,15 @@ public class DeckView {
             case 12:
                 System.out.println(RED + "Card is already in the deck." + RESET);
                 break;
+            case 13:
+                System.out.println(RED + "There are no existing sellable decks." + RESET);
+                break;
+            case 14:
+                System.out.println(RED + "Deck is not sellable." + RESET);
+                break;
+            case 15:
+                System.out.println(RED + "Deck successfully sold." + RESET);
+                break;
         }
         System.out.println();
     }
@@ -104,6 +113,16 @@ public class DeckView {
                 "   \\_/    |___| |_____|    \\_/\\_/       |____/  |_____|  \\____| |_|\\_\\" + RESET);
     }
 
+    public void displaySellDeck(double money) {
+        System.out.println(BOLD + BLUE +
+                " ____    _____   _       _          ____    _____    ____   _  __\n" +
+                "/ ___|  | ____| | |     | |        |  _ \\  | ____|  / ___| | |/ /\n" +
+                "\\___ \\  |  _|   | |     | |        | | | | |  _|   | |     | ' / \n" +
+                " ___) | | |___  | |___  | |___     | |_| | | |___  | |___  | . \\ \n" +
+                "|____/  |_____| |_____| |_____|    |____/  |_____|  \\____| |_|\\_\\" + RESET);
+        System.out.println(GREEN + "You currently have $" + money + RESET);
+    }
+
     /*
     Method           - displayDeck
     String deckName  - Name of the deck to display
@@ -146,11 +165,17 @@ public class DeckView {
         System.out.println(GREEN + "[0] Back\n" + RESET);
     }
 
+    public void displayDeckToBeSold(String deckName, double deckValue, double currentMoney) {
+        System.out.println("\n" + GREEN + deckName + " - $" + deckValue + RESET);
+        System.out.println(GREEN + "If sold, current money: $" + currentMoney + " -> $" + (currentMoney + deckValue) + RESET);
+    }
+
     /*
     Method       - printBorder (private)
     return type  - void
     Method Comment : Helper method to print consistent bordered lines for deck displays
      */
+
     private void printBorder() {
         System.out.println(BLUE + "+" + "-".repeat(32) + "+" + RESET);
     }
