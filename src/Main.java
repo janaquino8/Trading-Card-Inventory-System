@@ -8,14 +8,7 @@
 package src;
 
 import src.controller.Controller;
-
 import src.controller.NewController;
-import src.view.CollectionView;
-import src.view.CollectorView;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList; //REMOVE
 
 /**
  * Initiates running of program
@@ -24,6 +17,8 @@ public class Main {
     public static void main(String[] args) {
         Controller controller = new Controller();
         controller.run();
+
+        // For GUI Functionality
 //        NewController controller = new NewController();
 //        controller.mainMenu();
     }
