@@ -52,8 +52,8 @@ public class Card {
         this(name, rarity, baseValue, cardNo);
         if (variant != 1) {
             this.variant = new Variant(variant);
-            this.calculateFinalValue();
         }
+        this.calculateFinalValue();
     }
 
     /**
@@ -69,7 +69,9 @@ public class Card {
      * Decrements the collection count of the card
      */
     public void decrementCollectionCount() {
-        this.setCollectionCount(this.getCollectionCount() - 1);
+        if (this.getCollectionCount() > 0) {
+            this.setCollectionCount(this.getCollectionCount() - 1);
+        }
     }
 
     /**
