@@ -86,7 +86,7 @@ public class Controller {
     /**
      * collectionMenu
      * Runs the menu for managing collection
-     * add card, update card count, display card, display collection
+     * add card, update card count, display card, display collection, and sell card
      */
     public void collectionMenu() {
         int input;
@@ -109,7 +109,7 @@ public class Controller {
     /**
      * binderMenu
      * Runs the menu for managing binders
-     * create binder, delete binder, add card to binder, remove card from binder, view binder, trade
+     * create binder, delete binder, add card to binder, remove card from binder, view binder, trade, and sell binder
      */
     public void binderMenu() {
         int input;
@@ -134,7 +134,7 @@ public class Controller {
     /**
      * deckMenu
      * Runs the menu for managing decks
-     * create deck, delete deck, add card to deck, remove card from deck, view deck
+     * create deck, delete deck, add card to deck, remove card from deck, view deck, and sell deck
      */
     public void deckMenu() {
         int input;
@@ -157,9 +157,9 @@ public class Controller {
 
     /**
      * addCard
+     * Creates a new card and adds it to the collection, or increments card count if card already exists prior
      * @param isAutoAdd false if the user will still be asked for confirmation, true otherwise
      * @return index of new card/card copy
-     * Creates a new card and adds it to the collection, or increments card count if card already exists prior
      */
     public int addCard(boolean isAutoAdd) {
         String name;
@@ -228,7 +228,8 @@ public class Controller {
 
     /**
      * createBinder
-     * Creates an empty binder
+     * Creates an empty binder, it asks user to choose a specific binder
+     * Non-curated, Pauper, Rares, Luxury, and Collector Binders
      */
     public void createBinder() {
         String name;
@@ -262,7 +263,7 @@ public class Controller {
 
     /**
      * createDeck
-     * Creates an empty deck
+     * Creates an empty deck, it asks user to choose a specific deck. Normal, Sellable Decks.
      */
     public void createDeck() {
         String name;
@@ -410,6 +411,13 @@ public class Controller {
         }
     }
 
+    /**
+     * sellCard
+     * Sells a card from the collection. User can search by name or card number.
+     * Handles empty collections, missing cards, and cancellation. On success,
+     * updates the player's money and decrements the card from collection.
+     * Displays appropriate confirmation messages throughout the process.
+     */
     public void sellCard() {
         int index = -1;
 
@@ -495,7 +503,11 @@ public class Controller {
 
     /**
      * addCardToBinder
-     * Adds a card from the collection to a non-full binder
+     * Moves a card from the main collection to a specified binder if space is available.
+     * Handles edge cases: no binders exist, no cards in collection, all binders full,
+     * invalid binder name, full binder, invalid card search, user cancellation, and
+     * card not compatible with binder.
+     * Displays appropriate UI prompts and confirmation messages throughout the process.
      */
     public void addCardToBinder() {
         // if there are no existing binders
@@ -689,7 +701,10 @@ public class Controller {
 
     /**
      * trade
-     * Executes a trade between a card in a binder and a card outside the collection
+     * Executes a card trade between a binder and an external card.
+     * Validates: binder existence, non-empty binder, tradable binder type,
+     * and incoming card rarity.
+     * Shows trade details and requires confirmation for value differences ≥ $1.00.
      */
     public void trade() {
         // if there are no existing binders
@@ -805,6 +820,11 @@ public class Controller {
         collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
     }
 
+    /**
+     * sellBinder
+     * Sells a specific binder (Pauper/Rares/Luxury) after validation and confirmation.
+     * Handles different pricing rules per binder type and updates player money on success.
+     */
     public void sellBinder() {
         // if there are no existing binders
         if (collector.getBindersCount() == 0) {
@@ -1138,6 +1158,12 @@ public class Controller {
         } while (true);
     }
 
+    /**
+     * sellDeck
+     * Sells a user-selected deck after validation and confirmation.
+     * Validates deck existence and sellable status, calculating value and processing the sale.
+     * Updates player's money and removes deck upon successful sale.
+     */
     public void sellDeck() {
         // if there are no existing decks
         if (collector.getDecksCount() == 0) {

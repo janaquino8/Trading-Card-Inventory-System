@@ -8,6 +8,12 @@ public abstract class Holder {
     protected int ID;
     public static int MAX_COUNT;
 
+    /**
+     * Holder
+     * Creates a new Holder with specified name and card capacity.
+     * @param name The holder's display name
+     * @param count Maximum number of cards this holder can contain
+     */
     public Holder(String name, int count) {
         cards = new Card[count];
         this.setName(name);
@@ -15,8 +21,8 @@ public abstract class Holder {
 
     /**
      * addCard
-     * @param card card to be added to the holder
      * Adds a card to the holder
+     * @param card card to be added to the holder
      */
     public boolean addCard(Card card) {
         int index = 0;
@@ -34,8 +40,8 @@ public abstract class Holder {
 
     /**
      * removeCard
-     * @param index index of the card to be removed from the holder
      * Removes a card form the holder
+     * @param index index of the card to be removed from the holder
      */
     public void removeCard(int index) {
         if (this.isEmpty()) {
@@ -52,8 +58,8 @@ public abstract class Holder {
 
     /**
      * isEmpty
-     * @return true if holder is empty, false otherwise
      * Checks if the holder is empty (i.e., 0 cards)
+     * @return true if holder is empty, false otherwise
      */
     public boolean isEmpty() {
         return this.cards[0] == null;
@@ -61,8 +67,8 @@ public abstract class Holder {
 
     /**
      * isFull
-     * @return true if holder is full, false otherwise
      * Checks if the holder is full (i.e., has reached the maximum number of cards allowed)
+     * @return true if holder is full, false otherwise
      */
     public boolean isFull() {
         return this.cards[MAX_COUNT - 1] != null;
@@ -70,9 +76,9 @@ public abstract class Holder {
 
     /**
      * findCard
+     * Finds a card in cards given its name
      * @param name name of the card to be found
      * @return index of the card in cards, -1 if not found
-     * Finds a card in cards given its name
      */
     public int findCard(String name) {
         for (int i = 0; i < MAX_COUNT && this.getCard(i) != null; i++) {
@@ -85,8 +91,8 @@ public abstract class Holder {
 
     /**
      * getName
-     * @return name of the binder
      * Getter for name
+     * @return name of the binder
      */
     public String getName() {
         return this.name;
@@ -94,8 +100,8 @@ public abstract class Holder {
 
     /**
      * setName
-     * @param name new name of the binder
      * Setter for name
+     * @param name new name of the binder
      */
     public void setName(String name) {
         this.name = name;
@@ -103,9 +109,9 @@ public abstract class Holder {
 
     /**
      * getCard
+     * Getter for a card given an index
      * @param index index of the card to get
      * @return card at specified index
-     * Getter for a card given an index
      */
     public Card getCard(int index) {
         if (index >= 0 && index < MAX_COUNT) {
@@ -116,9 +122,9 @@ public abstract class Holder {
 
     /**
      * setCard
+     * Setter for card given an index
      * @param index index of the card to set
      * @param card new card
-     * Setter for card given an index
      */
     public void setCard(int index, Card card) {
         if (index >= 0 && index < MAX_COUNT) {
@@ -128,17 +134,27 @@ public abstract class Holder {
 
     /**
      * getCards
-     * @return cards
      * Getter for cards
+     * @return cards
      */
     public Card[] getCards() {
         return this.cards;
     }
 
+    /**
+     * setCards
+     * Sets the current cards in this holder with the given array.
+     * @param cards Array of Card objects to store (can be null or empty)
+     */
     public void setCards(Card[] cards) {
         this.cards = cards;
     }
 
+    /**
+     * getID
+     * Returns this holder's unique identifier number.
+     * @return The holder's ID value
+     */
     public int getID() {
         return this.ID;
     }
