@@ -1,6 +1,5 @@
 package src.model.holders.binder;
 
-import src.model.card.Card;
 import src.model.holders.Holder;
 import src.model.holders.NameSorter;
 
@@ -11,6 +10,9 @@ import java.util.*;
  * Represents a binder
  */
 public abstract class Binder extends Holder {
+
+    protected int ID;
+
     /**
      * Binder
      * @param name name of the created binder
@@ -29,4 +31,8 @@ public abstract class Binder extends Holder {
         Arrays.sort(this.getCards(), new NameSorter());
     }
 
+
+    public int getID() {
+        return this.ID;
+    }
 }

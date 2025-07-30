@@ -337,4 +337,21 @@ public class CollectorView {
         System.out.println(GREEN + "\nThanks for using the Trading Card Inventory System!" + RESET);
         System.out.println(GREEN + "Shutting down..." + RESET);
     }
+
+    // Options for the user for the different kinds of binders
+    public void displayCreateBinderOptions() {
+        System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S\n" + RESET);
+        System.out.println(GREEN + "[1] - Non Curated Binder" + RESET);
+        System.out.println(GREEN + "[2] - Pauper Binder" + RESET);
+        System.out.println(GREEN + "[3] - Rares Binder" + RESET);
+        System.out.println(GREEN + "[4] - Luxury Binder" + RESET);
+        System.out.println(GREEN + "[5] - Collector Binder\n" + RESET);
+    }
+
+    // Options for the user for the different kinds of binders
+    public void displayCreateDeckOptions() {
+        System.out.println(BOLD + UNDERLINE + RED + "O P T I O N S\n" + RESET);
+        System.out.println(GREEN + "[1] - Normal Deck" + RESET);
+        System.out.println(GREEN + "[2] - Sellable Deck\n" + RESET);
+    }
 }

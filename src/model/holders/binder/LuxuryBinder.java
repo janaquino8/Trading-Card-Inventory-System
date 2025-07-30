@@ -3,11 +3,13 @@ package src.model.holders.binder;
 import src.model.card.Card;
 
 public class LuxuryBinder extends SellableBinder {
+
     private double value;
 
     public LuxuryBinder(String name) {
         super(name);
         this.value = 0;
+        this.ID = 5;
     }
 
     @Override

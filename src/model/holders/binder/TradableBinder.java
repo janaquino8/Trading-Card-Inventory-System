@@ -14,6 +14,7 @@ public class TradableBinder extends Binder {
      */
     public TradableBinder(String name) {
         super(name);
+        this.ID = 1;
     }
 
     /**
@@ -27,5 +28,4 @@ public class TradableBinder extends Binder {
             this.setCard(outgoingCardIndex, incomingCard);
         }
     }
-
 }

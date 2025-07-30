@@ -94,13 +94,14 @@ public class Controller {
         do {
             // displays collection menu and asks for input
             collectorView.displayCollectionOptions();
-            input = collectorView.getIntInput("Enter option: ", 0, 4);
+            input = collectorView.getIntInput("Enter option: ", 0, 5);
 
             switch (input) {
                 case 1: this.addCard(false); break;
                 case 2: this.updateCardCount(); break;
                 case 3: this.displayCard(); break;
                 case 4: this.displayCollection(); break;
+                case 5: this.sellCard(); Break;
             }
         } while (input != 0);
     }
@@ -116,7 +117,7 @@ public class Controller {
         do {
             // displays binder menu and asks for input
             collectorView.displayBinderOptions();
-            input = collectorView.getIntInput("Enter option: ", 0, 6);
+            input = collectorView.getIntInput("Enter option: ", 0, 7);
 
             switch (input) {
                 case 1: this.createBinder(); break;
@@ -125,6 +126,7 @@ public class Controller {
                 case 4: this.removeCardFromBinder(); break;
                 case 5: this.viewBinder(); break;
                 case 6: this.trade(); break;
+                case 7: this.sellBinder; break;
             }
         } while (input != 0);
     }
@@ -140,7 +142,7 @@ public class Controller {
         do {
             // displays deck menu and asks for input
             collectorView.displayDeckOptions();
-            input = collectorView.getIntInput("Enter option: ", 0, 5);
+            input = collectorView.getIntInput("Enter option: ", 0, 6);
 
             switch (input) {
                 case 1: this.createDeck(); break;
@@ -148,6 +150,7 @@ public class Controller {
                 case 3: this.addCardToDeck(); break;
                 case 4: this.removeCardFromDeck(); break;
                 case 5: this.viewDeck(); break;
+                case 6: this.sellDeck(); break;
             }
         } while (input != 0);
     }
@@ -243,15 +246,18 @@ public class Controller {
             }
         } while (collector.findBinder(name) != -1);
 
-        // asks if the binder will be created
+        // Displays kinds of binders
+        collectorView.displayCreateBinderOptions();
+        int option = collectorView.getIntInput("Enter option: ", 1, 5);
+
+        // Asks if the binder will be created
         if (collectorView.getIntInput("Create binder " + name + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
-            collector.createBinder(name);
+            collector.createBinder(name, option);
             collectorView.printConfirmationMsg(2);
         }
         else {
             collectorView.printConfirmationMsg(0);
         }
-
     }
 
     /**
@@ -274,9 +280,13 @@ public class Controller {
             }
         } while (collector.findDeck(name) != -1);
 
+        // Displays kinds of decks
+        collectorView.displayCreateDeckOptions();
+        int option = collectorView.getIntInput("Enter option: ", 1, 2);
+
         // asks if the deck will be created
         if (collectorView.getIntInput("Create deck " + name + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
-            collector.createDeck(name);
+            collector.createDeck(name, option);
             collectorView.printConfirmationMsg(3);
         }
         else {
@@ -501,9 +511,15 @@ public class Controller {
             // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                                           binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
-                collector.getBinder(binderIndex).addCard(collector.getCollection().getCard(cardIndex));
-                collector.getCollection().getCard(cardIndex).decrementCollectionCount();
-                binderView.printConfirmationMsg(1);
+
+                // if card can be added to the binder, return true and continue next step to decrement in collection
+                if (collector.getBinder(binderIndex).addCard(collector.getCollection().getCard(cardIndex))) {
+                    collector.getCollection().getCard(cardIndex).decrementCollectionCount();
+                    binderView.printConfirmationMsg(1);
+                }
+                else {
+                    binderView.printConfirmationMsg(14);
+                }
             }
             else {
                 binderView.printConfirmationMsg(0);
@@ -658,6 +674,11 @@ public class Controller {
                 binderView.printConfirmationMsg(9);
                 binderIndex = -1;
             }
+            // Check if binder is tradable, ID 3, 4, 5 aren't tradable
+            else if (collector.getBinder(binderIndex).getID() > 2) {
+                binderView.printConfirmationMsg(15);
+                binderIndex = -1;
+            }
         } while (binderIndex == -1);
 
         // asks user for outgoing card
@@ -672,7 +693,19 @@ public class Controller {
         } while (outgoingCardIndex == -1);
 
         // creates incoming card
-        incomingCardIndex = this.addCard(true);
+        int loop1 = 0;
+        do {
+            incomingCardIndex = this.addCard(true);
+
+            // Collector Binder incoming card filter
+            if (collector.getBinder(binderIndex).getID() == 2) {
+                if (collector.getCollection().getCard(incomingCardIndex).getVariant().getName().equals("Normal")) {
+                    binderView.printConfirmationMsg(14);
+                    collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
+                    loop1 = 1;
+                }
+            }
+        } while (loop1 == 1);
 
         difference = Math.abs(collector.getCollection().getCard(incomingCardIndex).getFinalValue() -
                 collector.getBinder(binderIndex).getCard(outgoingCardIndex).getFinalValue());
@@ -690,11 +723,23 @@ public class Controller {
             // if cancelled
             if (collectorView.getIntInput("Proceed with trade? (1 for yes, 0 for no): ", 0, 1) == 0) {
                 binderView.printConfirmationMsg(0);
+                collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
                 return;
             }
         }
         // otherwise
-        collector.getBinder(binderIndex).trade(outgoingCardIndex, collector.getCollection().getCard(incomingCardIndex));
+        int loop2 = 1;
+        int i = 0;
+        do {
+            if (binderName.equals(collector.getTradableBinders().get(i).getName())) {
+                loop2 = 0;
+            }
+            else {
+                i++;
+            }
+        } while (loop2 == 1);
+
+        collector.getTradableBinders().get(i).trade(outgoingCardIndex, collector.getCollection().getCard(incomingCardIndex));
         binderView.printConfirmationMsg(13);
         collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
     }

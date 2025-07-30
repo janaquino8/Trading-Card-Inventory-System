@@ -63,6 +63,12 @@ public class BinderView {
             case 13:
                 System.out.println(GREEN + "Trade completed." + RESET);
                 break;
+            case 14:
+                System.out.println(GREEN + "Card cannot be added to the binder." + RESET);
+                break;
+            case 15:
+                System.out.println(GREEN + "Binder is not tradable." + RESET);
+                break;
         }
         System.out.println();
     }

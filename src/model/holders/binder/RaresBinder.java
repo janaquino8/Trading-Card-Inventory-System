@@ -3,8 +3,10 @@ package src.model.holders.binder;
 import src.model.card.Card;
 
 public class RaresBinder extends SellableBinder {
+
     public RaresBinder(String name) {
         super(name);
+        this.ID = 4;
     }
 
     @Override

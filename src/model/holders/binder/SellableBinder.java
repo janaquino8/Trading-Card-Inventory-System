@@ -3,6 +3,7 @@ package src.model.holders.binder;
 import src.model.card.Card;
 
 public abstract class SellableBinder extends Binder {
+
     public SellableBinder(String name) {
         super(name);
     }
