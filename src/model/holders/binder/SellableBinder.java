@@ -12,7 +12,9 @@ public abstract class SellableBinder extends Binder {
         double value = 0;
 
         for (Card c : cards) {
-            value += c.getFinalValue();
+            if (c != null) {
+                value += c.getFinalValue();
+            }
         }
 
         return value;

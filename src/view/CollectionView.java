@@ -37,6 +37,9 @@ public class CollectionView {
             case 5:
                 System.out.println(RED + "There are currently no cards in collection." + RESET);
                 break;
+            case 6:
+                System.out.println(GREEN + "Card successfully sold." + RESET);
+                break;
         }
         System.out.println();
     }
@@ -70,6 +73,19 @@ public class CollectionView {
                 "| | | |  | |  \\___ \\  | |_) | | |       / _ \\    \\ V /     | |       / _ \\   | |_) | | | | |\n" +
                 "| |_| |  | |   ___) | |  __/  | |___   / ___ \\    | |      | |___   / ___ \\  |  _ <  | |_| |\n" +
                 "|____/  |___| |____/  |_|     |_____| /_/   \\_\\   |_|       \\____| /_/   \\_\\ |_| \\_\\ |____/ " + RESET);
+        System.out.println(GREEN + "[1] Search card by name" + RESET);
+        System.out.println(GREEN + "[2] Search card by card no." + RESET);
+        System.out.println(GREEN + "[0] Back\n" + RESET);
+    }
+
+    public void displaySellCard(double money) {
+        System.out.println(BOLD + BLUE +
+                " ____    _____   _       _           ____      _      ____    ____  \n" +
+                "/ ___|  | ____| | |     | |         / ___|    / \\    |  _ \\  |  _ \\ \n" +
+                "\\___ \\  |  _|   | |     | |        | |       / _ \\   | |_) | | | | |\n" +
+                " ___) | | |___  | |___  | |___     | |___   / ___ \\  |  _ <  | |_| |\n" +
+                "|____/  |_____| |_____| |_____|     \\____| /_/   \\_\\ |_| \\_\\ |____/ " + RESET);
+        System.out.println(GREEN + "You currently have $" + money + RESET);
         System.out.println(GREEN + "[1] Search card by name" + RESET);
         System.out.println(GREEN + "[2] Search card by card no." + RESET);
         System.out.println(GREEN + "[0] Back\n" + RESET);
@@ -128,6 +144,11 @@ public class CollectionView {
         System.out.printf(BLUE + "|" + RESET + GREEN + " %-26s " + RESET + BLUE + "|" + RESET +
                 MAGENTA + " Count : %3d " + RESET + BLUE + "|" + RESET + "\n", name, collectionCount);
         printBorder();
+    }
+
+    public void displayCardToBeSold(String cardName, double cardValue, double currentMoney) {
+        System.out.println("\n" + GREEN + cardName + " - $" + cardValue + RESET);
+        System.out.println(GREEN + "If sold, current money: $" + currentMoney + " -> $" + (currentMoney + cardValue) + RESET);
     }
 
     /*
