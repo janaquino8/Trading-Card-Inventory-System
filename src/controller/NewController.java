@@ -9,6 +9,7 @@ import src.model.holders.binder.*;
 import src.model.holders.deck.*;
 import src.view.*;
 
+import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionListener;
@@ -18,9 +19,11 @@ public class NewController {
     Collector collector;
     CollectorGUI collectorGUI;
     CollectionGUI collectionGUI;
-    BinderView binderView;
-    DeckView deckView;
+    BinderGUI binderGUI;
+    DeckGUI deckGUI;
+    CardGUI cardGUI;
     ActionListener actionListener;
+    String previousMenu;
 
     /**
      * Controller
@@ -33,6 +36,7 @@ public class NewController {
     }
 
     public void mainMenu() {
+        previousMenu = "main";
         actionListener = e -> {
             switch (e.getActionCommand()) {
                 case "Add a Card"        -> addCard();
@@ -49,11 +53,12 @@ public class NewController {
     }
 
     public void manageCollection() {
+        previousMenu = "collection";
         actionListener = e -> {
             switch (e.getActionCommand()) {
                 case "Add a Card"           -> addCard();
-                case "Update Card Count"    -> System.out.println("2");
-                case "Display a Card"       -> System.out.println("3");
+                case "Update Card Count"    -> updateCardCount();
+                case "Display a Card"       -> displayCard();
                 case "Display Collection"   -> displayCollection();
                 case "Sell a Card"          -> System.out.println("5");
                 case "Return to Main Menu"  -> mainMenu();
@@ -65,6 +70,7 @@ public class NewController {
     }
 
     public void manageBinders() {
+        previousMenu = "binder";
         actionListener = e -> {
             switch (e.getActionCommand()) {
                 case "Create a Binder"              -> System.out.println("1");
@@ -84,6 +90,7 @@ public class NewController {
     }
 
     public void manageDecks() {
+        previousMenu = "deck";
         actionListener = e -> {
             switch (e.getActionCommand()) {
                 case "Create a Deck"              -> System.out.println("1");
@@ -104,19 +111,36 @@ public class NewController {
     public void addCard() {
         actionListener = e -> {
             switch (e.getActionCommand()) {
-                case "Back" -> {
-                    collectionGUI.dispose();
-                    collectorGUI = new CollectorGUI();
-                }
+                case "Back" -> goBackToMenu(collectionGUI);
                 case "Add" -> {
                     int index = collector.getCollection().findCard(collectionGUI.getCardName());
 
                     if (index != -1) {
                         Card c = collector.getCollection().getCard(index);
+
                         String msg = "Card " + c.getName() + " already exists with the following details:\n";
+                        msg += "Name: " + c.getName() + "\n";
+                        msg += "Rarity: " + c.getRarity().getName() + "\n";
+                        msg += "Variant: " + c.getVariant().getName() + "\n";
+                        msg += "Value: " + c.getFinalValue() + "$\n";
+                        msg += "Would you like to add another copy to the collection?";
+
+                        if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                            collector.getCollection().getCard(index).incrementCollectionCount();
+
+                            msg = "A copy of " + c.getName() + " has been added to the collection.";
+                            JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                     else {
+                        String msg = "Card " + collectionGUI.getCardName() + " does not exist. Would you like to add to collection?";
+                        if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
+                            collector.getCollection().addCard(collectionGUI.getCardName(), collectionGUI.getRarity(),
+                                    collectionGUI.getVariant(), collectionGUI.getValue());
 
+                            msg = collectionGUI.getCardName() + " has been added to the collection.";
+                            JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                 }
             }
@@ -129,19 +153,71 @@ public class NewController {
     }
 
     public void updateCardCount() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(collectionGUI);
+                case "Select" -> {
+                    int index = collectionGUI.getSelectedCardIndex();
+                    if (index >= 0) {
+                        Card c = collector.getCollection().getCard(index);
+                        collectionGUI.setCardNameField(c.getName());
+                        collectionGUI.setCardCountField(c.getCollectionCount());
+                    }
+                }
+                case "Increment" -> {
+                    int index = collectionGUI.getSelectedCardIndex();
+                    collector.getCollection().getCard(index).incrementCollectionCount();
+                    collectionGUI.setCardCountField(collector.getCollection().getCard(index).getCollectionCount());
+                }
+                case "Decrement" -> {
+                    int index = collectionGUI.getSelectedCardIndex();
+                    collector.getCollection().getCard(index).decrementCollectionCount();
+                    collectionGUI.setCardCountField(collector.getCollection().getCard(index).getCollectionCount());
+                }
+            }
+        };
 
+        collectorGUI.dispose();
+        collectionGUI = new CollectionGUI();
+        ArrayList<Card> displayableCards = new ArrayList<Card>(collector.getCollection().getCards());
+        ArrayList<String> displayableCardsList = new ArrayList<String>();
+
+        for (Card c : displayableCards) {
+            displayableCardsList.add(c.getName());
+        }
+
+        collectionGUI.displayUpdateCardCount(displayableCardsList.toArray(new String[0]), actionListener);
     }
 
     public void displayCard() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(collectionGUI);
+                case "Display" -> {
+                    Card c = collector.getCollection().getCard(collectionGUI.getSelectedCardIndex());
+                    cardGUI = new CardGUI();
+                    cardGUI.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
+                            c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
+                }
+            }
+        };
 
+        collectorGUI.dispose();
+        collectionGUI = new CollectionGUI();
+        ArrayList<Card> displayableCards = new ArrayList<Card>(collector.getCollection().getCards());
+        ArrayList<String> displayableCardsList = new ArrayList<String>();
+
+        for (Card c : displayableCards) {
+            displayableCardsList.add(c.getCardNo() + " - " + c.getName());
+        }
+
+        collectionGUI.displayCard(displayableCardsList.toArray(new String[0]), actionListener);
     }
 
     public void displayCollection() {
         actionListener = e -> {
             if (e.getActionCommand().equals("Back")) {
-                collectionGUI.dispose();
-                collectorGUI = new CollectorGUI();
-                manageCollection();
+                goBackToMenu(collectionGUI);
             }
         };
 
@@ -157,10 +233,21 @@ public class NewController {
             displayableCardsList.add(c.getName() + " (" + c.getCollectionCount() + " copies)");
         }
 
-        collectionGUI.displayCollection(displayableCardsList.toArray(new String[0]));
+        collectionGUI.displayCollection(displayableCardsList.toArray(new String[0]), actionListener);
     }
 
     public void sellCard() {
 
+    }
+
+    private void goBackToMenu(Frame frame) {
+        frame.dispose();
+        collectorGUI = new CollectorGUI();
+        switch (previousMenu) {
+            case "main"         -> mainMenu();
+            case "collection"   -> manageCollection();
+            case "binder"       -> manageBinders();
+            case "deck"         -> manageDecks();
+        }
     }
 }
