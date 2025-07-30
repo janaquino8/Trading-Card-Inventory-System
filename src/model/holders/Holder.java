@@ -13,7 +13,7 @@ public abstract class Holder {
     }
 
     /**
-     * addCard PROB MAKE BOOLEAN
+     * addCard
      * @param card card to be added to the holder
      * Adds a card to the holder
      */
@@ -32,7 +32,7 @@ public abstract class Holder {
     }
 
     /**
-     * removeCard PROB MAKE BOOLEAN
+     * removeCard
      * @param index index of the card to be removed from the holder
      * Removes a card form the holder
      */
