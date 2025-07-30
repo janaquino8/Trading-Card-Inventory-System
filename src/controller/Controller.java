@@ -101,7 +101,7 @@ public class Controller {
                 case 2: this.updateCardCount(); break;
                 case 3: this.displayCard(); break;
                 case 4: this.displayCollection(); break;
-                case 5: this.sellCard(); Break;
+                //case 5: this.sellCard(); Break;
             }
         } while (input != 0);
     }
@@ -126,7 +126,7 @@ public class Controller {
                 case 4: this.removeCardFromBinder(); break;
                 case 5: this.viewBinder(); break;
                 case 6: this.trade(); break;
-                case 7: this.sellBinder; break;
+                //case 7: this.sellBinder; break;
             }
         } while (input != 0);
     }
@@ -150,7 +150,7 @@ public class Controller {
                 case 3: this.addCardToDeck(); break;
                 case 4: this.removeCardFromDeck(); break;
                 case 5: this.viewDeck(); break;
-                case 6: this.sellDeck(); break;
+                //case 6: this.sellDeck(); break;
             }
         } while (input != 0);
     }
@@ -223,7 +223,7 @@ public class Controller {
             collectorView.printConfirmationMsg(1);
         }
 
-        return collector.getCollectionCardCount();
+        return collector.getCollectionCardCount() - 1;
     }
 
     /**
@@ -325,7 +325,7 @@ public class Controller {
         else {
             // displays chosen card and collection
             collectionView.displayCardToUpdateCount(collector.getCollection().getCard(index).getName(),
-                                                    collector.getCollection().getCard(index).getCollectionCount());
+                    collector.getCollection().getCard(index).getCollectionCount());
 
             // if no copies of the card exists in the collection
             if (collector.getCollection().getCard(index).getCollectionCount() == 0) {
@@ -382,7 +382,7 @@ public class Controller {
         else {
             Card c = collector.getCollection().getCard(index);
             cardView.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
-                                 c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
+                    c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
         }
     }
 
@@ -391,6 +391,10 @@ public class Controller {
      * Displays the name and collection count of each card in the collection
      */
     public void displayCollection() {
+        if (collector.getCollectionTotalCount() == 0) {
+            collectionView.printConfirmationMsg(5);
+            return;
+        }
         // sorts collection
         collector.getCollection().getCards().sort(new NameSorter());
 
@@ -398,7 +402,9 @@ public class Controller {
         collectionView.displayCollection();
 
         for (Card c : collector.getCollection().getCards()) {
-            collectionView.displayCollectionCard(c.getCollectionCount(), c.getName());
+            if (c.getCollectionCount() > 0) {
+                collectionView.displayCollectionCard(c.getCollectionCount(), c.getName());
+            }
         }
     }
 
@@ -510,7 +516,7 @@ public class Controller {
         else {
             // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
-                                          binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
+                    binderName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
 
                 // if card can be added to the binder, return true and continue next step to decrement in collection
                 if (collector.getBinder(binderIndex).addCard(collector.getCollection().getCard(cardIndex))) {
@@ -649,6 +655,11 @@ public class Controller {
             binderView.printConfirmationMsg(8);
             return;
         }
+        // if there are no existing tradable binders
+        else if (collector.getTradableBinders().isEmpty()) {
+            binderView.printConfirmationMsg(16);
+            return;
+        }
 
         int binderIndex;
         String binderName;
@@ -693,7 +704,7 @@ public class Controller {
         } while (outgoingCardIndex == -1);
 
         // creates incoming card
-        int loop1 = 0;
+        boolean isValid = true;
         do {
             incomingCardIndex = this.addCard(true);
 
@@ -702,20 +713,23 @@ public class Controller {
                 if (collector.getCollection().getCard(incomingCardIndex).getVariant().getName().equals("Normal")) {
                     binderView.printConfirmationMsg(14);
                     collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
-                    loop1 = 1;
+                    isValid = false;
+                }
+                else {
+                    isValid = true;
                 }
             }
-        } while (loop1 == 1);
+        } while (!isValid);
 
         difference = Math.abs(collector.getCollection().getCard(incomingCardIndex).getFinalValue() -
                 collector.getBinder(binderIndex).getCard(outgoingCardIndex).getFinalValue());
 
         // displays trade
         binderView.displayTrade(collector.getCollection().getCard(incomingCardIndex).getName(),
-                                collector.getCollection().getCard(incomingCardIndex).getFinalValue(),
-                                outgoingCardName,
-                                collector.getBinder(binderIndex).getCard(outgoingCardIndex).getFinalValue(),
-                                difference);
+                collector.getCollection().getCard(incomingCardIndex).getFinalValue(),
+                outgoingCardName,
+                collector.getBinder(binderIndex).getCard(outgoingCardIndex).getFinalValue(),
+                difference);
 
         // if difference in value is >= $1.00
         if (difference >= 1) {
@@ -856,7 +870,7 @@ public class Controller {
         else {
             // asks user if card will be added to binder
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
-                                          deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
+                    deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
                 collector.getDeck(deckIndex).addCard(collector.getCollection().getCard(cardIndex));
                 collector.getCollection().getCard(cardIndex).decrementCollectionCount();
                 deckView.printConfirmationMsg(1);
@@ -1002,4 +1016,3 @@ public class Controller {
 
     }
 }
-

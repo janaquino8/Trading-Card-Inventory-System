@@ -20,6 +20,29 @@ public class Collection {
     }
 
     /**
+     * addCard
+     * @param name name of the created card
+     * @param rarity integer representing the rarity of the created card
+     * @param baseValue base value of the created card
+     * Creates a common/uncommon card and adds it to the collection
+     */
+    public void addCard(String name, int rarity, double baseValue) {
+        this.getCards().add(new Card(name, rarity, baseValue, this.getCards().size()));
+    }
+
+    /**
+     * addCard
+     * @param name name of the created card
+     * @param rarity integer representing the rarity of the created card
+     * @param variant integer representing the variant of the created card
+     * @param baseValue base value of the created card
+     * Creates a rare/legendary card and adds it to the collection
+     */
+    public void addCard(String name, int rarity, int variant, double baseValue) {
+        this.getCards().add(new Card(name, rarity, variant, baseValue, this.getCards().size()));
+    }
+
+    /**
      * findCard
      * @param name name of the card to be found
      * @return index of the card in cards, -1 if not found
@@ -50,29 +73,6 @@ public class Collection {
     }
 
     /**
-     * addCard
-     * @param name name of the created card
-     * @param rarity integer representing the rarity of the created card
-     * @param baseValue base value of the created card
-     * Creates a common/uncommon card and adds it to the collection
-     */
-    public void addCard(String name, int rarity, double baseValue) {
-        this.getCards().add(new Card(name, rarity, baseValue, this.getCards().size()));
-    }
-
-    /**
-     * addCard
-     * @param name name of the created card
-     * @param rarity integer representing the rarity of the created card
-     * @param variant integer representing the variant of the created card
-     * @param baseValue base value of the created card
-     * Creates a rare/legendary card and adds it to the collection
-     */
-    public void addCard(String name, int rarity, int variant, double baseValue) {
-        this.getCards().add(new Card(name, rarity, variant, baseValue, this.getCards().size()));
-    }
-
-    /**
      * returnCards
      * @param cards the cards from the deleted binder/deck
      * Returns the cards from a deleted binder/deck back into to the collection
@@ -86,13 +86,13 @@ public class Collection {
         }
     }
 
-//    /**
-//     * sort
-//     * Sorts cards in alphabetical order of name
-//     */
-//    public void sort() {
-//        this.getCards().sort(new NameSorter());
-//    }
+    /**
+     * sort
+     * Sorts cards in alphabetical order of name
+     */
+    public void sort() {
+        this.getCards().sort(new NameSorter());
+    }
 
     /**
      * ?
