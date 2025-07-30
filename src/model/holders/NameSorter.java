@@ -8,7 +8,7 @@ import java.util.*;
  * NameSorter
  * Sorts objects in alphabetical order of name
  */
-public class NameSorter implements Comparator<Card>{
+public class NameSorter implements Comparator<Card> {
     /**
      * compare
      * @param c1 first card

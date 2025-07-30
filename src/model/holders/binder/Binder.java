@@ -28,9 +28,10 @@ public abstract class Binder extends Holder {
      * Sorts cards in alphabetical order of name
      */
     public void sort() {
-        Arrays.sort(this.getCards(), new NameSorter());
+        if (this.getCard(2) != null) {
+            Arrays.sort(this.getCards(), new NameSorter());
+        }
     }
-
 
     public int getID() {
         return this.ID;
