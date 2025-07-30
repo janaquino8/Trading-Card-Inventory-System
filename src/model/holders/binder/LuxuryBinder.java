@@ -41,4 +41,14 @@ public class LuxuryBinder extends SellableBinder {
     public double getValueWithHandlingFee() {
         return this.value * 1.1;
     }
+
+    @Override
+    public void setCards(Card[] cards) {
+        super.setCards(cards);
+        value = getValue();
+    }
+
+    public double getCurrentValue() {
+        return this.value;
+    }
 }
