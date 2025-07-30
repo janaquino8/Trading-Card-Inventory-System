@@ -2,6 +2,11 @@ package src.model.holders;
 
 import src.model.card.Card;
 
+/**
+ * Representation of a holder in the collection.
+ *
+ * <p>A holder possesses a name and stores a finite amount of cards.
+ */
 public abstract class Holder {
     protected String name;
     protected Card[] cards;
@@ -9,7 +14,6 @@ public abstract class Holder {
     public static int MAX_COUNT;
 
     /**
-     * Holder
      * Creates a new Holder with specified name and card capacity.
      * @param name The holder's display name
      * @param count Maximum number of cards this holder can contain
@@ -20,9 +24,9 @@ public abstract class Holder {
     }
 
     /**
-     * addCard
-     * Adds a card to the holder
+     * Adds a card to the holder.
      * @param card card to be added to the holder
+     * @return true if the card is successfully added, false otherwise
      */
     public boolean addCard(Card card) {
         int index = 0;
@@ -39,8 +43,7 @@ public abstract class Holder {
     }
 
     /**
-     * removeCard
-     * Removes a card form the holder
+     * Removes a card form the holder.
      * @param index index of the card to be removed from the holder
      */
     public void removeCard(int index) {
@@ -57,8 +60,7 @@ public abstract class Holder {
     }
 
     /**
-     * isEmpty
-     * Checks if the holder is empty (i.e., 0 cards)
+     * Checks if the holder is empty (i.e., 0 cards).
      * @return true if holder is empty, false otherwise
      */
     public boolean isEmpty() {
@@ -66,8 +68,7 @@ public abstract class Holder {
     }
 
     /**
-     * isFull
-     * Checks if the holder is full (i.e., has reached the maximum number of cards allowed)
+     * Checks if the holder is full (i.e., has reached the maximum number of cards allowed).
      * @return true if holder is full, false otherwise
      */
     public boolean isFull() {
@@ -75,8 +76,7 @@ public abstract class Holder {
     }
 
     /**
-     * findCard
-     * Finds a card in cards given its name
+     * Finds a card in cards given its name.
      * @param name name of the card to be found
      * @return index of the card in cards, -1 if not found
      */
@@ -90,8 +90,7 @@ public abstract class Holder {
     }
 
     /**
-     * getName
-     * Getter for name
+     * Getter for name.
      * @return name of the binder
      */
     public String getName() {
@@ -99,8 +98,7 @@ public abstract class Holder {
     }
 
     /**
-     * setName
-     * Setter for name
+     * Setter for name.
      * @param name new name of the binder
      */
     public void setName(String name) {
@@ -108,8 +106,7 @@ public abstract class Holder {
     }
 
     /**
-     * getCard
-     * Getter for a card given an index
+     * Getter for a card given an index.
      * @param index index of the card to get
      * @return card at specified index
      */
@@ -121,8 +118,7 @@ public abstract class Holder {
     }
 
     /**
-     * setCard
-     * Setter for card given an index
+     * Setter for card given an index.
      * @param index index of the card to set
      * @param card new card
      */
@@ -133,8 +129,7 @@ public abstract class Holder {
     }
 
     /**
-     * getCards
-     * Getter for cards
+     * Getter for cards.
      * @return cards
      */
     public Card[] getCards() {
@@ -142,7 +137,6 @@ public abstract class Holder {
     }
 
     /**
-     * setCards
      * Sets the current cards in this holder with the given array.
      * @param cards Array of Card objects to store (can be null or empty)
      */
@@ -151,7 +145,6 @@ public abstract class Holder {
     }
 
     /**
-     * getID
      * Returns this holder's unique identifier number.
      * @return The holder's ID value
      */

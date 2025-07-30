@@ -5,48 +5,43 @@ import src.model.card.Card;
 import java.util.*;
 
 /**
- * Collection
- * Represents the collection of the user
+ * Represents the collection of the user.
  */
 public class Collection {
     private ArrayList<Card> cards;
 
     /**
-     * Collector
-     * Constructor to construct a Collection object
+     * Constructor to construct a Collection object.
      */
     public Collection() {
         cards = new ArrayList<>();
     }
 
     /**
-     * addCard
+     * Creates a card without a given variant and adds it to the collection.
      * @param name name of the created card
      * @param rarity integer representing the rarity of the created card
      * @param baseValue base value of the created card
-     * Creates a common/uncommon card and adds it to the collection
      */
     public void addCard(String name, int rarity, double baseValue) {
         this.getCards().add(new Card(name, rarity, baseValue, this.getCards().size()));
     }
 
     /**
-     * addCard
+     * Creates a card given its variant and adds it to the collection.
      * @param name name of the created card
      * @param rarity integer representing the rarity of the created card
      * @param variant integer representing the variant of the created card
      * @param baseValue base value of the created card
-     * Creates a rare/legendary card and adds it to the collection
      */
     public void addCard(String name, int rarity, int variant, double baseValue) {
         this.getCards().add(new Card(name, rarity, variant, baseValue, this.getCards().size()));
     }
 
     /**
-     * findCard
+     * Finds a card in cards given a name.
      * @param name name of the card to be found
      * @return index of the card in cards, -1 if not found
-     * Finds a card in cards given a name
      */
     public int findCard(String name) {
         for (int i = 0; i < this.getCards().size(); i++) {
@@ -58,10 +53,9 @@ public class Collection {
     }
 
     /**
-     * findCard
+     * Finds a card in cards given a card number.
      * @param cardNo card number of the card to be found
      * @return index of the card in cards, -1 if not found
-     * Finds a card in cards given a card number
      */
     public int findCard(int cardNo) {
         for (int i = 0; i < this.getCards().size(); i++) {
@@ -73,9 +67,8 @@ public class Collection {
     }
 
     /**
-     * returnCards
+     * Returns the cards from a deleted binder/deck back into to the collection.
      * @param cards the cards from the deleted binder/deck
-     * Returns the cards from a deleted binder/deck back into to the collection
      */
     public void returnCards(Card[] cards) {
         for (Card c : cards) {
@@ -87,15 +80,16 @@ public class Collection {
     }
 
     /**
-     * sort
-     * Sorts cards in alphabetical order of name
+     * Sorts cards in alphabetical order of name.
      */
     public void sort() {
         this.getCards().sort(new NameSorter());
     }
 
     /**
-     * ?
+     * Sells a copy of a card in the collection.
+     * @param index collection index of the card to be sold
+     * @return value of the card. 0.0 if invalid
      */
     public double sellCard(int index) {
         if (this.getCard(index).getCollectionCount() > 0) {
@@ -106,10 +100,9 @@ public class Collection {
     }
 
     /**
-     * getCard
+     * Getter for a card given an index.
      * @param index index of the card to get
      * @return card at specified index
-     * Getter for a card given an index
      */
     public Card getCard(int index) {
         if (index >= 0 && index < this.getCards().size()) {
@@ -119,9 +112,8 @@ public class Collection {
     }
 
     /**
-     * getCards
+     * Getter for cards.
      * @return cards
-     * Getter for cards
      */
     public ArrayList<Card> getCards() {
         return this.cards;

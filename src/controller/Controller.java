@@ -8,8 +8,7 @@ import src.model.holders.deck.*;
 import src.view.*;
 
 /**
- * Controller
- * Handles all actions performed by the user
+ * Handles all actions performed by the user.
  */
 public class Controller {
     Collector collector;
@@ -20,8 +19,7 @@ public class Controller {
     CardView cardView;
 
     /**
-     * Controller
-     * Constructor to construct a Collector object
+     * Constructor to construct a Collector object.
      */
     public Controller() {
         collector = new Collector();
@@ -33,9 +31,8 @@ public class Controller {
     }
 
     /**
-     * run
      * The main invoker of the program that runs the main menu
-     * options change depending on card count of collection, binder count, and deck count
+     * options change depending on card count of collection, binder count, and deck count.
      */
     public void run() {
         System.out.println(Binder.MAX_COUNT + " " + Deck.MAX_COUNT);
@@ -84,9 +81,8 @@ public class Controller {
     }
 
     /**
-     * collectionMenu
      * Runs the menu for managing collection
-     * add card, update card count, display card, display collection, and sell card
+     * add card, update card count, display card, display collection, and sell card.
      */
     public void collectionMenu() {
         int input;
@@ -107,9 +103,8 @@ public class Controller {
     }
 
     /**
-     * binderMenu
      * Runs the menu for managing binders
-     * create binder, delete binder, add card to binder, remove card from binder, view binder, trade, and sell binder
+     * create binder, delete binder, add card to binder, remove card from binder, view binder, trade, and sell binder.
      */
     public void binderMenu() {
         int input;
@@ -132,9 +127,8 @@ public class Controller {
     }
 
     /**
-     * deckMenu
      * Runs the menu for managing decks
-     * create deck, delete deck, add card to deck, remove card from deck, view deck, and sell deck
+     * create deck, delete deck, add card to deck, remove card from deck, view deck, and sell deck.
      */
     public void deckMenu() {
         int input;
@@ -156,8 +150,7 @@ public class Controller {
     }
 
     /**
-     * addCard
-     * Creates a new card and adds it to the collection, or increments card count if card already exists prior
+     * Creates a new card and adds it to the collection, or increments card count if card already exists prior.
      * @param isAutoAdd false if the user will still be asked for confirmation, true otherwise
      * @return index of new card/card copy
      */
@@ -227,8 +220,7 @@ public class Controller {
     }
 
     /**
-     * createBinder
-     * Creates an empty binder, it asks user to choose a specific binder
+     * Creates an empty binder, it asks user to choose a specific binder.
      * Non-curated, Pauper, Rares, Luxury, and Collector Binders
      */
     public void createBinder() {
@@ -262,7 +254,6 @@ public class Controller {
     }
 
     /**
-     * createDeck
      * Creates an empty deck, it asks user to choose a specific deck. Normal, Sellable Decks.
      */
     public void createDeck() {
@@ -296,8 +287,7 @@ public class Controller {
     }
 
     /**
-     * updateCardCount
-     * Updates the collection count of a card in the collection (via increment or decrement)
+     * Updates the collection count of a card in the collection (via increment or decrement).
      */
     public void updateCardCount() {
         int index = -1;
@@ -355,8 +345,7 @@ public class Controller {
     }
 
     /**
-     * displayCard
-     * Displays the details of a card in the collection
+     * Displays the details of a card in the collection.
      */
     public void displayCard() {
         int index = -1;
@@ -388,8 +377,7 @@ public class Controller {
     }
 
     /**
-     * displayCollection
-     * Displays the name and collection count of each card in the collection
+     * Displays the name and collection count of each card in the collection.
      */
     public void displayCollection() {
         // if there are no card in the collection
@@ -412,7 +400,6 @@ public class Controller {
     }
 
     /**
-     * sellCard
      * Sells a card from the collection. User can search by name or card number.
      * Handles empty collections, missing cards, and cancellation. On success,
      * updates the player's money and decrements the card from collection.
@@ -464,8 +451,7 @@ public class Controller {
     }
 
     /**
-     * deleteBinder
-     * Deletes an existing binder and returns contents, if any, back to the collection
+     * Deletes an existing binder and returns contents, if any, back to the collection.
      */
     public void deleteBinder() {
         // if there are no existing binders
@@ -502,7 +488,6 @@ public class Controller {
     }
 
     /**
-     * addCardToBinder
      * Moves a card from the main collection to a specified binder if space is available.
      * Handles edge cases: no binders exist, no cards in collection, all binders full,
      * invalid binder name, full binder, invalid card search, user cancellation, and
@@ -593,8 +578,7 @@ public class Controller {
     }
 
     /**
-     * returnCardFromBinder
-     * Removes a card from a non-empty binder and returns it to the collection
+     * Removes a card from a non-empty binder and returns it to the collection.
      */
     public void removeCardFromBinder() {
         // if there are no existing binders
@@ -654,8 +638,7 @@ public class Controller {
     }
 
     /**
-     * viewBinder
-     * Displays the names of the cards in a binder
+     * Displays the names of the cards in a binder.
      */
     public void viewBinder() {
         // if there are no existing binders
@@ -700,7 +683,6 @@ public class Controller {
     }
 
     /**
-     * trade
      * Executes a card trade between a binder and an external card.
      * Validates: binder existence, non-empty binder, tradable binder type,
      * and incoming card rarity.
@@ -821,7 +803,6 @@ public class Controller {
     }
 
     /**
-     * sellBinder
      * Sells a specific binder (Pauper/Rares/Luxury) after validation and confirmation.
      * Handles different pricing rules per binder type and updates player money on success.
      */
@@ -902,8 +883,7 @@ public class Controller {
     }
 
     /**
-     * deleteDeck
-     * Deletes an existing deck and returns contents, if any, back to the collection
+     * Deletes an existing deck and returns contents, if any, back to the collection.
      */
     public void deleteDeck() {
         // if there are no existing decks
@@ -940,8 +920,7 @@ public class Controller {
     }
 
     /**
-     * addCardToDeck
-     * Adds a card from the collection to a non-full deck, while preventing duplicates
+     * Adds a card from the collection to a non-full deck, while preventing duplicates.
      */
     public void addCardToDeck() {
         // if there are no existing decks
@@ -1025,8 +1004,7 @@ public class Controller {
     }
 
     /**
-     * returnCardFromDeck
-     * Removes a card from a non-empty deck and returns it to the collection
+     * Removes a card from a non-empty deck and returns it to the collection.
      */
     public void removeCardFromDeck() {
         // if there are no existing decks
@@ -1086,8 +1064,7 @@ public class Controller {
     }
 
     /**
-     * viewDeck
-     * Displays the names of the cards in a deck; allows the user to view the details of the cards individually
+     * Displays the names of the cards in a deck; allows the user to view the details of the cards individually.
      */
     public void viewDeck() {
         // if there are no existing decks
@@ -1159,7 +1136,6 @@ public class Controller {
     }
 
     /**
-     * sellDeck
      * Sells a user-selected deck after validation and confirmation.
      * Validates deck existence and sellable status, calculating value and processing the sale.
      * Updates player's money and removes deck upon successful sale.

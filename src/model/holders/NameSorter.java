@@ -5,16 +5,15 @@ import src.model.card.Card;
 import java.util.*;
 
 /**
- * NameSorter
- * Sorts objects in alphabetical order of name
+ * Sorts objects in alphabetical order of name.
  */
 public class NameSorter implements Comparator<Card> {
     /**
-     * compare
-     * Compares the names of two Cards based on ASCII value
+     * Compares the names of two Cards based on ASCII value.
      * @param c1 first card
      * @param c2 second card
-     * @return a negative int if c1 name has a lower ASCII value, a positive int if c2 has a lower ASCII value, and 0 if both are equal
+     * @return a negative int if c1 name has a lower ASCII value, a positive int if c2 has a lower ASCII value,
+     * and 0 if both are equal
      */
     public int compare (Card c1, Card c2) {
         return c1.getName().compareTo(c2.getName());

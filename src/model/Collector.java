@@ -8,8 +8,7 @@ import src.model.holders.deck.*;
 import java.util.*;
 
 /**
- * Collector
- * Represents the user as the collector using the program
+ * Represents the user as the collector using the program.
  */
 public class Collector {
     private Collection collection;
@@ -18,8 +17,7 @@ public class Collector {
     private double money;
 
     /**
-     * Collector
-     * Constructor to construct a Collector object
+     * Constructor to construct a Collector object.
      */
     public Collector() {
         this.collection = new Collection();
@@ -29,7 +27,6 @@ public class Collector {
     }
 
     /**
-     * deleteHolder
      * Deletes a holder at the specified index from the given list of holders.
      * If the holder is not empty, its cards are returned to the collection before deletion.
      * @param holders the list of holders from which to delete
@@ -45,7 +42,6 @@ public class Collector {
     }
 
     /**
-     * findHolder
      * Finds the index of the first holder with the specified name in the given list.
      * @param holders the list of holders to search through
      * @param name the name of the holder to find (case-sensitive)
@@ -61,7 +57,6 @@ public class Collector {
     }
 
     /**
-     * isHoldersEmpty
      * Checks if all holders in the list are empty.
      * @param holders the list of holders to check
      * @return true if all holders are empty, false if at least one holder contains cards
@@ -76,7 +71,6 @@ public class Collector {
     }
 
     /**
-     * isHolderFull
      * Checks if all holders in the list are full.
      * Returns false immediately if the list is empty.
      * @param holders the list of holders to check
@@ -95,8 +89,7 @@ public class Collector {
     }
 
     /**
-     * createBinder
-     * Creates a binder
+     * Creates a binder.
      * @param name name of the created binder
      */
     public void createBinder(String name, int type) {
@@ -110,8 +103,7 @@ public class Collector {
     }
 
     /**
-     * deleteBinder
-     * Deletes a binder
+     * Deletes a binder.
      * @param index integer of the binder in binders to be deleted
      */
     public void deleteBinder(int index) {
@@ -119,8 +111,7 @@ public class Collector {
     }
 
     /**
-     * findBinder
-     * Finds a binder in binders given a name
+     * Finds a binder in binders given a name.
      * @param name name of the binder to be found
      * @return index of the binder in binders, -1 if not found
      */
@@ -129,8 +120,7 @@ public class Collector {
     }
 
     /**
-     * createDeck
-     * Creates a deck
+     * Creates a deck.
      * @param name name of the created deck
      */
     public void createDeck(String name, int type) {
@@ -141,8 +131,7 @@ public class Collector {
     }
 
     /**
-     * deleteDeck
-     * Deletes a deck
+     * Deletes a deck.
      * @param index integer of the deck in decks to be deleted
      */
     public void deleteDeck(int index) {
@@ -150,8 +139,7 @@ public class Collector {
     }
 
     /**
-     * findDeck
-     * Finds a deck in decks given a name
+     * Finds a deck in decks given a name.
      * @param name name of the deck to be found
      * @return index of the binder in decks, -1 if not found
      */
@@ -160,8 +148,7 @@ public class Collector {
     }
 
     /**
-     * isBindersEmpty
-     * Checks if all binders are empty
+     * Checks if all binders are empty.
      * @return true if all binders are empty, false otherwise
      */
     public boolean isBindersEmpty() {
@@ -169,8 +156,7 @@ public class Collector {
     }
 
     /**
-     * isBindersFull
-     * Checks if all binders are full
+     * Checks if all binders are full.
      * @return true if all binders are full, false otherwise
      */
     public boolean isBindersFull() {
@@ -178,8 +164,7 @@ public class Collector {
     }
 
     /**
-     * isDecksEmpty
-     * Checks if all decks are empty
+     * Checks if all decks are empty.
      * @return true if all decks are empty, false otherwise
      */
     public boolean isDecksEmpty() {
@@ -187,8 +172,7 @@ public class Collector {
     }
 
     /**
-     * isDecksFull
-     * Checks if all decks are full
+     * Checks if all decks are full.
      * @return true if all decks are full, false otherwise
      */
     public boolean isDecksFull() {
@@ -196,11 +180,9 @@ public class Collector {
     }
 
     /**
-     * getTradableBinders
      * Retrieves all binders that are TradableBinder objects.
      * Creates and returns a new list containing only the TradableBinder objects.
      * @return a new ArrayList containing all TradableBinder objects from the binders collection.
-     *         Returns an empty list if no tradable binders exist.
      */
     public ArrayList<TradableBinder> getTradableBinders() {
         ArrayList<TradableBinder> newList = new ArrayList<TradableBinder>();
@@ -213,11 +195,9 @@ public class Collector {
     }
 
     /**
-     * getSellableBinders
      * Retrieves all binders that are sellable. Creates and returns a new list
      * containing only sellable binders.
      * @return a new ArrayList containing all sellable binders from the binders collection.
-     *         Returns an empty list if no sellable binders exist.
      */
     public ArrayList<Binder> getSellableBinders() {
         ArrayList<Binder> newList = new ArrayList<Binder>(this.getBinders());
@@ -226,11 +206,9 @@ public class Collector {
     }
 
     /**
-     * getSellableDecks
      * Retrieves all decks that are sellable. Creates and returns a new list
      * containing only sellable decks.
      * @return a new ArrayList containing all sellable decks.
-     *         Returns an empty list if no sellable decks exist.
      */
     public ArrayList<Deck> getSellableDecks() {
         ArrayList<Deck> newList = new ArrayList<Deck>(this.getDecks());
@@ -239,8 +217,7 @@ public class Collector {
     }
 
     /**
-     * getCollection
-     * Getter for collection
+     * Getter for collection.
      * @return collection
      */
     public Collection getCollection() {
@@ -248,8 +225,7 @@ public class Collector {
     }
 
     /**
-     * getBinder
-     * Getter for a binder given an index
+     * Getter for a binder given an index.
      * @param index index of binder to get
      * @return binder at specified index
      */
@@ -261,8 +237,7 @@ public class Collector {
     }
 
     /**
-     * getBinders
-     * Getter for binders
+     * Getter for binders.
      * @return binders
      */
     public ArrayList<Binder> getBinders() {
@@ -270,8 +245,7 @@ public class Collector {
     }
 
     /**
-     * getDeck
-     * Getter for a deck given an index
+     * Getter for a deck given an index.
      * @param index index of deck to get
      * @return deck at specified index
      */
@@ -283,8 +257,7 @@ public class Collector {
     }
 
     /**
-     * getDecks
-     * Getter for decks
+     * Getter for decks.
      * @return decks
      */
     public ArrayList<Deck> getDecks() {
@@ -292,7 +265,6 @@ public class Collector {
     }
 
     /**
-     * getCollectionCardCount
      * Gets the number of unique card types in the collection.
      * This counts each distinct card once, regardless of quantity.
      * @return the number of unique card types in the collection
@@ -302,7 +274,6 @@ public class Collector {
     }
 
     /**
-     * getCollectionTotalCount
      * Gets the total quantity of all cards in the collection.
      * This sums the quantities of each card instance.
      * @return the total count of all cards in the collection
@@ -318,7 +289,6 @@ public class Collector {
     }
 
     /**
-     * getBindersCount
      * Gets the number of unique binders.
      * @return the number of unique binders
      */
@@ -327,7 +297,6 @@ public class Collector {
     }
 
     /**
-     * getDecksCount
      * Gets the number of unique decks.
      * @return the number of unique decks
      */
@@ -336,7 +305,6 @@ public class Collector {
     }
 
     /**
-     * earnMoney
      * Adds the specified amount to the current money balance.
      * @param sale the amount of money to add
      */
@@ -345,7 +313,6 @@ public class Collector {
     }
 
     /**
-     * getMoney
      * Gets the current money balance.
      * @return the current amount of money available
      */

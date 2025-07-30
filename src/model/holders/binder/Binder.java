@@ -6,14 +6,14 @@ import src.model.holders.NameSorter;
 import java.util.*;
 
 /**
- * Binder
- * Represents a binder
+ * Binder representation in the program.
+ *
+ * <p>A binder is a type of holder that can store up to 20 cards at a time, including duplicates.
  */
 public abstract class Binder extends Holder {
     /**
-     * Binder
+     * Constructor to construct a Binder object given its name.
      * @param name name of the created binder
-     * Constructor to construct a Binder object given its name
      */
     public Binder(String name) {
         super(name, 20);
@@ -21,8 +21,7 @@ public abstract class Binder extends Holder {
     }
 
     /**
-     * sort
-     * Sorts cards in alphabetical order of name
+     * Sorts cards in alphabetical order of name.
      */
     public void sort() {
         if (this.getCard(2) != null) {

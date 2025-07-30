@@ -1,15 +1,14 @@
 package src.model.card;
 
-/*
-Rarity - Represents card rarity levels with its names and abbreviations
+/**
+ * Represents card rarity with names.
  */
 public class Rarity {
     private String name;
 
-    /*
-    Method      - Rarity (constructor)
-    int rarity  - Numeric code representing rarity level (2-4)
-    Method Comment : Creates specific rarity based on input code (2: Uncommon, 3: Rare, 4: Legendary)
+    /**
+     * Creates specific rarity based on input code.
+     * @param rarity numeric code representing rarity level
      */
     public Rarity(int rarity) {
         switch (rarity) {
@@ -27,20 +26,17 @@ public class Rarity {
         }
     }
 
-    /*
-    Method       - getName
-    return type  - String
-    Method Comment : Returns the full name of the rarity level
+    /**
+     * Returns the full name of the rarity level.
+     * @return name of the rarity
      */
     public String getName() {
         return this.name;
     }
 
-    /*
-    Method       - setName
-    String name  - New name to assign to the rarity
-    return type  - void
-    Method Comment : Sets the rarity's name
+    /**
+     * Sets the rarity's name.
+     * @param name new name to assign to the rarity
      */
     public void setName(String name) {
         this.name = name;

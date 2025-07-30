@@ -1,16 +1,15 @@
 package src.model.card;
 
-/*
-Variant - Represents different card variants with its name, abbreviations, and unique value multipliers
+/**
+ * Represents card variant with name and value multiplier.
  */
 public class Variant {
     private String name;
     private double valueMultiplier;
 
-    /*
-    Method       - Variant (constructor)
-    int variant  - Numeric code representing variant type (2-4)
-    Method Comment : Creates specific variant based on input code (2: Extended-art, 3: Full-art, 4: Alt-art)
+    /**
+     * Creates specific variant based on input code.
+     * @param variant numeric code representing variant type
      */
     public Variant(int variant) {
         switch (variant) {
@@ -33,39 +32,33 @@ public class Variant {
         }
     }
 
-    /*
-    Method       - getName
-    return type  - String
-    Method Comment : Returns the full name of the variant
+    /**
+     * Returns the full name of the variant.
+     * @return name of the variant
      */
     public String getName() {
         return this.name;
     }
 
-    /*
-    Method       - setName
-    String name  - New name to assign to the variant
-    return type  - void
-    Method Comment : Sets the variant's name
+    /**
+     * Sets the variant's name.
+     * @param name new name to assign to the variant
      */
     public void setName(String name) {
         this.name = name;
     }
 
-    /*
-    Method       - getValueMultiplier
-    return type  - double
-    Method Comment : Returns the multiplier applied to card's base value
+    /**
+     * Returns the multiplier applied to card's base value.
+     * @return value multiplier corresponding to the variant
      */
     public double getValueMultiplier() {
         return this.valueMultiplier;
     }
 
-    /*
-    Method                  - setValueMultiplier
-    double valueMultiplier  - New multiplier value to assign
-    return type             - void
-    Method Comment : Sets the value multiplier for this variant
+    /**
+     * Sets the value multiplier for this variant.
+     * @param valueMultiplier new multiplier value to assign
      */
     public void setValueMultiplier(double valueMultiplier) {
         this.valueMultiplier = valueMultiplier;

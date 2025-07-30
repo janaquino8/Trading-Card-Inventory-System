@@ -1,8 +1,7 @@
 package src.model.card;
 
 /**
- * Card
- * Represents a card
+ * Represents a card in the program
  */
 public class Card {
     private String name;
@@ -14,20 +13,18 @@ public class Card {
     private int cardNo;
 
     /**
-     * Card
-     * Constructor to construct a Card object
+     * Constructor to construct a Card object.
      */
     public Card() {
         this.setCollectionCount(1);
     }
 
     /**
-     * Card
+     * Constructor to construct a Card object not given the variant (mainly for common/uncommon cards).
      * @param name name of the card
      * @param rarity integer representation of the rarity of the card
      * @param baseValue base value of the card
      * @param cardNo card number of the card
-     * Constructor to construct a Card object that is common/uncommon in rarity
      */
     public Card(String name, int rarity, double baseValue, int cardNo) {
         this();
@@ -40,13 +37,12 @@ public class Card {
     }
 
     /**
-     * Card
+     * Constructor to construct a Card object given the variant.
      * @param name name of the card
      * @param rarity integer representation of the rarity of the card
      * @param variant integer representation of the variant of the card
      * @param baseValue base value of the card
      * @param cardNo card number of the card
-     * Constructor to construct a Card object that is rare/legendary in rarity
      */
     public Card(String name, int rarity, int variant, double baseValue, int cardNo) {
         this(name, rarity, baseValue, cardNo);
@@ -57,16 +53,14 @@ public class Card {
     }
 
     /**
-     * incrementCollectionCount
-     * Increments the collection count of the card
+     * Increments the collection count of the card.
      */
     public void incrementCollectionCount() {
         this.setCollectionCount(this.getCollectionCount() + 1);
     }
 
     /**
-     * decrementCollectionCount
-     * Decrements the collection count of the card
+     * Decrements the collection count of the card.
      */
     public void decrementCollectionCount() {
         if (this.getCollectionCount() > 0) {
@@ -75,116 +69,103 @@ public class Card {
     }
 
     /**
-     * calculateFinalValue
-     * Calculates the final value of the card using the value multiplier set by the variant
+     * Calculates the final value of the card using the value multiplier set by the variant.
      */
     private void calculateFinalValue() {
         this.setFinalValue(this.getBaseValue() * this.getVariant().getValueMultiplier());
     }
 
     /**
-     * getName
+     * Getter for name.
      * @return name of the card
-     * Getter for name
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * setName
+     * Setter for name.
      * @param name new name of the card
-     * Setter for name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * getRarity
+     * Getter for Rarity.
      * @return Rarity of the card
-     * Getter for Rarity
      */
     public Rarity getRarity() {
         return this.rarity;
     }
 
     /**
-     * getVariant
+     * Getter for Variant.
      * @return Variant of the card
-     * Getter for Variant
      */
     public Variant getVariant() {
         return this.variant;
     }
 
     /**
-     * getBaseValue
+     * Getter for base value.
      * @return base value of the card
-     * Getter for base value
      */
     public double getBaseValue() {
         return this.baseValue;
     }
 
     /**
-     * setBaseValue
+     * Setter for base value.
      * @param baseValue new base value of the card
-     * Setter for base value
      */
     public void setBaseValue(double baseValue) {
         this.baseValue = baseValue;
     }
 
     /**
-     * getFinalValue
+     * Getter for final value.
      * @return final value of the card
-     * Getter for final value
      */
     public double getFinalValue() {
         return this.finalValue;
     }
 
     /**
-     * setFinalValue
+     * Setter for final value.
      * @param finalValue new final value of the card
-     * Setter for final value
      */
     public void setFinalValue(double finalValue) {
         this.finalValue = finalValue;
     }
 
     /**
-     * getCollectionCount
+     * Getter for collection count.
      * @return collection count of the card
-     * Getter for collection count
      */
     public int getCollectionCount() {
         return this.collectionCount;
     }
 
     /**
-     * setCollectionCount
+     * Setter for collection count.
      * @param collectionCount new collection count of the card
-     * Setter for collection count
      */
     public void setCollectionCount(int collectionCount) {
         this.collectionCount = collectionCount;
     }
 
     /**
-     * getCardNo
+     * Getter for card number.
      * @return card number of the card
-     * Getter for card number
      */
     public int getCardNo() {
         return this.cardNo;
     }
 
     /**
-     * setCardNo
+     * Setter for card number.
      * @param cardNo new card number of the card
-     * Setter for card number
      */
     public void setCardNo(int cardNo) {
         this.cardNo = cardNo;
