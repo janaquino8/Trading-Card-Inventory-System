@@ -223,6 +223,7 @@ public class CollectorView {
         System.out.println(GREEN + "[4] Remove a Card" + RESET);
         System.out.println(GREEN + "[5] View a Binder" + RESET);
         System.out.println(GREEN + "[6] Trade" + RESET);
+        System.out.println(GREEN + "[7] Sell a Binder" + RESET);
         System.out.println(RED + "[0] Back\n" + RESET);
     }
 

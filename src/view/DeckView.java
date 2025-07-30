@@ -65,7 +65,7 @@ public class DeckView {
                 System.out.println(RED + "Deck is not sellable." + RESET);
                 break;
             case 15:
-                System.out.println(RED + "Deck successfully sold." + RESET);
+                System.out.println(GREEN + "Deck successfully sold." + RESET);
                 break;
         }
         System.out.println();

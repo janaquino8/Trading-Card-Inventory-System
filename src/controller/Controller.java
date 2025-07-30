@@ -126,7 +126,7 @@ public class Controller {
                 case 4: this.removeCardFromBinder(); break;
                 case 5: this.viewBinder(); break;
                 case 6: this.trade(); break;
-                //case 7: this.sellBinder(); break;
+                case 7: this.sellBinder(); break;
             }
         } while (input != 0);
     }
@@ -669,7 +669,7 @@ public class Controller {
             }
         } while (binderIndex == -1);
 
-        // if deck is empty
+        // if binder is empty
         if (collector.getBinder(binderIndex).isEmpty()) {
             binderView.printConfirmationMsg(9);
             return;
@@ -805,6 +805,82 @@ public class Controller {
         collector.getCollection().getCard(incomingCardIndex).decrementCollectionCount();
     }
 
+    public void sellBinder() {
+        // if there are no existing binders
+        if (collector.getBindersCount() == 0) {
+            collectorView.printConfirmationMsg(13);
+            return;
+        }
+        // if there are no existing sellable binders
+        else if (collector.getSellableBinders().isEmpty()) {
+            binderView.printConfirmationMsg(17);
+            return;
+        }
+
+        String binderName;
+        int binderIndex;
+        double binderValue;
+
+        // header
+        binderView.displaySellBinder(collector.getMoney());
+
+        // asks for binder name
+        do {
+            binderName = collectorView.getStringInput("Enter binder name: ");
+            binderIndex = collector.findBinder(binderName);
+
+            // if binder doesn't exist
+            if (binderIndex == -1) {
+                binderView.printConfirmationMsg(4);
+            }
+            // if binder is not sellable
+            else if (collector.getBinder(binderIndex).getID() <= 2) {
+                binderView.printConfirmationMsg(18);
+                binderIndex = -1;
+            }
+        } while (binderIndex == -1);
+
+        switch (collector.getBinder(binderIndex).getID()) {
+            case 3 -> {
+                PauperBinder pb = new PauperBinder("");
+                pb.setCards(collector.getBinder(binderIndex).getCards());
+                binderValue = pb.getValue();
+            }
+            case 4 -> {
+                RaresBinder rb = new RaresBinder("");
+                rb.setCards(collector.getBinder(binderIndex).getCards());
+                binderValue = rb.getValueWithHandlingFee();
+            }
+            case 5 -> {
+                LuxuryBinder lb = new LuxuryBinder("");
+                lb.setCards(collector.getBinder(binderIndex).getCards());
+                binderValue = lb.getValueWithHandlingFee();
+
+                String msg = binderName + "is currently worth $" + lb.getCurrentValue() + ". Would you like to increase its value?";
+                msg += " (1 for yes, 0 for no): ";
+                if (collectorView.getIntInput(msg, 0, 1) == 1) {
+                   do {
+                       binderValue = collectorView.getDoubleInput("Enter new value (must be higher than original value): ");
+                   } while (!lb.setNewValue(binderValue));
+                }
+            }
+            default -> {
+                return;
+            }
+        }
+
+        binderView.displayBinderToBeSold(binderName, binderValue, collector.getMoney());
+
+        if (collectorView.getIntInput("Sell binder? (1 for yes, 0 for no): ", 0, 1) == 1) {
+            collector.earnMoney(binderValue);
+            collector.getBinders().remove(binderIndex);
+            binderView.printConfirmationMsg(19);
+        }
+        else {
+            binderView.printConfirmationMsg(0);
+        }
+    }
+
     /**
      * deleteDeck
      * Deletes an existing deck and returns contents, if any, back to the collection
@@ -880,7 +956,7 @@ public class Controller {
             if (deckIndex == -1) {
                 deckView.printConfirmationMsg(4);
             }
-            // if binder is full
+            // if deck is full
             else if (collector.getDeck(deckIndex).isFull()) {
                 deckView.printConfirmationMsg(5);
                 deckIndex = -1;
@@ -915,7 +991,7 @@ public class Controller {
             deckView.printConfirmationMsg(12);
         }
         else {
-            // asks user if card will be added to binder
+            // asks user if card will be added to deck
             if (collectorView.getIntInput("Add " + collector.getCollection().getCard(cardIndex).getName() + " to " +
                     deckName + "? (1 for yes, 0 for no): ", 0, 1) == 1) {
                 collector.getDeck(deckIndex).addCard(collector.getCollection().getCard(cardIndex));
@@ -1090,6 +1166,7 @@ public class Controller {
             if (deckIndex == -1) {
                 deckView.printConfirmationMsg(4);
             }
+            // if deck is not sellable
             else if (collector.getDeck(deckIndex).getID() == 1) {
                 deckView.printConfirmationMsg(14);
                 deckIndex = -1;
@@ -1103,7 +1180,7 @@ public class Controller {
 
         if (collectorView.getIntInput("Sell deck? (1 for yes, 0 for no): ", 0, 1) == 1) {
             collector.earnMoney(sd.getValue());
-            collector.deleteDeck(deckIndex);
+            collector.getDecks().remove(deckIndex);
             deckView.printConfirmationMsg(15);
         }
         else {

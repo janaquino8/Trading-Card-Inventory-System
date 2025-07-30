@@ -72,6 +72,15 @@ public class BinderView {
             case 16:
                 System.out.println(RED + "There are no existing tradable binders." + RESET);
                 break;
+            case 17:
+                System.out.println(RED + "There are no existing sellable binders." + RESET);
+                break;
+            case 18:
+                System.out.println(RED + "Binder is not sellable." + RESET);
+                break;
+            case 19:
+                System.out.println(GREEN + "Binder successfully sold." + RESET);
+                break;
         }
         System.out.println();
     }
@@ -132,6 +141,16 @@ public class BinderView {
                 "  |_|   |_| \\_\\ /_/   \\_\\ |____/  |_____|" + RESET);
     }
 
+    public void displaySellBinder(double money) {
+        System.out.println(BOLD + BLUE +
+                " ____    _____   _       _          ____    ___   _   _   ____    _____   ____  \n" +
+                "/ ___|  | ____| | |     | |        | __ )  |_ _| | \\ | | |  _ \\  | ____| |  _ \\ \n" +
+                "\\___ \\  |  _|   | |     | |        |  _ \\   | |  |  \\| | | | | | |  _|   | |_) |\n" +
+                " ___) | | |___  | |___  | |___     | |_) |  | |  | |\\  | | |_| | | |___  |  _ < \n" +
+                "|____/  |_____| |_____| |_____|    |____/  |___| |_| \\_| |____/  |_____| |_| \\_\\" + RESET);
+        System.out.println(GREEN + "You currently have $" + money + RESET);
+    }
+
     /*
     Method             - displayBinder
     String binderName  - Name of the binder to display
@@ -190,6 +209,11 @@ public class BinderView {
         printBorder(51);
         System.out.printf(BLUE + "|" + RESET + " Difference:" + MAGENTA + " $%-36s " + RESET + BLUE + "|" + RESET + "\n", formattedDifference);
         printBorder(51);
+    }
+
+    public void displayBinderToBeSold(String binderName, double binderValue, double currentMoney) {
+        System.out.println("\n" + GREEN + binderName + " - $" + binderValue + RESET);
+        System.out.println(GREEN + "If sold, current money: $" + currentMoney + " -> $" + (currentMoney + binderValue) + RESET);
     }
 
     /*
