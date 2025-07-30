@@ -5,6 +5,7 @@ import src.model.card.Card;
 public abstract class Holder {
     protected String name;
     protected Card[] cards;
+    protected int ID;
     public static int MAX_COUNT;
 
     public Holder(String name, int count) {
@@ -132,5 +133,13 @@ public abstract class Holder {
      */
     public Card[] getCards() {
         return this.cards;
+    }
+
+    public void setCards(Card[] cards) {
+        this.cards = cards;
+    }
+
+    public int getID() {
+        return this.ID;
     }
 }
