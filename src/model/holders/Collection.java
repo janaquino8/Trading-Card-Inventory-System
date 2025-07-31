@@ -8,6 +8,9 @@ import java.util.*;
  * Represents the collection of the user.
  */
 public class Collection {
+    /**
+     * Cards in the collection.
+     */
     private ArrayList<Card> cards;
 
     /**
