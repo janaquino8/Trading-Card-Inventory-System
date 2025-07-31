@@ -1,10 +1,8 @@
 package src.view;
 
-import java.util.*;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -12,21 +10,21 @@ import java.awt.event.ActionListener;
 CollectionView - Handles all visual displays related to card collection operations
  */
 public class CollectionGUI extends Frame {
-    private Button[] buttons;
     private TextField cardNameField;
     private TextField valueField;
     private ComboBox rarityBox;
     private ComboBox variantBox;
     private ComboBox cardListBox;
     private Button btnBack;
-    private Button btnAddCard;
-    private Button btnDisplayCard;
+    private Button btnAdd;
+    private Button btnDisplay;
     private Button btnIncrement;
     private Button btnDecrement;
-    private Button btnSellCard;
+    private Button btnSell;
     private Label cardNameLabel;
     private Label cardCountLabel;
     private Label cardValueLabel;
+    private Label collectorMoneyLabel;
     private JPanel leftPanel;
     private JPanel rightPanel;
     private boolean isFieldsEmpty;
@@ -102,11 +100,11 @@ public class CollectionGUI extends Frame {
         setPanels(new JPanel[]{cardName, rarity, variant, value}, body);
 
         JPanel options = new JPanel();
-        btnAddCard = new Button("Add");
-        btnAddCard.setEnabled(false);
-        setPanel(new Button[]{btnBack, btnAddCard}, options);
+        btnAdd = new Button("Add");
+        btnAdd.setEnabled(false);
+        setPanel(new Button[]{btnBack, btnAdd}, options);
 
-        setActionListener(new Button[]{btnBack, btnAddCard}, listener);
+        setActionListener(new Button[]{btnBack, btnAdd}, listener);
 
         this.add(body, BorderLayout.CENTER);
         this.add(options, BorderLayout.SOUTH);
@@ -115,15 +113,7 @@ public class CollectionGUI extends Frame {
     public void displayUpdateCardCount(String[] cardsList, ActionListener listener) {
         ActionListener updateListener = e -> {
             if (e.getSource() == cardListBox) {
-                if (cardListBox.getSelectedIndex() != 0) {
-                    rightPanel.setVisible(true);
-                }
-                else {
-                    rightPanel.setVisible(false);
-                }
-            }
-            if (e.getSource() == btnIncrement || e.getSource() == btnDecrement) {
-                btnDecrement.setEnabled(!cardCountLabel.getText().equals("Count: 0"));
+                rightPanel.setVisible(cardListBox.getSelectedIndex() != 0);
             }
         };
 
@@ -167,7 +157,6 @@ public class CollectionGUI extends Frame {
         options.setVisible(true);
 
         cardListBox.addActionListener(updateListener);
-        setActionListener(new Button[]{btnIncrement, btnDecrement}, updateListener);
         cardListBox.addActionListener(listener);
         setActionListener(new Button[]{btnBack, btnIncrement, btnDecrement}, listener);
 
@@ -179,12 +168,7 @@ public class CollectionGUI extends Frame {
     public void displayCard(String[] cardsList, ActionListener listener) {
         ActionListener boxListener = e -> {
             if (e.getSource() == cardListBox) {
-                if (cardListBox.getSelectedIndex() == 0) {
-                    btnDisplayCard.setEnabled(false);
-                }
-                else {
-                    btnDisplayCard.setEnabled(true);
-                }
+                btnDisplay.setEnabled(cardListBox.getSelectedIndex() != 0);
             }
         };
 
@@ -201,9 +185,9 @@ public class CollectionGUI extends Frame {
         body.add(cardListBox);
 
         body.add(Box.createVerticalStrut(15));
-        btnDisplayCard = new Button("Display");
-        btnDisplayCard.setEnabled(false);
-        body.add(btnDisplayCard);
+        btnDisplay = new Button("Display");
+        btnDisplay.setEnabled(false);
+        body.add(btnDisplay);
 
         body.setVisible(true);
 
@@ -214,7 +198,7 @@ public class CollectionGUI extends Frame {
         options.setVisible(true);
 
         cardListBox.addActionListener(boxListener);
-        setActionListener(new Button[]{btnBack, btnDisplayCard}, listener);
+        setActionListener(new Button[]{btnBack, btnDisplay}, listener);
 
         this.add(body, BorderLayout.CENTER);
         this.add(options, BorderLayout.SOUTH);
@@ -243,21 +227,10 @@ public class CollectionGUI extends Frame {
         this.add(options, BorderLayout.SOUTH);
     }
 
-    public void displaySellCard(String[] cardsList, ActionListener listener) {
+    public void displaySellCard(String[] cardsList, double money, ActionListener listener) {
         ActionListener updateListener = e -> {
             if (e.getSource() == cardListBox) {
-                if (cardListBox.getSelectedIndex() != 0) {
-                    rightPanel.setVisible(true);
-                }
-                else {
-                    rightPanel.setVisible(false);
-                }
-            }
-            if (e.getSource() == btnIncrement) {
-                btnDecrement.setEnabled(!cardCountLabel.getText().equals("Count: 0"));
-            }
-            if (e.getSource() == btnDecrement) {
-                btnDecrement.setEnabled(!cardCountLabel.getText().equals("Count: 0"));
+                rightPanel.setVisible(cardListBox.getSelectedIndex() != 0);
             }
         };
 
@@ -265,6 +238,7 @@ public class CollectionGUI extends Frame {
 
         leftPanel = new JPanel();
         leftPanel.setOpaque(false);
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setPreferredSize(new Dimension(450, 0));
 
         rightPanel = new JPanel();
@@ -274,10 +248,19 @@ public class CollectionGUI extends Frame {
 
         leftPanel.add(Box.createVerticalStrut(15));
         cardListBox = new ComboBox(cardsList);
-        cardListBox.setName("Select");
+        cardListBox.setActionCommand("Select");
         cardListBox.insertItemAt("", 0);
         cardListBox.setSelectedIndex(0);
         leftPanel.add(cardListBox);
+
+        leftPanel.add(Box.createVerticalStrut(300));
+        Label collectorLabel = new Label("You currently have", Font.PLAIN, 25);
+        leftPanel.add(collectorLabel);
+
+        collectorMoneyLabel = new Label("$", Font.BOLD, 25);
+        collectorMoneyLabel.setBorder(BorderFactory.createLineBorder(Color.decode("#BCBEC4"), 2, true));
+        leftPanel.add(collectorMoneyLabel);
+        setCollectorMoneyLabel(money);
 
         leftPanel.setVisible(true);
 
@@ -285,13 +268,12 @@ public class CollectionGUI extends Frame {
         rightPanel.add(cardNameLabel);
         cardCountLabel = new Label("Count: ", Font.PLAIN, 25);
         rightPanel.add(cardCountLabel);
+        cardValueLabel = new Label("Value: $", Font.PLAIN, 25);
+        rightPanel.add(cardValueLabel);
 
         rightPanel.add(Box.createVerticalStrut(15));
-        JPanel updateButtonsPanel = new JPanel();
-        btnIncrement = new Button("Increment");
-        btnDecrement = new Button("Decrement");
-        setPanel(new Button[]{btnIncrement, btnDecrement}, updateButtonsPanel);
-        rightPanel.add(updateButtonsPanel);
+        btnSell = new Button("Sell");
+        rightPanel.add(btnSell);
 
         rightPanel.setVisible(false);
 
@@ -302,8 +284,7 @@ public class CollectionGUI extends Frame {
 
         cardListBox.addActionListener(updateListener);
         cardListBox.addActionListener(listener);
-        setActionListener(new Button[]{btnIncrement, btnDecrement}, updateListener);
-        setActionListener(new Button[]{btnBack, btnIncrement, btnDecrement}, listener);
+        setActionListener(new Button[]{btnBack, btnSell}, listener);
 
         this.add(leftPanel, BorderLayout.WEST);
         this.add(rightPanel, BorderLayout.EAST);
@@ -354,19 +335,30 @@ public class CollectionGUI extends Frame {
         }
     }
 
-    public void setCardNameField(String cardName) {
-        cardNameField.setText(cardName);
+    public void setCardNameLabel(String cardName) {
+        cardNameLabel.setText(cardName);
     }
 
-    public void setCardCountField(int cardCount) {
+    public void setCardCountLabelForUpdateCard(int cardCount) {
         cardCountLabel.setText("Count: " + cardCount);
-        if (cardCount == 0) {
-            btnDecrement.setEnabled(false);
-        }
+        btnDecrement.setEnabled(cardCount != 0);
+    }
+
+    public void setCardCountLabelForSell(int cardCount) {
+        cardCountLabel.setText("Count: " + cardCount);
+        btnSell.setEnabled(cardCount != 0);
+    }
+
+    public void setCardValueLabel(double value) {
+        cardValueLabel.setText("Value: $" + value);
+    }
+
+    public void setCollectorMoneyLabel(double money) {
+        collectorMoneyLabel.setText("$" + money);
     }
 
     private void updateBtnAdd() {
-        btnAddCard.setEnabled(!isFieldsEmpty && !isBoxesEmpty && getValue() >= 0);
+        btnAdd.setEnabled(!isFieldsEmpty && !isBoxesEmpty && getValue() >= 0);
     }
 
     public String getCardName() {

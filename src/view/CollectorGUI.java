@@ -4,10 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-
 public class CollectorGUI extends Frame {
     private JPanel body;
-    private Button[] buttons;
 
     public CollectorGUI() {
         super();
@@ -22,8 +20,8 @@ public class CollectorGUI extends Frame {
         clearBody();
 
         String btn1Label = collectionCardCount > 0 ? "Manage Collection" : "Add a Card";
-        String btn2Label = binderCount > 0 ? "Manage Binders" : "Add a Binder";
-        String btn3Label = deckCount > 0 ? "Manage Decks" : "Add a Deck";
+        String btn2Label = binderCount > 0 ? "Manage Binders" : "Create a Binder";
+        String btn3Label = deckCount > 0 ? "Manage Decks" : "Create a Deck";
 
         Button button1 = new Button(btn1Label);
         Button button2 = new Button(btn2Label);
