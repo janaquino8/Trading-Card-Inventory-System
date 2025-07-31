@@ -11,7 +11,12 @@ import src.view.*;
  * Handles all actions performed by the user.
  */
 public class Controller {
+    /**
+     * Represents the user.
+     */
     Collector collector;
+
+    // View Classes
     CollectorView collectorView;
     CollectionView collectionView;
     BinderView binderView;

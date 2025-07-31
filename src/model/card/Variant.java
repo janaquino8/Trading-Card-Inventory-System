@@ -4,7 +4,14 @@ package src.model.card;
  * Represents card variant with name and value multiplier.
  */
 public class Variant {
+    /**
+     * Name of the variant.
+     */
     private String name;
+
+    /**
+     * Muliplier of the value of the card.
+     */
     private double valueMultiplier;
 
     /**

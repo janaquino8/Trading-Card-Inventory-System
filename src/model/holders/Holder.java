@@ -8,9 +8,24 @@ import src.model.card.Card;
  * <p>A holder possesses a name and stores a finite amount of cards.
  */
 public abstract class Holder {
+    /**
+     * Name of the holder.
+     */
     protected String name;
+
+    /**
+     * Collection of cards.
+     */
     protected Card[] cards;
+
+    /**
+     * Represents the type of holder.
+     */
     protected int ID;
+
+    /**
+     * Maximum number of cards that can be stored in the holder.
+     */
     public static int MAX_COUNT;
 
     /**

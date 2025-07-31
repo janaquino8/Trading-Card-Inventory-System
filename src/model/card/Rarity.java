@@ -4,6 +4,9 @@ package src.model.card;
  * Represents card rarity with names.
  */
 public class Rarity {
+    /**
+     * Name of the rarity.
+     */
     private String name;
 
     /**

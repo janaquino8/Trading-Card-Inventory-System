@@ -10,6 +10,9 @@ import src.model.card.Card;
  * manually set the price of the binder as long as it is greater than or equal to its orgiginal value.
  */
 public class LuxuryBinder extends SellableBinder {
+    /**
+     * Current value of the binder.
+     */
     private double value;
 
     /**

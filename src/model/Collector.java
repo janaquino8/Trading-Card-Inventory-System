@@ -11,9 +11,24 @@ import java.util.*;
  * Represents the user as the collector using the program.
  */
 public class Collector {
+    /**
+     * Collection of the collector.
+     */
     private Collection collection;
+
+    /**
+     * Collection of binders.
+     */
     private ArrayList<Binder> binders;
+
+    /**
+     * Collection of decks.
+     */
     private ArrayList<Deck> decks;
+
+    /**
+     * Corresponds to the money of the user.
+     */
     private double money;
 
     /**
