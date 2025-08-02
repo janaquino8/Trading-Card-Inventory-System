@@ -22,11 +22,11 @@ public class Main {
      * @param args main argument
      */
     public static void main(String[] args) {
-        Controller controller = new Controller();
-        controller.run();
+        //Controller controller = new Controller();
+        //controller.run();
 
 //        For GUI Functionality
-//        NewController controller = new NewController();
-//        controller.mainMenu();
+        NewController controller = new NewController();
+        controller.mainMenu();
     }
 }

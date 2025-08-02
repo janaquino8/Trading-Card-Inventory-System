@@ -121,6 +121,20 @@ public abstract class Holder {
     }
 
     /**
+     * Returns the current number of cards in the holder.
+     * @return the count of cards currently in the holder
+     */
+    public int getCardCount() {
+        int count = 0;
+        for (int i = 0; i < MAX_COUNT; i++) {
+            if (this.cards[i] != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
      * Getter for a card given an index.
      * @param index index of the card to get
      * @return card at specified index
