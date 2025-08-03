@@ -1,5 +1,6 @@
 package src.controller;
 
+import java.awt.*;
 import java.util.*;
 
 import src.model.*;
@@ -8,6 +9,7 @@ import src.model.holders.NameSorter;
 import src.model.holders.binder.*;
 import src.model.holders.deck.*;
 import src.view.*;
+import src.view.Frame;
 
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
@@ -123,9 +125,9 @@ public class NewController {
             switch (e.getActionCommand()) {
                 case "Create a Deck"              -> createDeck();
                 case "Delete a Deck"              -> deleteDeck();
-                case "Add a Card to a Deck"       -> System.out.println("3");
+                case "Add a Card to a Deck"       -> addCardToDeck();
                 case "Remove a Card From a Deck"  -> System.out.println("4");
-                case "View a Deck"                -> System.out.println("5");
+                case "View a Deck"                -> viewDeck();
                 case "Sell a Deck"                -> System.out.println("6");
                 case "Return to Main Menu"        -> mainMenu();
             }
@@ -525,6 +527,170 @@ public class NewController {
         deckGUI.displayCreateDeck(actionListener);
     }
 
+    public void viewDeck() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(deckGUI);
+                case "View" -> {
+                    int index = deckGUI.getSelectedDeckIndex();
+                    if (index >= 0) {
+                        // Dispose the current deck selection GUI
+                        deckGUI.dispose();
+
+                        Deck deck = collector.getDeck(index);
+                        String[] cardNames = Arrays.stream(deck.getCards())
+                                .filter(Objects::nonNull)
+                                .map(Card::getName)
+                                .toArray(String[]::new);
+
+                        String typeName = switch(deck.getID()) {
+                            case 1 -> "Normal";
+                            case 2 -> "Sellable";
+                            default -> "Unknown";
+                        };
+
+                        // Create new DeckGUI for the view
+                        DeckGUI viewDeckGUI = new DeckGUI();
+                        viewDeckGUI.displayViewDeck(
+                                deck.getName(),
+                                typeName,
+                                cardNames,
+                                e2 -> {
+                                    viewDeckGUI.dispose();
+                                    viewDeck(); // Reopen the selection if needed
+                                }
+                        );
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Please select a deck first",
+                                "No Selection",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+        };
+
+        collectorGUI.dispose();
+        deckGUI = new DeckGUI();
+
+        // Get list of deck names for selection
+        String[] deckNames = collector.getDecks().stream()
+                .map(Deck::getName)
+                .toArray(String[]::new);
+
+        deckGUI.displaySelectDeck(deckNames, actionListener);
+    }
+
+    public void addCardToDeck() {
+        // Check preconditions
+        if (collector.getDecksCount() == 0) {
+            JOptionPane.showMessageDialog(null, "No decks exist!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (collector.getCollectionTotalCount() == 0) {
+            JOptionPane.showMessageDialog(null, "No cards in collection!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (collector.isDecksFull()) {
+            JOptionPane.showMessageDialog(null, "All decks are full!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(deckGUI);
+                case "AddToDeck" -> {
+                    int deckIndex = deckGUI.getSelectedDeckIndex();
+                    String selectedCardName = deckGUI.getSelectedCardName();
+
+                    if (deckIndex == -1 || selectedCardName == null) {
+                        JOptionPane.showMessageDialog(null,
+                                "Please select both a deck and a card",
+                                "Selection Required",
+                                JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+
+                    // Find the card in the collection by name
+                    int cardIndex = collector.getCollection().findCard(selectedCardName);
+
+                    if (cardIndex == -1) {
+                        JOptionPane.showMessageDialog(null,
+                                "Card not found in collection!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    Deck deck = collector.getDeck(deckIndex);
+                    Card card = collector.getCollection().getCard(cardIndex);
+
+                    // Check standard conditions
+                    if (deck.isFull()) {
+                        JOptionPane.showMessageDialog(null,
+                                "Deck is full!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (card.getCollectionCount() == 0) {
+                        JOptionPane.showMessageDialog(null,
+                                "No copies of this card in collection!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Check if card already exists in deck
+                    if (deck.findCard(card.getName()) != -1) {
+                        JOptionPane.showMessageDialog(null,
+                                "This card already exists in the deck!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Get user confirmation
+                    int confirm = JOptionPane.showConfirmDialog(null,
+                            "Add " + card.getName() + " to " + deck.getName() + "?",
+                            "Confirm",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        if (deck.addCard(card)) {
+                            card.decrementCollectionCount();
+                            JOptionPane.showMessageDialog(null,
+                                    "Card added to deck!",
+                                    "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Failed to add card to deck!",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        };
+
+        // Prepare data for GUI
+        String[] deckNames = collector.getDecks().stream()
+                .filter(d -> !d.isFull())
+                .map(Deck::getName)
+                .toArray(String[]::new);
+
+        String[] cardNames = collector.getCollection().getCards().stream()
+                .filter(c -> c.getCollectionCount() > 0)
+                .map(Card::getName)
+                .toArray(String[]::new);
+
+        collectorGUI.dispose();
+        deckGUI = new DeckGUI();
+        deckGUI.displayAddCardToDeck(deckNames, cardNames, actionListener);
+    }
+
     /**
      * Updates the collection count of a card in the collection (via increment or decrement).
      */
@@ -568,27 +734,58 @@ public class NewController {
      * Displays the details of a card in the collection.
      */
     public void displayCard() {
-        actionListener = e -> {
+        // Store a reference to the current collectionGUI
+        CollectionGUI currentCollectionGUI = new CollectionGUI();
+        ArrayList<String> displayableCardsList = new ArrayList<String>();
+        ArrayList<Card> filteredCards = new ArrayList<Card>(); // Store filtered cards
+
+        for (Card c : collector.getCollection().getCards()) {
+            if (c.getCollectionCount() > 0) {
+                displayableCardsList.add(c.getCardNo() + " - " + c.getName());
+                filteredCards.add(c); // Add to filtered list
+            }
+        }
+
+        // Create the action listener for card selection
+        ActionListener selectionListener = e -> {
             switch (e.getActionCommand()) {
-                case "Back" -> goBackToMenu(collectionGUI);
+                case "Back" -> goBackToMenu(currentCollectionGUI);
                 case "Display" -> {
-                    Card c = collector.getCollection().getCard(collectionGUI.getSelectedCardIndex());
-                    cardGUI = new CardGUI();
-                    cardGUI.displayCard(c.getName(), c.getCardNo(), c.getRarity().getName(), c.getVariant().getName(),
-                            c.getCollectionCount(), c.getBaseValue(), c.getFinalValue());
+                    int selectedIndex = currentCollectionGUI.getSelectedCardIndex();
+                    if (selectedIndex >= 0 && selectedIndex < filteredCards.size()) {
+                        // Close the current collection GUI window
+                        currentCollectionGUI.dispose();
+
+                        // Get card from filtered list instead of original list
+                        Card c = filteredCards.get(selectedIndex);
+
+                        // Create and show card details window
+                        CardGUI cardFrame = new CardGUI();
+                        cardFrame.displayCard(
+                                c.getName(),
+                                c.getCardNo(),
+                                c.getRarity().getName(),
+                                c.getVariant().getName(),
+                                c.getCollectionCount(),
+                                c.getBaseValue(),
+                                c.getFinalValue()
+                        );
+
+                        // Set back action to return to card selection
+                        cardFrame.setBackAction(ev -> {
+                            cardFrame.dispose();
+                            displayCard(); // Reopen the card selection
+                        });
+                    }
                 }
             }
         };
 
+        // Close any existing collector GUI
         collectorGUI.dispose();
-        collectionGUI = new CollectionGUI();
-        ArrayList<String> displayableCardsList = new ArrayList<String>();
 
-        for (Card c : collector.getCollection().getCards()) {
-            displayableCardsList.add(c.getCardNo() + " - " + c.getName());
-        }
-
-        collectionGUI.displayCard(displayableCardsList.toArray(new String[0]), actionListener);
+        // Display the card selection
+        currentCollectionGUI.displayCard(displayableCardsList.toArray(new String[0]), selectionListener);
     }
 
     /**
