@@ -173,6 +173,11 @@ public class NewController {
                             collector.getCollection().addCard(collectionGUI.getCardName(), collectionGUI.getRarity(),
                                     collectionGUI.getVariant(), collectionGUI.getValue());
 
+                            // extra
+                            if (collectionGUI.getRarity() == 1) {
+                                collector.getCollection().getCard(collector.getCollectionCardCount() - 1).getRarity().setName("Common");
+                            }
+
                             msg = collectionGUI.getCardName() + " has been added to the collection.";
                             JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -197,11 +202,7 @@ public class NewController {
                     if (index == -1) {
                         String msg = binderGUI.getBinderName() + " does not exist. Would you like to create the binder?";
                         if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-                            switch (binderGUI.getBinderType()) {
-                                case 1 -> collector.createBinder(binderGUI.getBinderName(), 1);
-                                case 2 -> collector.createBinder(binderGUI.getBinderName(), 2);
-                            }
-
+                            collector.createBinder(binderGUI.getBinderName(), binderGUI.getBinderType());
                             msg = binderGUI.getBinderName() + " has been created.";
                             JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -228,264 +229,6 @@ public class NewController {
         binderGUI.displayCreateBinder(actionListener);
     }
 
-    public void viewBinder() {
-        actionListener = e -> {
-            switch (e.getActionCommand()) {
-                case "Back" -> goBackToMenu(binderGUI);
-                case "View" -> {
-                    int index = binderGUI.getSelectedBinderIndex();
-                    if (index >= 0) {
-                        // Dispose the current binder selection GUI
-                        binderGUI.dispose();
-
-                        Binder binder = collector.getBinder(index);
-                        String[] cardNames = Arrays.stream(binder.getCards())
-                                .filter(Objects::nonNull)
-                                .map(Card::getName)
-                                .toArray(String[]::new);
-
-                        String typeName = switch(binder.getID()) {
-                            case 1 -> "Non-curated";
-                            case 2 -> "Collector";
-                            case 3 -> "Pauper";
-                            case 4 -> "Rares";
-                            case 5 -> "Luxury";
-                            default -> "Unknown";
-                        };
-
-                        // Create new BinderGUI for the view
-                        BinderGUI viewBinderGUI = new BinderGUI();
-                        viewBinderGUI.displayViewBinder(
-                                binder.getName(),
-                                typeName,
-                                cardNames,
-                                e2 -> {
-                                    viewBinderGUI.dispose();
-                                    viewBinder(); // Reopen the selection if needed
-                                }
-                        );
-                    } else {
-                        JOptionPane.showMessageDialog(null,
-                                "Please select a binder first",
-                                "No Selection",
-                                JOptionPane.WARNING_MESSAGE);
-                    }
-                }
-            }
-        };
-
-        collectorGUI.dispose();
-        binderGUI = new BinderGUI();
-
-        // Get list of binder names for selection
-        String[] binderNames = collector.getBinders().stream()
-                .map(Binder::getName)
-                .toArray(String[]::new);
-
-        binderGUI.displaySelectBinder(binderNames, actionListener);
-    }
-
-    public void addCardToBinder() {
-        // Check preconditions (same as before)
-        if (collector.getBindersCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No binders exist!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (collector.getCollectionTotalCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No cards in collection!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (collector.isBindersFull()) {
-            JOptionPane.showMessageDialog(null, "All binders are full!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        actionListener = e -> {
-            switch (e.getActionCommand()) {
-                case "Back" -> goBackToMenu(binderGUI);
-                case "AddToBinder" -> {
-                    int binderIndex = binderGUI.getSelectedBinderIndex();
-                    String selectedCardName = binderGUI.getSelectedCardName();
-
-                    if (binderIndex == -1 || selectedCardName == null) {
-                        JOptionPane.showMessageDialog(null,
-                                "Please select both a binder and a card",
-                                "Selection Required",
-                                JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-
-                    // Find the card in the collection by name
-                    int cardIndex = collector.getCollection().findCard(selectedCardName);
-
-                    // Find the card in the collection by name instead of using the raw index
-                    int actualCardIndex = collector.getCollection().findCard(selectedCardName);
-
-                    if (actualCardIndex == -1) {
-                        JOptionPane.showMessageDialog(null,
-                                "Card not found in collection!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    Binder binder = collector.getBinder(binderIndex);
-                    Card card = collector.getCollection().getCard(actualCardIndex);
-
-                    // Check standard conditions
-                    if (binder.isFull()) {
-                        JOptionPane.showMessageDialog(null,
-                                "Binder is full!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    if (card.getCollectionCount() == 0) {
-                        JOptionPane.showMessageDialog(null,
-                                "No copies of this card in collection!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    // Get user confirmation
-                    int confirm = JOptionPane.showConfirmDialog(null,
-                            "Add " + card.getName() + " to " + binder.getName() + "?",
-                            "Confirm",
-                            JOptionPane.YES_NO_OPTION);
-
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        // Try to add the card - this will check binder-specific rules
-                        if (binder.addCard(card)) {
-                            card.decrementCollectionCount();
-                            JOptionPane.showMessageDialog(null,
-                                    "Card added to binder!",
-                                    "Success",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            // This handles cases where card doesn't meet binder requirements
-                            String errorMessage = switch (binder.getID()) {
-                                case 2 -> "Collector Binder only accepts non-normal variants!";
-                                case 3 -> "Pauper Binder only accepts Common/Uncommon cards!";
-                                case 4 -> "Rares Binder only accepts Rare/Legendary cards!";
-                                default -> "Card cannot be added to this binder!";
-                            };
-                            JOptionPane.showMessageDialog(null,
-                                    errorMessage,
-                                    "Invalid Card",
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                }
-            }
-        };
-
-        // Prepare and show GUI (same as before)
-        String[] binderNames = collector.getBinders().stream()
-                .map(Binder::getName)
-                .toArray(String[]::new);
-
-        String[] cardNames = collector.getCollection().getCards().stream()
-                .filter(c -> c.getCollectionCount() > 0)
-                .map(Card::getName)
-                .toArray(String[]::new);
-
-        collectorGUI.dispose();
-        binderGUI = new BinderGUI();
-        binderGUI.displayAddCardToBinder(binderNames, cardNames, actionListener);
-    }
-
-    public void removeCardFromBinder() {
-        // Check preconditions
-        if (collector.getBindersCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No binders exist!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (collector.isBindersEmpty()) {
-            JOptionPane.showMessageDialog(null, "All binders are empty!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        actionListener = e -> {
-            switch (e.getActionCommand()) {
-                case "Back" -> goBackToMenu(binderGUI);
-                case "BinderSelectionChanged" -> {
-                    int binderIndex = binderGUI.getSelectedBinderIndex();
-                    if (binderIndex >= 0) {
-                        Binder binder = collector.getBinder(binderIndex);
-                        String[] cardNames = Arrays.stream(binder.getCards())
-                                .filter(Objects::nonNull)
-                                .map(Card::getName)
-                                .toArray(String[]::new);
-
-                        // Update the view with the new card names
-                        binderGUI.updateCardList(cardNames);
-                    }
-                }
-                case "RemoveFromBinder" -> {
-                    int binderIndex = binderGUI.getSelectedBinderIndex();
-                    int cardIndex = binderGUI.getSelectedCardIndex();
-
-                    if (binderIndex == -1 || cardIndex == -1) {
-                        JOptionPane.showMessageDialog(null,
-                                "Please select both a binder and a card",
-                                "Selection Required",
-                                JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-
-                    Binder binder = collector.getBinder(binderIndex);
-
-                    // Check if card exists at the selected index
-                    if (cardIndex >= binder.getCardCount() || binder.getCard(cardIndex) == null) {
-                        JOptionPane.showMessageDialog(null,
-                                "The selected card no longer exists in this binder!",
-                                "Card Not Found",
-                                JOptionPane.WARNING_MESSAGE);
-                        // Refresh the view
-                        removeCardFromBinder();
-                        return;
-                    }
-
-                    Card card = binder.getCard(cardIndex);
-
-                    // Get user confirmation
-                    int confirm = JOptionPane.showConfirmDialog(null,
-                            "Remove " + card.getName() + " from " + binder.getName() + "?",
-                            "Confirm",
-                            JOptionPane.YES_NO_OPTION);
-
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        // Return card to collection
-                        collector.getCollection().getCard(collector.getCollection().findCard(card.getName()))
-                                .incrementCollectionCount();
-                        // Remove from binder
-                        binder.removeCard(cardIndex);
-
-                        JOptionPane.showMessageDialog(null,
-                                "Card removed from binder!",
-                                "Success",
-                                JOptionPane.INFORMATION_MESSAGE);
-
-                        // Refresh the view
-                        removeCardFromBinder();
-                    }
-                }
-            }
-        };
-
-        // Prepare data for GUI
-        String[] binderNames = collector.getBinders().stream()
-                .filter(b -> !b.isEmpty())
-                .map(Binder::getName)
-                .toArray(String[]::new);
-
-        collectorGUI.dispose();
-        binderGUI = new BinderGUI();
-        binderGUI.displayRemoveCardFromBinder(binderNames, actionListener);
-    }
-
     public void createDeck() {
         actionListener = e -> {
             switch (e.getActionCommand()) {
@@ -496,14 +239,7 @@ public class NewController {
                     if (index == -1) {
                         String msg = deckGUI.getDeckName() + " does not exist. Would you like to create the deck?";
                         if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-                            switch (deckGUI.getDeckType()) {
-                                case 1 -> collector.createDeck(deckGUI.getDeckName(), 1);
-                                case 2 -> collector.createDeck(deckGUI.getDeckName(), 2);
-                                case 3 -> collector.createDeck(deckGUI.getDeckName(), 3);
-                                case 4 -> collector.createDeck(deckGUI.getDeckName(), 4);
-                                case 5 -> collector.createDeck(deckGUI.getDeckName(), 5);
-                            }
-
+                            collector.createDeck(deckGUI.getDeckName(), deckGUI.getDeckType());
                             msg = deckGUI.getDeckName() + " has been created.";
                             JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -525,170 +261,6 @@ public class NewController {
         deckGUI = new DeckGUI();
 
         deckGUI.displayCreateDeck(actionListener);
-    }
-
-    public void viewDeck() {
-        actionListener = e -> {
-            switch (e.getActionCommand()) {
-                case "Back" -> goBackToMenu(deckGUI);
-                case "View" -> {
-                    int index = deckGUI.getSelectedDeckIndex();
-                    if (index >= 0) {
-                        // Dispose the current deck selection GUI
-                        deckGUI.dispose();
-
-                        Deck deck = collector.getDeck(index);
-                        String[] cardNames = Arrays.stream(deck.getCards())
-                                .filter(Objects::nonNull)
-                                .map(Card::getName)
-                                .toArray(String[]::new);
-
-                        String typeName = switch(deck.getID()) {
-                            case 1 -> "Normal";
-                            case 2 -> "Sellable";
-                            default -> "Unknown";
-                        };
-
-                        // Create new DeckGUI for the view
-                        DeckGUI viewDeckGUI = new DeckGUI();
-                        viewDeckGUI.displayViewDeck(
-                                deck.getName(),
-                                typeName,
-                                cardNames,
-                                e2 -> {
-                                    viewDeckGUI.dispose();
-                                    viewDeck(); // Reopen the selection if needed
-                                }
-                        );
-                    } else {
-                        JOptionPane.showMessageDialog(null,
-                                "Please select a deck first",
-                                "No Selection",
-                                JOptionPane.WARNING_MESSAGE);
-                    }
-                }
-            }
-        };
-
-        collectorGUI.dispose();
-        deckGUI = new DeckGUI();
-
-        // Get list of deck names for selection
-        String[] deckNames = collector.getDecks().stream()
-                .map(Deck::getName)
-                .toArray(String[]::new);
-
-        deckGUI.displaySelectDeck(deckNames, actionListener);
-    }
-
-    public void addCardToDeck() {
-        // Check preconditions
-        if (collector.getDecksCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No decks exist!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (collector.getCollectionTotalCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No cards in collection!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (collector.isDecksFull()) {
-            JOptionPane.showMessageDialog(null, "All decks are full!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        actionListener = e -> {
-            switch (e.getActionCommand()) {
-                case "Back" -> goBackToMenu(deckGUI);
-                case "AddToDeck" -> {
-                    int deckIndex = deckGUI.getSelectedDeckIndex();
-                    String selectedCardName = deckGUI.getSelectedCardName();
-
-                    if (deckIndex == -1 || selectedCardName == null) {
-                        JOptionPane.showMessageDialog(null,
-                                "Please select both a deck and a card",
-                                "Selection Required",
-                                JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-
-                    // Find the card in the collection by name
-                    int cardIndex = collector.getCollection().findCard(selectedCardName);
-
-                    if (cardIndex == -1) {
-                        JOptionPane.showMessageDialog(null,
-                                "Card not found in collection!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    Deck deck = collector.getDeck(deckIndex);
-                    Card card = collector.getCollection().getCard(cardIndex);
-
-                    // Check standard conditions
-                    if (deck.isFull()) {
-                        JOptionPane.showMessageDialog(null,
-                                "Deck is full!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    if (card.getCollectionCount() == 0) {
-                        JOptionPane.showMessageDialog(null,
-                                "No copies of this card in collection!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    // Check if card already exists in deck
-                    if (deck.findCard(card.getName()) != -1) {
-                        JOptionPane.showMessageDialog(null,
-                                "This card already exists in the deck!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    // Get user confirmation
-                    int confirm = JOptionPane.showConfirmDialog(null,
-                            "Add " + card.getName() + " to " + deck.getName() + "?",
-                            "Confirm",
-                            JOptionPane.YES_NO_OPTION);
-
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        if (deck.addCard(card)) {
-                            card.decrementCollectionCount();
-                            JOptionPane.showMessageDialog(null,
-                                    "Card added to deck!",
-                                    "Success",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            JOptionPane.showMessageDialog(null,
-                                    "Failed to add card to deck!",
-                                    "Error",
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                }
-            }
-        };
-
-        // Prepare data for GUI
-        String[] deckNames = collector.getDecks().stream()
-                .filter(d -> !d.isFull())
-                .map(Deck::getName)
-                .toArray(String[]::new);
-
-        String[] cardNames = collector.getCollection().getCards().stream()
-                .filter(c -> c.getCollectionCount() > 0)
-                .map(Card::getName)
-                .toArray(String[]::new);
-
-        collectorGUI.dispose();
-        deckGUI = new DeckGUI();
-        deckGUI.displayAddCardToDeck(deckNames, cardNames, actionListener);
     }
 
     /**
@@ -819,6 +391,7 @@ public class NewController {
     public void sellCard() {
         actionListener = e -> {
             switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(collectionGUI);
                 case "Select" -> {
                     int index = collectionGUI.getSelectedCardIndex();
                     if (index >= 0) {
@@ -832,8 +405,7 @@ public class NewController {
                     int index = collectionGUI.getSelectedCardIndex();
                     collector.earnMoney(collector.getCollection().sellCard(index));
                     collectionGUI.setCollectorMoneyLabel(collector.getMoney());
-                    collectionGUI.setCardCountLabelForSell(collector.
-                            getCollection().getCard(index).getCollectionCount());
+                    collectionGUI.setCardCountLabelForSell(collector.getCollection().getCard(index).getCollectionCount());
                 }
             }
         };
@@ -878,6 +450,201 @@ public class NewController {
         binderGUI.displayDeleteBinder(bindersList.toArray(new String[0]), actionListener);
     }
 
+    public void viewBinder() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(binderGUI);
+                case "View" -> {
+                    int index = binderGUI.getSelectedBinderIndex();
+                    if (index >= 0 && index < collector.getBindersCount()) {
+                        // Dispose the current binder selection GUI
+                        binderGUI.dispose();
+
+                        Binder binder = collector.getBinder(index);
+                        String[] cardNames = Arrays.stream(binder.getCards())
+                                .filter(Objects::nonNull)
+                                .map(Card::getName)
+                                .toArray(String[]::new);
+
+                        String typeName = switch(binder.getID()) {
+                            case 1 -> "Non-curated";
+                            case 2 -> "Collector";
+                            case 3 -> "Pauper";
+                            case 4 -> "Rares";
+                            case 5 -> "Luxury";
+                            default -> "Unknown";
+                        };
+
+                        // Create new BinderGUI for the view
+                        BinderGUI viewBinderGUI = new BinderGUI();
+                        viewBinderGUI.displayViewBinder(binder.getName(), typeName, cardNames,
+                                e2 -> {
+                                    viewBinderGUI.dispose();
+                                    viewBinder(); // Reopen the selection if needed
+                                }
+                        );
+                    }
+                }
+            }
+        };
+
+        collectorGUI.dispose();
+        binderGUI = new BinderGUI();
+
+        // Get list of binder names for selection
+        String[] binderNames = collector.getBinders().stream()
+                .map(Binder::getName)
+                .toArray(String[]::new);
+
+        binderGUI.displaySelectBinder(binderNames, actionListener);
+    }
+
+    public void addCardToBinder() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(binderGUI);
+                case "Add" -> {
+                    int binderIndex = binderGUI.getSelectedBinderIndex();
+                    String selectedCardName = binderGUI.getSelectedCardName();
+
+//                    // Find the card in the collection by name
+//                    int cardIndex = collector.getCollection().findCard(selectedCardName);
+
+                    // Find the card in the collection by name
+                    int actualCardIndex = collector.getCollection().findCard(selectedCardName);
+
+                    Binder binder = collector.getBinder(binderIndex);
+                    Card card = collector.getCollection().getCard(actualCardIndex);
+
+//                    // Check standard conditions
+//                    if (binder.isFull()) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "Binder is full!",
+//                                "Error",
+//                                JOptionPane.ERROR_MESSAGE);
+//                        return;
+//                    }
+//
+//                    if (card.getCollectionCount() == 0) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "No copies of this card in collection!",
+//                                "Error",
+//                                JOptionPane.ERROR_MESSAGE);
+//                        return;
+//                    }
+
+                    // Get user confirmation
+                    String msg = "Add " + card.getName() + " to " + binder.getName() + "?";
+                    int confirm = JOptionPane.showConfirmDialog(null, msg, "Confirm", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        // Try to add the card - this will check binder-specific rules
+                        if (binder.addCard(card)) {
+                            card.decrementCollectionCount();
+                            binderGUI.resetDisplayAddCardToBinder(binder.isFull(), card.getCollectionCount());
+                            JOptionPane.showMessageDialog(null, "Card added to binder!", "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            // This handles cases where card doesn't meet binder requirements
+                            String errorMessage = switch (binder.getID()) {
+                                case 2 -> "Collector Binder only accepts non-normal variants!";
+                                case 3 -> "Pauper Binder only accepts Common/Uncommon cards!";
+                                case 4 -> "Rares Binder only accepts Rare/Legendary cards!";
+                                default -> "Card cannot be added to this binder!";
+                            };
+                            JOptionPane.showMessageDialog(null, errorMessage, "Failed", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        };
+
+        // Prepare and show GUI (same as before)
+        String[] binderNames = collector.getBinders().stream()
+                .filter(b -> !b.isFull())
+                .map(Binder::getName)
+                .toArray(String[]::new);
+
+        String[] cardNames = collector.getCollection().getCards().stream()
+                .filter(c -> c.getCollectionCount() > 0)
+                .map(Card::getName)
+                .toArray(String[]::new);
+
+        collectorGUI.dispose();
+        binderGUI = new BinderGUI();
+        binderGUI.displayAddCardToBinder(binderNames, cardNames, actionListener);
+    }
+
+    public void removeCardFromBinder() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(binderGUI);
+                case "BinderSelectionChanged" -> {
+                    int binderIndex = binderGUI.getSelectedBinderIndex();
+
+                    if (binderIndex >= 0) {
+                        Binder binder = collector.getBinder(binderIndex);
+                        String[] cardNames = Arrays.stream(binder.getCards())
+                                .filter(Objects::nonNull)
+                                .map(Card::getName)
+                                .toArray(String[]::new);
+
+                        // Update the view with the new card names
+                        binderGUI.updateCardList(cardNames);
+                    }
+                }
+                case "Remove" -> {
+                    int binderIndex = binderGUI.getSelectedBinderIndex();
+                    int cardIndex = binderGUI.getSelectedCardIndex();
+
+                    Binder binder = collector.getBinder(binderIndex);
+
+                    // Check if card exists at the selected index
+//                    if (cardIndex >= binder.getCardCount() || binder.getCard(cardIndex) == null) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "The selected card no longer exists in this binder!",
+//                                "Card Not Found",
+//                                JOptionPane.WARNING_MESSAGE);
+//                        // Refresh the view
+//                        removeCardFromBinder();
+//                        return;
+//                    }
+
+                    Card card = binder.getCard(cardIndex);
+
+                    // Get user confirmation
+                    String msg = "Remove " + card.getName() + " from " + binder.getName() + "?";
+                    int confirm = JOptionPane.showConfirmDialog(null, msg, "Confirm", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        // Return card to collection
+                        collector.getCollection().getCard(collector.getCollection().findCard(card.getName()))
+                                .incrementCollectionCount();
+                        // Remove from binder
+                        binder.removeCard(cardIndex);
+                        binderGUI.resetDisplayRemoveCardFromBinder(binder.isEmpty());
+
+                        JOptionPane.showMessageDialog(null, "Card removed from binder!", "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+
+                        // Refresh the view
+//                        removeCardFromBinder();
+                    }
+                }
+            }
+        };
+
+        // Prepare data for GUI
+        String[] binderNames = collector.getBinders().stream()
+                .filter(b -> !b.isEmpty())
+                .map(Binder::getName)
+                .toArray(String[]::new);
+
+        collectorGUI.dispose();
+        binderGUI = new BinderGUI();
+        binderGUI.displayRemoveCardFromBinder(binderNames, actionListener);
+    }
+
     public void deleteDeck() {
         actionListener = e -> {
             switch (e.getActionCommand()) {
@@ -905,6 +672,141 @@ public class NewController {
         }
 
         deckGUI.displayDeleteDeck(decksList.toArray(new String[0]), actionListener);
+    }
+
+    public void viewDeck() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(deckGUI);
+                case "View" -> {
+                    int index = deckGUI.getSelectedDeckIndex();
+                    if (index >= 0 && index < collector.getDecksCount()) {
+                        // Dispose the current deck selection GUI
+                        deckGUI.dispose();
+
+                        Deck deck = collector.getDeck(index);
+                        String[] cardNames = Arrays.stream(deck.getCards())
+                                .filter(Objects::nonNull)
+                                .map(Card::getName)
+                                .toArray(String[]::new);
+
+                        String typeName = switch(deck.getID()) {
+                            case 1 -> "Normal";
+                            case 2 -> "Sellable";
+                            default -> "Unknown";
+                        };
+
+                        // Create new DeckGUI for the view
+                        DeckGUI viewDeckGUI = new DeckGUI();
+                        viewDeckGUI.displayViewDeck(deck.getName(), typeName, cardNames,
+                                e2 -> {
+                                    viewDeckGUI.dispose();
+                                    viewDeck(); // Reopen the selection if needed
+                                }
+                        );
+                    }
+                }
+            }
+        };
+
+        collectorGUI.dispose();
+        deckGUI = new DeckGUI();
+
+        // Get list of deck names for selection
+        String[] deckNames = collector.getDecks().stream()
+                .map(Deck::getName)
+                .toArray(String[]::new);
+
+        deckGUI.displaySelectDeck(deckNames, actionListener);
+    }
+
+    public void addCardToDeck() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(deckGUI);
+                case "Add" -> {
+                    int deckIndex = deckGUI.getSelectedDeckIndex();
+                    String selectedCardName = deckGUI.getSelectedCardName();
+
+//                    if (deckIndex == -1 || selectedCardName == null) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "Please select both a deck and a card",
+//                                "Selection Required",
+//                                JOptionPane.WARNING_MESSAGE);
+//                        return;
+//                    }
+
+                    // Find the card in the collection by name
+                    int cardIndex = collector.getCollection().findCard(selectedCardName);
+
+//                    if (cardIndex == -1) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "Card not found in collection!",
+//                                "Error",
+//                                JOptionPane.ERROR_MESSAGE);
+//                        return;
+//                    }
+
+                    Deck deck = collector.getDeck(deckIndex);
+                    Card card = collector.getCollection().getCard(cardIndex);
+
+                    // Check standard conditions
+//                    if (deck.isFull()) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "Deck is full!",
+//                                "Error",
+//                                JOptionPane.ERROR_MESSAGE);
+//                        return;
+//                    }
+
+//                    if (card.getCollectionCount() == 0) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "No copies of this card in collection!",
+//                                "Error",
+//                                JOptionPane.ERROR_MESSAGE);
+//                        return;
+//                    }
+
+                    // Check if card already exists in deck
+                    if (deck.findCard(card.getName()) != -1) {
+                        JOptionPane.showMessageDialog(null, "This card already exists in the deck!", "Failed",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Get user confirmation
+                    String msg = "Add " + card.getName() + " to " + deck.getName() + "?";
+                    int confirm = JOptionPane.showConfirmDialog(null, msg, "Confirm", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        if (deck.addCard(card)) {
+                            card.decrementCollectionCount();
+                            deckGUI.resetDisplayAddCardToDeck(deck.isFull(), card.getCollectionCount());
+                            JOptionPane.showMessageDialog(null, "Card added to deck!", "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Failed to add card to deck!", "Failed", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        };
+
+        // Prepare data for GUI
+        String[] deckNames = collector.getDecks().stream()
+                .filter(d -> !d.isFull())
+                .map(Deck::getName)
+                .toArray(String[]::new);
+
+        String[] cardNames = collector.getCollection().getCards().stream()
+                .filter(c -> c.getCollectionCount() > 0)
+                .map(Card::getName)
+                .toArray(String[]::new);
+
+        collectorGUI.dispose();
+        deckGUI = new DeckGUI();
+        deckGUI.displayAddCardToDeck(deckNames, cardNames, actionListener);
     }
 
     /**

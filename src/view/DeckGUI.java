@@ -14,6 +14,7 @@ public class DeckGUI extends Frame {
     private Button btnBack;
     private Button btnAdd;
     private Button btnDelete;
+    private Button btnView;
     private Label deckNameLabel;
     private Label collectorMoneyLabel;
     private JPanel leftPanel;
@@ -122,18 +123,64 @@ public class DeckGUI extends Frame {
         this.add(options, BorderLayout.SOUTH);
     }
 
+    public void displayAddCardToDeck(String[] deckNames, String[] cardNames, ActionListener listener) {
+        // ActionListener for combo boxes
+        ActionListener boxListener = e -> {
+            if (e.getSource() == deckListBox || e.getSource() == cardListBox) {
+                btnAdd.setEnabled(deckListBox.getSelectedIndex() > 0 && cardListBox.getSelectedIndex() > 0);
+            }
+        };
+
+        renameWindow("Add Card to Deck");
+
+        // Main panel with vertical layout
+        JPanel body = new JPanel();
+        body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+        body.setOpaque(false);
+
+        // Deck selection
+        JPanel deckPanel = new JPanel();
+        Label deckLabel = new Label("Select Deck:", Font.PLAIN, 25);
+        deckListBox = new ComboBox(deckNames);
+        deckListBox.insertItemAt("", 0); // Add empty first item
+        deckListBox.setSelectedIndex(0); // Select empty item by default
+        deckListBox.addActionListener(boxListener); // Add listener here
+        setPanel(deckLabel, deckListBox, deckPanel);
+
+        // Card selection
+        JPanel cardPanel = new JPanel();
+        Label cardLabel = new Label("Select Card:", Font.PLAIN, 25);
+        cardListBox = new ComboBox(cardNames);
+        cardListBox.insertItemAt("", 0); // Add empty first item
+        cardListBox.setSelectedIndex(0); // Select empty item by default
+        cardListBox.addActionListener(boxListener); // Add listener here
+        setPanel(cardLabel, cardListBox, cardPanel);
+
+        setPanels(new JPanel[]{deckPanel, cardPanel}, body);
+
+        // Button panel
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        btnAdd = new Button("Add");
+        btnAdd.setEnabled(false); // Disable initially
+
+        // Add buttons and listeners
+        setPanel(new Button[]{btnBack, btnAdd}, options);
+        setActionListener(new Button[]{btnBack, btnAdd}, listener);
+
+        this.add(body, BorderLayout.CENTER);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
     public void displaySelectDeck(String[] deckNames, ActionListener listener) {
-        renameWindow("Select a Deck");
-
-        // Declare btnView first
-        Button btnView = new Button("View");
-        btnView.setEnabled(false);
-
         // ActionListener to track selection changes
         ActionListener boxListener = e -> {
-            boolean deckSelected = deckListBox.getSelectedIndex() > 0;
-            btnView.setEnabled(deckSelected); // Enable "View" only if a deck is selected
+            if (e.getSource() == deckListBox) {
+                btnView.setEnabled(deckListBox.getSelectedIndex() != 0);
+            }
         };
+
+        renameWindow("Select a Deck");
 
         // Main content panel
         JPanel body = new JPanel();
@@ -150,32 +197,26 @@ public class DeckGUI extends Frame {
         body.add(Box.createVerticalStrut(20));
 
         // Button panel with both View and Back buttons
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(false);
-        Button btnBack = new Button("Back");
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        btnView = new Button("View");
+        btnView.setEnabled(false);
 
-        // Set action commands
-        btnView.setActionCommand("View");
-        btnBack.setActionCommand("Back");
-
-        // Add both buttons to panel
-        buttonPanel.add(btnView);
-        buttonPanel.add(btnBack);
-
-        // Set listeners for both buttons
-        setActionListener(new Button[]{btnView, btnBack}, listener);
+        // Add buttons and listener
+        setPanel(new Button[]{btnBack, btnView}, options);
+        setActionListener(new Button[]{btnBack, btnView}, listener);
 
         this.add(body, BorderLayout.CENTER);
-        this.add(buttonPanel, BorderLayout.SOUTH);
+        this.add(options, BorderLayout.SOUTH);
     }
 
     public void displayViewDeck(String deckName, String deckType, String[] cardNames, ActionListener backListener) {
         renameWindow("View Deck: " + deckName);
 
         // Main panel with vertical layout
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setOpaque(false);
+        JPanel body = new JPanel();
+        body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+        body.setOpaque(false);
 
         // Deck info panel
         JPanel infoPanel = new JPanel();
@@ -190,8 +231,8 @@ public class DeckGUI extends Frame {
         typeLabel.setForeground(Color.decode("#66B2FF")); // Blue color
         infoPanel.add(typeLabel);
 
-        mainPanel.add(infoPanel);
-        mainPanel.add(Box.createVerticalStrut(20));
+        body.add(infoPanel);
+        body.add(Box.createVerticalStrut(20));
 
         // Cards list panel with scroll
         JPanel cardsPanel = new JPanel();
@@ -234,75 +275,19 @@ public class DeckGUI extends Frame {
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
 
-        mainPanel.add(scrollPane);
-        mainPanel.add(Box.createVerticalStrut(20));
+        body.add(scrollPane);
+        body.add(Box.createVerticalStrut(20));
 
         // Back button panel
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(false);
+        JPanel options = new JPanel();
+        options.setOpaque(false);
         btnBack.addActionListener(backListener);
-        buttonPanel.add(btnBack);
+        options.add(btnBack);
 
-        this.add(mainPanel, BorderLayout.CENTER);
-        this.add(buttonPanel, BorderLayout.SOUTH);
+        this.add(body, BorderLayout.CENTER);
+        this.add(options, BorderLayout.SOUTH);
         this.revalidate();
         this.repaint();
-    }
-
-    public void displayAddCardToDeck(String[] deckNames, String[] cardNames, ActionListener listener) {
-        renameWindow("Add Card to Deck");
-
-        // ActionListener for combo boxes
-        ActionListener boxListener = e -> {
-            boolean deckSelected = deckListBox.getSelectedIndex() > 0;
-            boolean cardSelected = cardListBox.getSelectedIndex() > 0;
-            btnAdd.setEnabled(deckSelected && cardSelected);
-        };
-
-        // Main panel with vertical layout
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setOpaque(false);
-
-        // Deck selection
-        JPanel deckPanel = new JPanel();
-        Label deckLabel = new Label("Select Deck:", Font.PLAIN, 25);
-        deckListBox = new ComboBox(deckNames);
-        deckListBox.insertItemAt("", 0); // Add empty first item
-        deckListBox.setSelectedIndex(0); // Select empty item by default
-        deckListBox.addActionListener(boxListener); // Add listener here
-        setPanel(deckLabel, deckListBox, deckPanel);
-
-        // Card selection
-        JPanel cardPanel = new JPanel();
-        Label cardLabel = new Label("Select Card:", Font.PLAIN, 25);
-        cardListBox = new ComboBox(cardNames);
-        cardListBox.insertItemAt("", 0); // Add empty first item
-        cardListBox.setSelectedIndex(0); // Select empty item by default
-        cardListBox.addActionListener(boxListener); // Add listener here
-        setPanel(cardLabel, cardListBox, cardPanel);
-
-        mainPanel.add(deckPanel);
-        mainPanel.add(cardPanel);
-
-        // Button panel
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(false);
-        btnAdd = new Button("Add");
-        btnAdd.setEnabled(false); // Disable initially
-        Button btnBack = new Button("Back");
-
-        // Set action commands
-        btnAdd.setActionCommand("AddToDeck");
-        btnBack.setActionCommand("Back");
-
-        // Add buttons and listeners
-        setActionListener(new Button[]{btnAdd, btnBack}, listener);
-        buttonPanel.add(btnAdd);
-        buttonPanel.add(btnBack);
-
-        this.add(mainPanel, BorderLayout.CENTER);
-        this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private void setPanel(Label label, TextField field, JPanel panel) {
@@ -387,17 +372,28 @@ public class DeckGUI extends Frame {
         return null;
     }
 
-    public void updateCardList(String[] cardNames) {
-        cardListBox.setModel(new DefaultComboBoxModel<>(cardNames));
-        cardListBox.insertItemAt("", 0);
-        cardListBox.setSelectedIndex(0);
-    }
-
     public void removeDeckFromList(int index) {
         if (deckListBox != null && deckListBox.getItemCount() > index) {
             deckListBox.removeItemAt(index);
             deckListBox.setSelectedIndex(0);
             btnDelete.setEnabled(false);
         }
+    }
+
+    public void updateCardList(String[] cardNames) {
+        cardListBox.setModel(new DefaultComboBoxModel<>(cardNames));
+        cardListBox.insertItemAt("", 0);
+        cardListBox.setSelectedIndex(0);
+    }
+
+    public void resetDisplayAddCardToDeck(boolean isDeckFull, int cardCollectionCount) {
+        if (isDeckFull) {
+            deckListBox.removeItemAt(getSelectedDeckIndex() + 1);
+        }
+        if (cardCollectionCount == 0) {
+            cardListBox.removeItemAt(getSelectedCardIndex() + 1);
+        }
+        deckListBox.setSelectedIndex(0);
+        cardListBox.setSelectedIndex(0);
     }
 }
