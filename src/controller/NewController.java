@@ -126,7 +126,7 @@ public class NewController {
                 case "Create a Deck"              -> createDeck();
                 case "Delete a Deck"              -> deleteDeck();
                 case "Add a Card to a Deck"       -> addCardToDeck();
-                case "Remove a Card From a Deck"  -> System.out.println("4");
+                case "Remove a Card From a Deck"  -> removeCardFromDeck();
                 case "View a Deck"                -> viewDeck();
                 case "Sell a Deck"                -> System.out.println("6");
                 case "Return to Main Menu"        -> mainMenu();
@@ -674,6 +674,101 @@ public class NewController {
         deckGUI.displayDeleteDeck(decksList.toArray(new String[0]), actionListener);
     }
 
+    private void showCardInDeck(DeckGUI deckGUI, Deck deck) {
+        // Create a new window for card selection
+        DeckGUI cardSelectGUI = new DeckGUI();
+        cardSelectGUI.displaySelectCardInDeck(
+                Arrays.stream(deck.getCards())
+                        .filter(Objects::nonNull)
+                        .map(Card::getName)
+                        .toArray(String[]::new),
+                e -> {
+                    int selectedIndex = cardSelectGUI.getSelectedCardIndex();
+                    if (selectedIndex >= 0) {
+                        Card selectedCard = deck.getCard(selectedIndex);
+                        // Close the selection window
+                        cardSelectGUI.dispose();
+
+                        // Show card details
+                        CardGUI cardDetailsGUI = new CardGUI();
+                        cardDetailsGUI.displayCard(
+                                selectedCard.getName(),
+                                selectedCard.getCardNo(),
+                                selectedCard.getRarity().getName(),
+                                selectedCard.getVariant().getName(),
+                                selectedCard.getCollectionCount(),
+                                selectedCard.getBaseValue(),
+                                selectedCard.getFinalValue()
+                        );
+
+                        // Set back action to return to deck view
+                        cardDetailsGUI.setBackAction(ev -> {
+                            cardDetailsGUI.dispose();
+                            showCardInDeck(deckGUI, deck); // Reopen card selection
+                        });
+                    }
+                },
+                e -> {
+                    // Back button action - just close this window
+                    cardSelectGUI.dispose();
+                }
+        );
+    }
+
+    public void removeCardFromDeck() {
+        actionListener = e -> {
+            switch (e.getActionCommand()) {
+                case "Back" -> goBackToMenu(deckGUI);
+                case "DeckSelectionChanged" -> {
+                    int deckIndex = deckGUI.getSelectedDeckIndex();
+                    if (deckIndex >= 0) {
+                        Deck deck = collector.getDeck(deckIndex);
+                        String[] cardNames = Arrays.stream(deck.getCards())
+                                .filter(Objects::nonNull)
+                                .map(Card::getName)
+                                .toArray(String[]::new);
+
+                        // Update the view with the new card names
+                        deckGUI.updateCardList(cardNames);
+                    }
+                }
+                case "Remove" -> {
+                    int deckIndex = deckGUI.getSelectedDeckIndex();
+                    int cardIndex = deckGUI.getSelectedCardIndex();
+
+                    Deck deck = collector.getDeck(deckIndex);
+                    Card card = deck.getCard(cardIndex);
+
+                    // Get user confirmation
+                    String msg = "Remove " + card.getName() + " from " + deck.getName() + "?";
+                    int confirm = JOptionPane.showConfirmDialog(null, msg, "Confirm", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        // Return card to collection
+                        collector.getCollection().getCard(collector.getCollection().findCard(card.getName()))
+                                .incrementCollectionCount();
+                        // Remove from deck
+                        deck.removeCard(cardIndex);
+                        deckGUI.resetDisplayRemoveCardFromDeck(deck.isEmpty());
+
+                        JOptionPane.showMessageDialog(null, "Card removed from deck!", "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        };
+
+        // Prepare data for GUI
+        String[] deckNames = collector.getDecks().stream()
+                .filter(d -> !d.isEmpty())
+                .map(Deck::getName)
+                .toArray(String[]::new);
+
+        collectorGUI.dispose();
+        deckGUI = new DeckGUI();
+        deckGUI.displayRemoveCardFromDeck(deckNames, actionListener);
+    }
+
     public void viewDeck() {
         actionListener = e -> {
             switch (e.getActionCommand()) {
@@ -702,7 +797,8 @@ public class NewController {
                                 e2 -> {
                                     viewDeckGUI.dispose();
                                     viewDeck(); // Reopen the selection if needed
-                                }
+                                },
+                                e3 -> showCardInDeck(viewDeckGUI, deck) // New handler for View Card
                         );
                     }
                 }

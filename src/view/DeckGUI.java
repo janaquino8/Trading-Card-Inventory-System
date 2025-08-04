@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DeckGUI extends Frame {
@@ -15,6 +16,7 @@ public class DeckGUI extends Frame {
     private Button btnAdd;
     private Button btnDelete;
     private Button btnView;
+    private Button btnRemove;
     private Label deckNameLabel;
     private Label collectorMoneyLabel;
     private JPanel leftPanel;
@@ -210,7 +212,7 @@ public class DeckGUI extends Frame {
         this.add(options, BorderLayout.SOUTH);
     }
 
-    public void displayViewDeck(String deckName, String deckType, String[] cardNames, ActionListener backListener) {
+    public void displayViewDeck(String deckName, String deckType, String[] cardNames, ActionListener backListener, ActionListener viewCardListener) {
         renameWindow("View Deck: " + deckName);
 
         // Main panel with vertical layout
@@ -278,16 +280,123 @@ public class DeckGUI extends Frame {
         body.add(scrollPane);
         body.add(Box.createVerticalStrut(20));
 
-        // Back button panel
+        // Button panel
         JPanel options = new JPanel();
         options.setOpaque(false);
+
+        Button btnViewCard = new Button("View Card");
+        btnViewCard.setEnabled(cardNames.length > 0); // Disable if deck is empty
+        btnViewCard.addActionListener(viewCardListener);
+
         btnBack.addActionListener(backListener);
         options.add(btnBack);
+        options.add(btnViewCard);
 
         this.add(body, BorderLayout.CENTER);
         this.add(options, BorderLayout.SOUTH);
         this.revalidate();
         this.repaint();
+    }
+
+    public void displaySelectCardInDeck(String[] cardNames, ActionListener viewListener, ActionListener backListener) {
+        renameWindow("Select a Card from Deck");
+
+        // Main content panel
+        JPanel body = new JPanel();
+        body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+        body.setOpaque(false);
+
+        // Card selection combo box
+        body.add(Box.createVerticalStrut(20));
+        cardListBox = new ComboBox(cardNames);
+        cardListBox.insertItemAt("", 0); // Add empty first item
+        cardListBox.setSelectedIndex(0); // Default to empty selection
+        body.add(cardListBox);
+        body.add(Box.createVerticalStrut(20));
+
+        // Button panel with both View and Back buttons
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        Button btnView = new Button("View");
+        btnView.setEnabled(cardNames.length > 0); // Disable if deck is empty
+        btnView.addActionListener(viewListener);
+
+        btnBack.addActionListener(backListener);
+
+        // Track selection changes (only needed if deck isn't empty)
+        if (cardNames.length > 0) {
+            cardListBox.addActionListener(e -> {
+                btnView.setEnabled(cardListBox.getSelectedIndex() != 0);
+            });
+        }
+
+        // Add buttons and listener
+        setPanel(new Button[]{btnBack, btnView}, options);
+        this.add(body, BorderLayout.CENTER);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
+    public void displayRemoveCardFromDeck(String[] deckNames, ActionListener listener) {
+        // ActionListener for combo boxes
+        ActionListener boxListener = e -> {
+            if (e.getSource() == deckListBox) {
+                // Notify controller that deck selection changed
+                listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "DeckSelectionChanged"));
+                btnRemove.setEnabled(false); // Disable until both selections are made
+                if (deckListBox.getSelectedIndex() == 0) {
+                    updateCardList(new String[]{}); // Clear card list if no deck selected
+                }
+            } else if (e.getSource() == cardListBox) {
+                btnRemove.setEnabled(deckListBox.getSelectedIndex() > 0 && cardListBox.getSelectedIndex() > 0);
+            }
+        };
+
+        renameWindow("Remove Card from Deck");
+
+        // Main panel with vertical layout
+        JPanel body = new JPanel();
+        body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+        body.setOpaque(false);
+
+        // Deck selection
+        JPanel deckPanel = new JPanel();
+        Label deckLabel = new Label("Select Deck:", Font.PLAIN, 25);
+        deckListBox = new ComboBox(deckNames);
+        deckListBox.insertItemAt("", 0);
+        deckListBox.setSelectedIndex(0);
+        deckListBox.addActionListener(boxListener);
+        setPanel(deckLabel, deckListBox, deckPanel);
+
+        // Card selection
+        JPanel cardPanel = new JPanel();
+        Label cardLabel = new Label("Select Card:", Font.PLAIN, 25);
+        cardListBox = new ComboBox(new String[]{""}); // Initialize empty
+        cardListBox.addActionListener(boxListener);
+        setPanel(cardLabel, cardListBox, cardPanel);
+
+        setPanels(new JPanel[]{deckPanel, cardPanel}, body);
+
+        // Button panel
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        btnRemove = new Button("Remove");
+        btnRemove.setEnabled(false); // Disable initially
+
+        // Add buttons and listeners
+        setPanel(new Button[]{btnBack, btnRemove}, options);
+        setActionListener(new Button[]{btnBack, btnRemove}, listener);
+
+        this.add(body, BorderLayout.CENTER);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
+    public void resetDisplayRemoveCardFromDeck(boolean isDeckEmpty) {
+        if (isDeckEmpty) {
+            deckListBox.removeItemAt(getSelectedDeckIndex() + 1);
+        }
+        updateCardList(new String[]{});
+        deckListBox.setSelectedIndex(0);
+        cardListBox.setSelectedIndex(0);
     }
 
     private void setPanel(Label label, TextField field, JPanel panel) {
