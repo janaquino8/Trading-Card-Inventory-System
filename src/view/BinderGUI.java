@@ -17,7 +17,10 @@ public class BinderGUI extends Frame {
     private Button btnDelete;
     private Button btnView;
     private Button btnRemove;
+    private Button btnTrade;
+    private Button btnSell;
     private Label binderNameLabel;
+    private Label binderValueLabel;
     private Label collectorMoneyLabel;
     private JPanel leftPanel;
     private JPanel rightPanel;
@@ -335,6 +338,119 @@ public class BinderGUI extends Frame {
         this.repaint();
     }
 
+    public void displayTrade(String[] binderNames, ActionListener listener) {
+        // ActionListener for combo boxes
+        ActionListener boxListener = e -> {
+            if (e.getSource() == binderListBox) {
+                // Just notify the controller that binder selection changed
+                listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "BinderSelectionChanged"));
+                btnTrade.setEnabled(false); // Disable remove button until both selections are made
+                if (binderListBox.getSelectedIndex() == 0) {
+                    updateCardList(new String[]{});
+                }
+            } else if (e.getSource() == cardListBox) {
+                btnTrade.setEnabled(binderListBox.getSelectedIndex() > 0 && cardListBox.getSelectedIndex() > 0);
+            }
+        };
+
+        renameWindow("Trade");
+
+        JPanel body = new JPanel();
+        body.setOpaque(false);
+        body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
+
+        JPanel binderSelect = new JPanel();
+        Label binderLabel = new Label("Select Binder:", Font.PLAIN, 25);
+        binderListBox = new ComboBox(binderNames);
+        binderListBox.insertItemAt("", 0);
+        binderListBox.setSelectedIndex(0);
+        binderListBox.addActionListener(boxListener);
+        setPanel(binderLabel, binderListBox, binderSelect);
+
+        // Card selection
+        JPanel cardSelect = new JPanel();
+        Label cardLabel = new Label("Select Card:", Font.PLAIN, 25);
+        cardListBox = new ComboBox(new String[]{}); // Initialize empty
+        cardListBox.addActionListener(boxListener);
+        setPanel(cardLabel, cardListBox, cardSelect);
+
+        setPanels(new JPanel[]{binderSelect, cardSelect}, body);
+
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        options.add(btnBack);
+        btnTrade = new Button("Trade");
+        btnTrade.setEnabled(false);
+
+        setPanel(new Button[]{btnBack, btnTrade}, options);
+        setActionListener(new Button[]{btnBack, btnTrade}, listener);
+
+        this.add(body, BorderLayout.CENTER);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
+    public void displaySellBinder(String[] bindersList, double money, ActionListener listener) {
+        ActionListener updateListener = e -> {
+            if (e.getSource() == binderListBox) {
+                rightPanel.setVisible(binderListBox.getSelectedIndex() != 0);
+            }
+        };
+
+        renameWindow("Sell a Binder");
+
+        leftPanel = new JPanel();
+        leftPanel.setOpaque(false);
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setPreferredSize(new Dimension(450, 0));
+
+        rightPanel = new JPanel();
+        rightPanel.setOpaque(false);
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setPreferredSize(new Dimension(450, 0));
+
+        leftPanel.add(Box.createVerticalStrut(15));
+        binderListBox = new ComboBox(bindersList);
+        binderListBox.setActionCommand("Select");
+        binderListBox.insertItemAt("", 0);
+        binderListBox.setSelectedIndex(0);
+        leftPanel.add(binderListBox);
+
+        leftPanel.add(Box.createVerticalStrut(300));
+        Label collectorLabel = new Label("You currently have", Font.PLAIN, 25);
+        leftPanel.add(collectorLabel);
+
+        collectorMoneyLabel = new Label("$", Font.BOLD, 25);
+        collectorMoneyLabel.setBorder(BorderFactory.createLineBorder(Color.decode("#BCBEC4"), 2, true));
+        leftPanel.add(collectorMoneyLabel);
+        setCollectorMoneyLabel(money);
+
+        leftPanel.setVisible(true);
+
+        binderNameLabel = new Label("Name", Font.PLAIN, 25);
+        rightPanel.add(binderNameLabel);
+        binderValueLabel = new Label("Value: $", Font.PLAIN, 25);
+        rightPanel.add(binderValueLabel);
+
+        rightPanel.add(Box.createVerticalStrut(15));
+        btnSell = new Button("Sell");
+        rightPanel.add(btnSell);
+
+        rightPanel.setVisible(false);
+
+        JPanel options = new JPanel();
+        options.setOpaque(false);
+        options.add(btnBack);
+        options.setVisible(true);
+
+        binderListBox.addActionListener(updateListener);
+        binderListBox.addActionListener(listener);
+        setActionListener(new Button[]{btnBack, btnSell}, listener);
+
+        this.add(leftPanel, BorderLayout.WEST);
+        this.add(rightPanel, BorderLayout.EAST);
+        this.add(options, BorderLayout.SOUTH);
+    }
+
     private void setPanel(Label label, TextField field, JPanel panel) {
         panel.add(label);
         panel.add(field);
@@ -379,6 +495,19 @@ public class BinderGUI extends Frame {
         }
     }
 
+    public void setBinderNameLabel(String binderName) {
+        binderNameLabel.setText(binderName);
+    }
+
+    public void setBinderValueLabel(double value) {
+        binderValueLabel.setText("Value: $" + value);
+    }
+
+    public void setCollectorMoneyLabel(double money) {
+        collectorMoneyLabel.setText("$" + money);
+    }
+
+
     private void updateBtnAdd() {
         btnAdd.setEnabled(!isFieldsEmpty && !isBoxesEmpty);
     }
@@ -408,6 +537,13 @@ public class BinderGUI extends Frame {
             return cardListBox.getSelectedIndex() - 1;
         }
         return -1;
+    }
+
+    public String getSelectedBinderName() {
+        if (binderListBox != null && binderListBox.getSelectedIndex() > 0) {
+            return (String) binderListBox.getSelectedItem();
+        }
+        return null;
     }
 
     public String getSelectedCardName() {
@@ -450,5 +586,18 @@ public class BinderGUI extends Frame {
         updateCardList(new String[]{});
         binderListBox.setSelectedIndex(0);
         cardListBox.setSelectedIndex(0);
+    }
+
+    public void resetDisplaySellBinder(double money) {
+        setCollectorMoneyLabel(money);
+        binderListBox.removeItemAt(getSelectedBinderIndex() + 1);
+        binderListBox.setSelectedIndex(0);
+        rightPanel.setVisible(false);
+    }
+
+    public void resetDisplayTrade() {
+        binderListBox.setSelectedIndex(0);
+        cardListBox.setSelectedIndex(0);
+        btnTrade.setEnabled(false);
     }
 }

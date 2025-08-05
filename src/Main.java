@@ -7,8 +7,8 @@
 
 package src;
 
+import src.controller.OldController;
 import src.controller.Controller;
-import src.controller.NewController;
 
 /**
  * Contains the main method which initiates running of program
@@ -22,11 +22,10 @@ public class Main {
      * @param args main argument
      */
     public static void main(String[] args) {
-        //Controller controller = new Controller();
-        //controller.run();
+        Controller controller = new Controller();
 
 //        For GUI Functionality
-        NewController controller = new NewController();
-        controller.mainMenu();
+//        NewController controller = new NewController();
+//        controller.mainMenu();
     }
 }

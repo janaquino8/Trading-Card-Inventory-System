@@ -28,6 +28,9 @@ public class CollectorGUI extends Frame {
         Button button3 = new Button(btn3Label);
 
         addButtonsToBody(new Button[]{button1, button2, button3}, listener);
+
+        revalidate();
+        repaint();
     }
 
     public void displayManageCollection(int collectionTotalCount, ActionListener listener) {
