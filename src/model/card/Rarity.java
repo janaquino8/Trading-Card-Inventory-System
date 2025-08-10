@@ -17,7 +17,7 @@ public class Rarity {
         switch (rarity) {
             case 1:
                 this.setName("Common");
-                //break; // ADDED POST SUBMISSION
+                break;
             case 2:
                 this.setName("Uncommon");
                 break;

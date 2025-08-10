@@ -10,7 +10,7 @@ public class Variant {
     private String name;
 
     /**
-     * Muliplier of the value of the card.
+     * Multiplier of the value of the card.
      */
     private double valueMultiplier;
 
