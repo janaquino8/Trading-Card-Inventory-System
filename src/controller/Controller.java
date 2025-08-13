@@ -587,6 +587,7 @@ public class Controller {
                         binderGUI.dispose();
 
                         Binder binder = collector.getBinder(index);
+                        binder.sort();
                         String[] cardNames = Arrays.stream(binder.getCards())
                                 .filter(Objects::nonNull)
                                 .map(Card::getName)
