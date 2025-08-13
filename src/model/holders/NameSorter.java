@@ -16,6 +16,9 @@ public class NameSorter implements Comparator<Card> {
      * and 0 if both are equal
      */
     public int compare (Card c1, Card c2) {
-        return c1.getName().compareTo(c2.getName());
+        if (c1 != null && c2 != null) {
+            return c1.getName().compareTo(c2.getName());
+        }
+        return 0;
     }
 }
