@@ -33,14 +33,15 @@ This is done as a Major Course Output, part of the course requirements for CCPRO
 git clone https://github.com/janaquino8/Trading-Card-Inventory-System
 ```
 
-### Compiling the project
+### Compiling the project (in CMD)
 ```sh
-TBD
+cd src
+javac -d ./out/ ./Main.java ./controller/*.java ./model/*.java ./view/*.java ./model/card/*.java ./model/holders/*.java ./model/holders/binder/*.java ./model/holders/deck/*.java
 ```
 
-### Running the project
+### Running the project (in CMD)
 ```sh
-TBD
+java Main.java
 ```
 
 ## File structure
