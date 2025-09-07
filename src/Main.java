@@ -8,7 +8,6 @@
 package src;
 
 import src.controller.Controller;
-import src.controller.OldController;
 
 /**
  * Contains the main method which initiates running of program
@@ -24,8 +23,5 @@ public class Main {
     public static void main(String[] args) {
         // GUI Version
         Controller controller = new Controller();
-
-        // CLI Version (comment out line 24 and uncomment line 28 to use)
-        // new OldController().run();
     }
 }
