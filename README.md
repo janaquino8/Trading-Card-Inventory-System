@@ -57,7 +57,7 @@ The project follows the Model-View-Controller (MVC) pattern. Each component is s
 - ```model```
 - ```view```
 - ```Main.java```
-- - ```MainCLI.java```
+- ```MainCLI.java```
 
 ### /controller
 - ```Controller.java```
