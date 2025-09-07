@@ -24,7 +24,7 @@ There are also holder types where the user may store cards:
 | Rares - restricted to rare and legendary cards; adds a 10% handling fee                               |
 | Luuxry - restricted to cards of non-normal variants; value can be increased; adds a 10% handling fee  |
 
-This is done as a Major Course Output, part of the course requirements for CCPROG3 in DLSU. This version includes basic GUI implementation. To access the CLI version, kindly access ```Main.java``` for details.
+This is done as a Major Course Output, part of the course requirements for CCPROG3 in DLSU. This version includes basic GUI implementation (via ```Main.java```), as well as a CLI implementation (via ```MainCLI.java```).
 
 ## Installation Guide
 

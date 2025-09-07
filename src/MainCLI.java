@@ -23,5 +23,6 @@ public class MainCLI {
     public static void main(String[] args) {
         // CLI Version
         OldController controller = new OldController();
+        controller.run();
     }
 }
