@@ -593,6 +593,12 @@ public class DeckGUI extends Frame {
         cardListBox.setSelectedIndex(0);
     }
 
+    public void resetDisplayCreateDeck(){
+        deckNameField.setText("");
+        deckTypeBox.setSelectedIndex(0);
+        updateBtnAdd();
+    }
+
     public void resetDisplayAddCardToDeck(boolean isDeckFull, int cardCollectionCount) {
         if (isDeckFull) {
             deckListBox.removeItemAt(getSelectedDeckIndex() + 1);

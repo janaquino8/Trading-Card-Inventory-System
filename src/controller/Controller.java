@@ -176,7 +176,7 @@ public class Controller {
 
                         if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                             collector.getCollection().getCard(index).incrementCollectionCount();
-
+                            collectionGUI.resetDisplayAddCard();
                             msg = "A copy of " + c.getName() + " has been added to the collection.";
                             JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
                             recentCardIndex = index;
@@ -190,7 +190,7 @@ public class Controller {
                         if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                             collector.getCollection().addCard(collectionGUI.getCardName(), collectionGUI.getRarity(),
                                     collectionGUI.getVariant(), collectionGUI.getValue());
-
+                            collectionGUI.resetDisplayAddCard();
                             msg = collectionGUI.getCardName() + " has been added to the collection.";
                             JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
                             recentCardIndex = collector.getCollectionCardCount() - 1;
@@ -223,6 +223,7 @@ public class Controller {
                         String msg = binderGUI.getBinderName() + " does not exist. Would you like to create the binder?";
                         if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                             collector.createBinder(binderGUI.getBinderName(), binderGUI.getBinderType());
+                            binderGUI.resetDisplayCreateBinder();
                             msg = binderGUI.getBinderName() + " has been created.";
                             JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -260,6 +261,7 @@ public class Controller {
                         String msg = deckGUI.getDeckName() + " does not exist. Would you like to create the deck?";
                         if (JOptionPane.showConfirmDialog(null, msg, "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
                             collector.createDeck(deckGUI.getDeckName(), deckGUI.getDeckType());
+                            deckGUI.resetDisplayCreateDeck();
                             msg = deckGUI.getDeckName() + " has been created.";
                             JOptionPane.showMessageDialog(null, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
                         }

@@ -357,6 +357,14 @@ public class CollectionGUI extends Frame {
         collectorMoneyLabel.setText("$" + money);
     }
 
+    public void resetDisplayAddCard() {
+        cardNameField.setText("");
+        rarityBox.setSelectedIndex(0);
+        variantBox.setSelectedIndex(0);
+        valueField.setText("");
+        updateBtnAdd();
+    }
+
     private void updateBtnAdd() {
         btnAdd.setEnabled(!isFieldsEmpty && !isBoxesEmpty && getValue() >= 0);
     }

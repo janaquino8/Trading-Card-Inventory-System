@@ -567,6 +567,12 @@ public class BinderGUI extends Frame {
         cardListBox.setSelectedIndex(0);
     }
 
+    public void resetDisplayCreateBinder(){
+        binderNameField.setText("");
+        binderTypeBox.setSelectedIndex(0);
+        updateBtnAdd();
+    }
+
     public void resetDisplayAddCardToBinder(boolean isBinderFull, int cardCollectionCount) {
         if (isBinderFull) {
             binderListBox.removeItemAt(getSelectedBinderIndex() + 1);
