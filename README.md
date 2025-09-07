@@ -36,12 +36,17 @@ git clone https://github.com/janaquino8/Trading-Card-Inventory-System
 ### Compiling the project (in CMD)
 ```sh
 cd src
-javac -d ./out/ ./Main.java ./controller/*.java ./model/*.java ./view/*.java ./model/card/*.java ./model/holders/*.java ./model/holders/binder/*.java ./model/holders/deck/*.java
+javac -d ./out/ ./*.java ./controller/*.java ./model/*.java ./view/*.java ./model/card/*.java ./model/holders/*.java ./model/holders/binder/*.java ./model/holders/deck/*.java
 ```
 
-### Running the project (in CMD)
+### Running the project (GUI version)
 ```sh
 java Main.java
+```
+
+### Running the project (CLI version)
+```sh
+java MainCLI.java
 ```
 
 ## File structure
