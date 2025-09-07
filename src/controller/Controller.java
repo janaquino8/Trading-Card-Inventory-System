@@ -392,7 +392,8 @@ public class Controller {
         displayableCards.sort(new NameSorter());
 
         for (Card c : displayableCards) {
-            displayableCardsList.add(c.getName() + " (" + c.getCollectionCount() + " copies)");
+            int count = c.getCollectionCount();
+            displayableCardsList.add(c.getName() + " (" + count + (count == 1 ? " copy)" : " copies)"));
         }
 
         collectionGUI.displayCollection(displayableCardsList.toArray(new String[0]), actionListener);
